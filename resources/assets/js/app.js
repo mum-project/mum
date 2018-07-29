@@ -1,0 +1,75 @@
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
+require('./bootstrap');
+
+window.Vue = require('vue');
+
+import VueSelect from 'vue-select';
+
+window.Fuse = require('fuse.js');
+
+window.moment = require('moment');
+
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+Vue.use(require('v-tooltip'));
+Vue.component('v-select', VueSelect);
+
+Vue.component('mu-alert', require('./components/Alert.vue'));
+Vue.component('custom-password', require('./components/PasswordInput.vue'));
+Vue.component('ajax-select', require('./components/AjaxSelect.vue'));
+Vue.component(
+  'alias-deactivate-at-input',
+  require('./components/AliasDeactivateAtInput.vue')
+);
+Vue.component('popup-modal', require('./components/PopupModal.vue'));
+Vue.component(
+  'integrations-form',
+  require('./components/integrations/IntegrationsForm.vue')
+);
+Vue.component(
+  'edit-integration-parameters',
+  require('./components/integrations/IntegrationParametersForm.vue')
+);
+Vue.component(
+  'size-measurements-chart',
+  require('./components/SizeMeasurementsChart.vue')
+);
+Vue.component(
+  'input-with-random-generator',
+  require('./components/InputWithRandomGenerator.vue')
+);
+Vue.component(
+  'alias-senders-recipients-form',
+  require('./components/aliasSendersRecipients/AliasSendersRecipientsForm.vue')
+);
+Vue.component(
+  'modal-content-provider',
+  require('./components/ModalContentProvider.vue')
+);
+Vue.component('index-search', require('./components/IndexSearch.vue'));
+
+const app = new Vue({
+  el: '#root',
+  data: {
+    showPopupModal: false,
+    modalContentIdentifier: null,
+    modalContentPayload: null,
+  },
+  methods: {
+    setModalContentIdentifier(identifier) {
+      this.modalContentIdentifier = identifier;
+      this.showPopupModal = identifier != null;
+    },
+    setModalContentPayload(payload) {
+      this.modalContentPayload = payload;
+    },
+  },
+});

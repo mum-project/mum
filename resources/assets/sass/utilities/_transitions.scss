@@ -1,0 +1,73 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-enter-active,
+.fadeIn,
+.fade-leave-active,
+.fadeOut {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+.fade-enter-active,
+.fadeIn {
+  animation-name: 'fadeIn';
+}
+
+.fade-leave-active,
+.fadeOut {
+  animation-name: 'fadeOut';
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translate3d(0, 1.5rem, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideOutUp {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -1.5rem, 0);
+  }
+}
+
+.slideUp-enter-active,
+.slideInUp,
+.slideUp-leave-active,
+.slideOutUp {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+.slideUp-enter-active,
+.slideInUp {
+  animation-name: 'slideInUp';
+}
+
+.slideUp-leave-active,
+.slideOutUp {
+  animation-name: 'slideOutUp';
+}

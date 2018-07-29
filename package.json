@@ -1,0 +1,32 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
+        "axios": "^0.18",
+        "chart.js": "^2.7.2",
+        "cross-env": "^5.2.0",
+        "diceware-generator": "^3.0.1",
+        "diceware-wordlist-en-eff": "^1.0.1",
+        "fuse.js": "^3.2.1",
+        "laravel-mix": "^2.0",
+        "lodash": "^4.17.10",
+        "moment": "^2.22.2",
+        "popper.js": "^1.12",
+        "tailwindcss": "^0.6.1",
+        "vue": "^2.5.7",
+        "vue-select": "^2.4.0"
+    },
+    "dependencies": {
+        "npm": "^5.10.0",
+        "v-tooltip": "^2.0.0-rc.33"
+    }
+}
