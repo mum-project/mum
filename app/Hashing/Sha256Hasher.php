@@ -5,10 +5,7 @@ namespace App\Hashing;
 use function bin2hex;
 use function crypt;
 use const CRYPT_SHA256;
-use function gettype;
 use function hash_equals;
-use const MHASH_SHA256;
-use phpDocumentor\Reflection\Types\Integer;
 use function preg_match;
 use function random_bytes;
 use RuntimeException;
@@ -57,7 +54,7 @@ class Sha256Hasher implements HasherContract
         }
 
         return [
-            'algo'     => MHASH_SHA256,
+            'algo'     => 'SHA256',
             'algoName' => 'sha256',
             'options'  => $options
         ];
@@ -110,7 +107,7 @@ class Sha256Hasher implements HasherContract
     public function needsRehash($hashedValue, array $options = [])
     {
         $info = $this->info($hashedValue);
-        if ($info['algo'] === MHASH_SHA256) {
+        if ($info['algo'] === 'SHA256') {
             return $info['options']['rounds'] !== $this->rounds($options);
         }
         return false;

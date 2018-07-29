@@ -1,5 +1,7 @@
 # MUM
 
+[![Build Status](https://travis-ci.com/mum-project/mum.svg?branch=master)](https://travis-ci.com/mum-project/mum)
+
 > This software is still in development and not production-ready. Help us make it better by contributing!
 
 ## Documentation

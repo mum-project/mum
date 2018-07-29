@@ -2,13 +2,10 @@
 
 namespace App\Hashing;
 
-use function array_key_exists;
 use function bin2hex;
 use function crypt;
 use const CRYPT_SHA512;
 use function hash_equals;
-use function is_array;
-use const MHASH_SHA512;
 use function preg_match;
 use function random_bytes;
 use RuntimeException;
@@ -57,7 +54,7 @@ class Sha512Hasher implements HasherContract
         }
 
         return [
-            'algo'     => MHASH_SHA512,
+            'algo'     => 'SHA512',
             'algoName' => 'sha512',
             'options'  => $options
         ];
@@ -110,7 +107,7 @@ class Sha512Hasher implements HasherContract
     public function needsRehash($hashedValue, array $options = [])
     {
         $info = $this->info($hashedValue);
-        if ($info['algo'] === MHASH_SHA512) {
+        if ($info['algo'] === 'SHA512') {
             return $info['options']['rounds'] !== $this->rounds($options);
         }
         return false;
