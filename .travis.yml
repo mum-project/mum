@@ -1,0 +1,25 @@
+os:
+  - linux
+
+language: php
+
+php:
+  - 7.1
+
+before_script:
+  - cp .env.travis .env
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+  - php artisan key:generate
+  - php artisan migrate
+  - npm install
+
+before_install:
+  - mysql -e 'CREATE DATABASE testing;'
+
+script:
+  - vendor/bin/phpunit --coverage-text
+  - npm run production
+
+services:
+  - mysql
