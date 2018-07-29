@@ -4,7 +4,6 @@ namespace Tests\Feature\Hashing;
 
 use App\Hashing\Sha256Hasher;
 use function hash_equals;
-use const MHASH_SHA256;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -23,7 +22,7 @@ class Sha256HasherTest extends TestCase
         $hasher = new Sha256Hasher();
         $info = $hasher->info($hash);
 
-        $this->assertEquals(MHASH_SHA256, $info['algo']);
+        $this->assertEquals('SHA256', $info['algo']);
         $this->assertEquals('sha256', $info['algoName']);
         $this->assertEquals($options, $info['options']);
     }

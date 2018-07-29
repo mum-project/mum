@@ -3,7 +3,6 @@
 namespace Tests\Feature\Hashing;
 
 use App\Hashing\Sha512Hasher;
-use const MHASH_SHA512;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -22,7 +21,7 @@ class Sha512HasherTest extends TestCase
         $hasher = new Sha512Hasher();
         $info = $hasher->info($hash);
 
-        $this->assertEquals(MHASH_SHA512, $info['algo']);
+        $this->assertEquals('SHA512', $info['algo']);
         $this->assertEquals('sha512', $info['algoName']);
         $this->assertEquals($options, $info['options']);
     }
