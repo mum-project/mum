@@ -1,6 +1,8 @@
 # MUM
 
 [![Build Status](https://travis-ci.com/mum-project/mum.svg?branch=master)](https://travis-ci.com/mum-project/mum)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/maintainability)](https://codeclimate.com/github/mum-project/mum/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/test_coverage)](https://codeclimate.com/github/mum-project/mum/test_coverage)
 
 > This software is still in development and not production-ready. Help us make it better by contributing!
 
