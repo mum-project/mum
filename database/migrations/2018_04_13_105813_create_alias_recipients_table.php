@@ -18,7 +18,6 @@ class CreateAliasRecipientsTable extends Migration
             $table->unsignedInteger('alias_id');
             $table->string('recipient_address');
             $table->unsignedInteger('mailbox_id')->nullable();
-            $table->timestamps();
 
             $table->unique(['alias_id', 'recipient_address']);
             $table->foreign('alias_id')->references('id')->on('aliases')->onDelete('cascade');
