@@ -1,8 +1,12 @@
-# MUM
+<p align="center"><img src="https://mum-project.github.io/docs/img/mum.svg" height="128"></p>
 
-[![Build Status](https://travis-ci.com/mum-project/mum.svg?branch=master)](https://travis-ci.com/mum-project/mum)
-[![Maintainability](https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/maintainability)](https://codeclimate.com/github/mum-project/mum/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/test_coverage)](https://codeclimate.com/github/mum-project/mum/test_coverage)
+<p align="center">
+    <a href="https://travis-ci.com/mum-project/mum"><img src="https://travis-ci.com/mum-project/mum.svg?branch=master" alt="Build Status"></a>
+    <a href="https://codeclimate.com/github/mum-project/mum/maintainability"><img src="https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/maintainability" alt="Maintainability"></a>
+    <a href="https://codeclimate.com/github/mum-project/mum/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/test_coverage" alt="Test Coverage"></a>
+</p>
+
+# MUM
 
 > This software is still in development and not production-ready. Help us make it better by contributing!
 
@@ -13,9 +17,13 @@ may access older documentation simply by downloading the corresponding documenta
 the static site yourself.
 
 ## About the Project
-MUM originated as a software development project at [Stuttgart Media University](https://www.hdm-stuttgart.de).
 Since there weren't any good web-based user management tools for Postfix and Dovecot out there, we decided
-to build our own.
+to build our own. MUM originated as a software development project at [Stuttgart Media University](https://www.hdm-stuttgart.de).
+
+## Migration
+Coming from another mailbox administration software? Maybe you want to have a look at 
+[MUM Migrator](https://github.com/mum-project/migrator/). Our console migration tool moves your data
+in a matter of minutes and allows you to focus on the important things.
 
 ## Contributing
 You want to help? Awesome! Have a look at the [Contribution Guide](CONTRIBUTING.md) and start coding.
