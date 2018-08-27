@@ -26,13 +26,14 @@ return [
     |   - %d  (Domain, e.g. "example.com")
     |   - %n  (Username / Local part, e.g. "jon.doe")
     |   - %u  (User, eg. "jon.doe@example.com")
-    |
+
     */
 
     'mailboxes' => [
-        'root_directory' => env('MAILBOXES_ROOT_DIRECTORY', '/srv/mail/mailboxes'),
-        'homedir'        => env('MAILBOXES_HOMEDIR', '/srv/mail/mailboxes/%d/%n'),
-        'maildir'        => env('MAILBOXES_MAILDIR', 'maildir:/srv/mail/mailboxes/%d/%n:LAYOUT=fs')
+        'forename_activated'    => env('FORENAME_ACTIVATED', 'false'),
+        'root_directory'        => env('MAILBOXES_ROOT_DIRECTORY', '/srv/mail/mailboxes'),
+        'homedir'               => env('MAILBOXES_HOMEDIR', '/srv/mail/mailboxes/%d/%n'),
+        'maildir'               => env('MAILBOXES_MAILDIR', 'maildir:/srv/mail/mailboxes/%d/%n:LAYOUT=fs')
     ],
 
     /*

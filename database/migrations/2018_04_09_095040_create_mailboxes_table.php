@@ -18,6 +18,7 @@ class CreateMailboxesTable extends Migration
             $table->string('local_part');
             $table->string('password');
             $table->rememberToken();
+            $table->string('forename')->nullable();
             $table->string('name')->nullable();
             $table->unsignedInteger('domain_id');
             $table->string('alternative_email')->nullable();

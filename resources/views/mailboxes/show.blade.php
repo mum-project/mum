@@ -26,14 +26,42 @@
             <p class="text-xs text-grey-dark mb-8">Created {{ $mailbox->created_at->diffForHumans() }} &middot;
                 Updated {{ $mailbox->updated_at->diffForHumans() }}</p>
 
-            <div class="flex flex-col mb-8">
-                <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">
-                    Name
+            @if(config('mum.mailbox.forename_activated'))
+                <div class="form-multi-row">
+                    <div class="form-group md:w-1/2">
+                       <div class="flex flex-col mb-8">
+                           <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">
+                               Forename
+                           </div>
+                           <div class="">
+                               {!! $mailbox->forename ? htmlspecialchars($mailbox->forename) : '&mdash;' !!}
+                           </div>
+                       </div>
+                    </div>
+                    <div class="form-group md:w-1/2">
+                        <div class="flex flex-col mb-8">
+                            <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">
+                                Name
+                            </div>
+                            <div class="">
+                                {!! $mailbox->name ? htmlspecialchars($mailbox->name) : '&mdash;' !!}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="">
-                    {!! $mailbox->name ? htmlspecialchars($mailbox->name) : '&mdash;' !!}
+            @else
+                <div class="flex flex-col mb-8">
+                    <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">
+                        Name
+                    </div>
+                    <div class="">
+                        {!! $mailbox->name ? htmlspecialchars($mailbox->name) : '&mdash;' !!}
+                    </div>
                 </div>
-            </div>
+            @endif
+
+
+
 
             <div class="flex flex-col mb-8">
                 <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">

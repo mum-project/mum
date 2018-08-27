@@ -100,6 +100,10 @@ class MailboxController extends Controller
             'send_only'         => 'boolean',
             'active'            => 'boolean'
         ];
+
+        if(config('mum.mailboxes.forename_activated')){
+            $validationRules['forename'] = 'string|nullable';
+        }
         if (isUserSuperAdmin()) {
             $validationRules['is_super_admin'] = 'boolean';
         }
@@ -160,6 +164,10 @@ class MailboxController extends Controller
             'name'              => 'string|nullable',
             'alternative_email' => 'email|nullable',
         ];
+
+        if(config('mum.mailboxes.forename_activated')){
+            $validationRules['forename'] = 'string|nullable';
+        }
 
         if (Auth::user()
             ->isSuperAdmin()) {

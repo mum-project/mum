@@ -9,6 +9,7 @@ use function array_merge;
 use function compact;
 use function csrf_token;
 use function factory;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use function now;
 use function route;
@@ -148,6 +149,65 @@ class MailboxControllerTest extends TestCase
         $this->assertDatabaseHas('mailboxes', $databaseNeedle);
     }
 
+    public function testStoreForename()
+    {
+        Config::set('mum.mailboxes.fore_and_surname', false);
+
+        $admin = factory(Mailbox::class)->create([
+            'is_super_admin' => true,
+            'active'         => true
+        ]);
+        $user = factory(Mailbox::class)->create([
+            'is_super_admin' => false,
+            'active'         => true
+        ]);
+        $domain = factory(Domain::class)->create();
+        $password = (string)now();
+
+        $data = [
+            'local_part'            => $this->faker->unique()->userName,
+            'password'              => $password,
+            'password_confirmation' => $password,
+            'name'                  => $this->faker->name,
+            'forename'              => $this->faker->name,
+            'domain_id'             => $domain->id,
+            'alternative_email'     => $this->faker->safeEmail,
+            'quota'                 => $this->faker->numberBetween(1, 200),
+            'is_super_admin'        => $this->faker->boolean,
+            'send_only'             => $this->faker->boolean,
+            'active'                => $this->faker->boolean
+        ];
+        $databaseNeedle = array_except($data, [
+            'password',
+            'password_confirmation'
+        ]);
+
+        $this->assertDatabaseMissing('mailboxes', $databaseNeedle);
+
+        Session::start();
+
+        $this->post(route('mailboxes.store'), array_merge($data, ['_token' => csrf_token()]))
+            ->assertStatus(302);
+
+        $this->actingAs($user)
+            ->post(route('mailboxes.store'), array_merge($data, ['_token' => csrf_token()]))
+            ->assertStatus(403);
+
+        $this->actingAs($admin)
+            ->post(route('mailboxes.store'), array_merge($data, ['_token' => csrf_token()]))
+            ->assertStatus(302);
+
+        Config::set('mum.mailboxes.fore_and_surname', true);
+
+        $this->actingAs($admin)
+            ->followingRedirects()
+            ->post(route('mailboxes.store'), array_merge($data, ['_token' => csrf_token()]))
+            ->assertSuccessful()
+            ->assertSeeText($data['local_part']);
+
+        $this->assertDatabaseHas('mailboxes', $databaseNeedle);
+    }
+
     public function testEdit()
     {
         $admin = factory(Mailbox::class)->create([
@@ -212,6 +272,64 @@ class MailboxControllerTest extends TestCase
         $this->actingAs($user)
             ->patch(route('mailboxes.update', compact('mailbox')), array_merge($data, ['_token' => csrf_token()]))
             ->assertStatus(403);
+
+        $this->actingAs($admin)
+            ->followingRedirects()
+            ->patch(route('mailboxes.update', compact('mailbox')), array_merge($data, ['_token' => csrf_token()]))
+            ->assertSuccessful()
+            ->assertSeeText($data['name']);
+
+        $this->assertDatabaseHas('mailboxes', $databaseNeedle);
+    }
+
+    public function testUpdateForename()
+    {
+        Config::set('mum.mailboxes.fore_and_surname', false);
+
+        $admin = factory(Mailbox::class)->create([
+            'is_super_admin' => true,
+            'active'         => true
+        ]);
+        $user = factory(Mailbox::class)->create([
+            'is_super_admin' => false,
+            'active'         => true
+        ]);
+        $mailbox = factory(Mailbox::class)->create();
+        $password = (string)now();
+
+        $data = [
+            'password'              => $password,
+            'password_confirmation' => $password,
+            'name'                  => $this->faker->name,
+            'forename'                  => $this->faker->name,
+            'alternative_email'     => $this->faker->safeEmail,
+            'quota'                 => $this->faker->numberBetween(1, 200),
+            'is_super_admin'        => $this->faker->boolean,
+            'send_only'             => $this->faker->boolean,
+            'active'                => $this->faker->boolean
+        ];
+
+        $databaseNeedle = array_merge(['id' => $mailbox->id], array_except($data, [
+            'password',
+            'password_confirmation'
+        ]));
+
+        $this->assertDatabaseMissing('mailboxes', $databaseNeedle);
+
+        Session::start();
+
+        $this->patch(route('mailboxes.update', compact('mailbox')), array_merge($data, ['_token' => csrf_token()]))
+            ->assertStatus(302);
+
+        $this->actingAs($user)
+            ->patch(route('mailboxes.update', compact('mailbox')), array_merge($data, ['_token' => csrf_token()]))
+            ->assertStatus(403);
+
+        $this->actingAs($admin)
+            ->patch(route('mailboxes.update', compact('mailbox')), array_merge($data, ['_token' => csrf_token()]))
+            ->assertStatus(302);
+
+        Config::set('mum.mailboxes.fore_and_surname', true);
 
         $this->actingAs($admin)
             ->followingRedirects()

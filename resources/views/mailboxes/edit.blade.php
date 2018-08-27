@@ -19,8 +19,27 @@
                     <p class="form-help">For technical reasons, you cannot change the local part or the domain of a
                         mailbox once it is created.</p>
                 </div>
-                <div class="form-multi-row">
-                    <div class="form-group md:w-1/2">
+                @if(config('mum.mailboxes.forename_activated'))
+                    <div class="form-multi-row">
+                        <div class="form-group md:w-1/2">
+                            @component('layout.components.input')
+                                @slot('name', 'forename')
+                                @slot('placeholder', 'Jon')
+                                @slot('value', $mailbox->forename)
+                                The forename of the person that will use this account.
+                            @endcomponent
+                        </div>
+                        <div class="form-group md:w-1/2">
+                            @component('layout.components.input')
+                                @slot('name', 'name')
+                                @slot('placeholder', 'Doe')
+                                @slot('value', $mailbox->name)
+                                The name of the person or software that will use this account.
+                            @endcomponent
+                        </div>
+                    </div>
+                @else
+                    <div class="form-row max-w-sm">
                         @component('layout.components.input')
                             @slot('name', 'name')
                             @slot('placeholder', 'Jon Doe')
@@ -28,17 +47,7 @@
                             The name of the person or software that will use this account.
                         @endcomponent
                     </div>
-                    <div class="form-group md:w-1/2">
-                        @component('layout.components.input')
-                            @slot('name', 'quota')
-                            @slot('type', 'number')
-                            @slot('extraProps', 'step="1" min="0"')
-                            @slot('addon', 'GB')
-                            @slot('value', $mailbox->quota)
-                            Maximum storage space this mailbox may use. Leave blank for no limit.
-                        @endcomponent
-                    </div>
-                </div>
+                @endif
                 <div class="form-multi-row">
                     <div class="form-group md:w-1/2">
                         @component('layout.components.passwordInput')
@@ -59,15 +68,27 @@
                         @endcomponent
                     </div>
                 </div>
-                <div class="form-row max-w-sm">
-                    @component('layout.components.input')
-                        @slot('name', 'alternative_email')
-                        @slot('label', 'Alternative Email')
-                        @slot('type', 'email')
-                        @slot('placeholder', 'doe@example.com')
-                        @slot('value', $mailbox->alternative_email)
-                        If the user has an alternative email address, we can use it for password resets.
-                    @endcomponent
+                <div class="form-multi-row">
+                    <div class="form-group md:w-1/2">
+                        @component('layout.components.input')
+                            @slot('name', 'alternative_email')
+                            @slot('label', 'Alternative Email')
+                            @slot('type', 'email')
+                            @slot('placeholder', 'doe@example.com')
+                            @slot('value', $mailbox->alternative_email)
+                            If the user has an alternative email address, we can use it for password resets.
+                        @endcomponent
+                    </div>
+                    <div class="form-group md:w-1/2">
+                        @component('layout.components.input')
+                            @slot('name', 'quota')
+                            @slot('type', 'number')
+                            @slot('extraProps', 'step="1" min="0"')
+                            @slot('addon', 'GB')
+                            @slot('value', $mailbox->quota)
+                            Maximum storage space this mailbox may use. Leave blank for no limit.
+                        @endcomponent
+                    </div>
                 </div>
                 <div class="form-multi-row">
                     <div class="form-group {{ Auth::user()->isSuperAdmin() ? 'md:w-1/3' : 'md:w-1/2' }}">
