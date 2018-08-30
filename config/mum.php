@@ -30,7 +30,7 @@ return [
     */
 
     'mailboxes' => [
-        'forename_activated'    => env('FORENAME_ACTIVATED',  false),
+        'first_name_activated'    => env('FIRST_NAME_ACTIVATED',  false),
         'root_directory'        => env('MAILBOXES_ROOT_DIRECTORY', '/srv/mail/mailboxes'),
         'homedir'               => env('MAILBOXES_HOMEDIR', '/srv/mail/mailboxes/%d/%n'),
         'maildir'               => env('MAILBOXES_MAILDIR', 'maildir:/srv/mail/mailboxes/%d/%n:LAYOUT=fs')

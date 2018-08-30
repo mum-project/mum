@@ -101,8 +101,8 @@ class MailboxController extends Controller
             'active'            => 'boolean'
         ];
 
-        if(config('mum.mailboxes.forename_activated')){
-            $validationRules['forename'] = 'string|nullable';
+        if(config('mum.mailboxes.first_name_activated')){
+            $validationRules['first_name'] = 'string|nullable';
         }
         if (isUserSuperAdmin()) {
             $validationRules['is_super_admin'] = 'boolean';
@@ -165,8 +165,8 @@ class MailboxController extends Controller
             'alternative_email' => 'email|nullable',
         ];
 
-        if(config('mum.mailboxes.forename_activated')){
-            $validationRules['forename'] = 'string|nullable';
+        if(config('mum.mailboxes.first_name_activated')){
+            $validationRules['first_name'] = 'string|nullable';
         }
 
         if (Auth::user()

@@ -149,9 +149,9 @@ class MailboxControllerTest extends TestCase
         $this->assertDatabaseHas('mailboxes', $databaseNeedle);
     }
 
-    public function testStoreForename()
+    public function testStoreFirstName()
     {
-        Config::set('mum.mailboxes.fore_and_surname', false);
+        Config::set('mum.mailboxes.first_name_activated', false);
 
         $admin = factory(Mailbox::class)->create([
             'is_super_admin' => true,
@@ -169,7 +169,7 @@ class MailboxControllerTest extends TestCase
             'password'              => $password,
             'password_confirmation' => $password,
             'name'                  => $this->faker->name,
-            'forename'              => $this->faker->name,
+            'first_name'            => $this->faker->name,
             'domain_id'             => $domain->id,
             'alternative_email'     => $this->faker->safeEmail,
             'quota'                 => $this->faker->numberBetween(1, 200),
@@ -197,12 +197,12 @@ class MailboxControllerTest extends TestCase
             ->post(route('mailboxes.store'), array_merge($data, ['_token' => csrf_token()]))
             ->assertStatus(302);
 
-        Config::set('mum.mailboxes.fore_and_surname', true);
+        Config::set('mum.mailboxes.first_name_activated', true);
 
         $this->actingAs($admin)
             ->followingRedirects()
             ->post(route('mailboxes.store'), array_merge($data, ['_token' => csrf_token()]))
-            ->assertSuccessful()
+            ->assertStatus(200)
             ->assertSeeText($data['local_part']);
 
         $this->assertDatabaseHas('mailboxes', $databaseNeedle);
@@ -282,9 +282,9 @@ class MailboxControllerTest extends TestCase
         $this->assertDatabaseHas('mailboxes', $databaseNeedle);
     }
 
-    public function testUpdateForename()
+    public function testUpdateFirstName()
     {
-        Config::set('mum.mailboxes.fore_and_surname', false);
+        Config::set('mum.mailboxes.first_name_activated', false);
 
         $admin = factory(Mailbox::class)->create([
             'is_super_admin' => true,
@@ -301,7 +301,7 @@ class MailboxControllerTest extends TestCase
             'password'              => $password,
             'password_confirmation' => $password,
             'name'                  => $this->faker->name,
-            'forename'                  => $this->faker->name,
+            'first_name'                  => $this->faker->name,
             'alternative_email'     => $this->faker->safeEmail,
             'quota'                 => $this->faker->numberBetween(1, 200),
             'is_super_admin'        => $this->faker->boolean,
@@ -329,7 +329,7 @@ class MailboxControllerTest extends TestCase
             ->patch(route('mailboxes.update', compact('mailbox')), array_merge($data, ['_token' => csrf_token()]))
             ->assertStatus(302);
 
-        Config::set('mum.mailboxes.fore_and_surname', true);
+        Config::set('mum.mailboxes.first_name_activated', true);
 
         $this->actingAs($admin)
             ->followingRedirects()

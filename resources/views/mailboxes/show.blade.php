@@ -25,16 +25,15 @@
             </div>
             <p class="text-xs text-grey-dark mb-8">Created {{ $mailbox->created_at->diffForHumans() }} &middot;
                 Updated {{ $mailbox->updated_at->diffForHumans() }}</p>
-
-            @if(config('mum.mailbox.forename_activated'))
+            @if(config('mum.mailboxes.first_name_activated'))
                 <div class="form-multi-row">
                     <div class="form-group md:w-1/2">
                        <div class="flex flex-col mb-8">
                            <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">
-                               Forename
+                               First name
                            </div>
                            <div class="">
-                               {!! $mailbox->forename ? htmlspecialchars($mailbox->forename) : '&mdash;' !!}
+                               {!! $mailbox->first_name ? htmlspecialchars($mailbox->first_name) : '&mdash;' !!}
                            </div>
                        </div>
                     </div>
@@ -59,10 +58,6 @@
                     </div>
                 </div>
             @endif
-
-
-
-
             <div class="flex flex-col mb-8">
                 <div class="text-xs uppercase tracking-wide mb-2 text-grey-dark">
                     Quota

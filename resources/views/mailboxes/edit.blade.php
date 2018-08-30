@@ -19,14 +19,14 @@
                     <p class="form-help">For technical reasons, you cannot change the local part or the domain of a
                         mailbox once it is created.</p>
                 </div>
-                @if(config('mum.mailboxes.forename_activated'))
+                @if(config('mum.mailboxes.first_name_activated'))
                     <div class="form-multi-row">
                         <div class="form-group md:w-1/2">
                             @component('layout.components.input')
-                                @slot('name', 'forename')
+                                @slot('name', 'first_name')
                                 @slot('placeholder', 'Jon')
-                                @slot('value', $mailbox->forename)
-                                The forename of the person that will use this account.
+                                @slot('value', $mailbox->first_name)
+                                The first name of the person that will use this account.
                             @endcomponent
                         </div>
                         <div class="form-group md:w-1/2">

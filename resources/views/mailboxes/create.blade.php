@@ -39,13 +39,13 @@
                         @endcomponent
                     </div>
                 </div>
-                @if(config('mum.mailboxes.forename_activated'))
+                @if(config('mum.mailboxes.first_name_activated'))
                     <div class="form-multi-row">
                         <div class="form-group md:w-1/2">
                             @component('layout.components.input')
-                                @slot('name', 'forename')
+                                @slot('name', 'first_name')
                                 @slot('placeholder', 'Jon')
-                                The forename of the person that will use this account.
+                                The first name of the person that will use this account.
                             @endcomponent
                         </div>
                         <div class="form-group md:w-1/2">
