@@ -14,13 +14,6 @@ use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 class Sha512Hasher implements HasherContract
 {
     /**
-     * The default cost factor.
-     *
-     * @var int
-     */
-    protected $rounds = 5000;
-
-    /**
      * Create a new hasher instance.
      *
      * @param  array $options
@@ -28,7 +21,7 @@ class Sha512Hasher implements HasherContract
      */
     public function __construct(array $options = [])
     {
-        $this->rounds = $options['rounds'] ?? $this->rounds;
+        //
     }
 
     /**
@@ -39,15 +32,12 @@ class Sha512Hasher implements HasherContract
      */
     public function info($hashedValue)
     {
-        if (!preg_match('/\$6\$(rounds=[0-9]+\$)?[^\$\s]+\$[^\$\s]+$/', $hashedValue)) {
+        if (!preg_match('/\$6\$[^\$\s]+\$[^\$\s]+$/', $hashedValue)) {
             return password_get_info($hashedValue);
         }
 
         $options = [];
         $matches = [];
-        if (preg_match('/rounds=([0-9]+)\$[^\$\s]+\$[^\$\s]+$/', $hashedValue, $matches)) {
-            $options['rounds'] = (int)$matches[1];
-        }
 
         if (preg_match('/\$([^\$\s]+)\$[^\$\s]+$/', $hashedValue, $matches)) {
             $options['salt'] = $matches[1];
@@ -75,7 +65,7 @@ class Sha512Hasher implements HasherContract
             throw new RuntimeException('SHA512 hashing not supported.');
         }
 
-        $hash = crypt($value, '$6$rounds=' . $this->rounds($options) . '$' . $this->salt($options) . '$');
+        $hash = crypt($value, '$6$' . $this->salt($options) . '$');
 
         return $hash;
     }
@@ -106,35 +96,7 @@ class Sha512Hasher implements HasherContract
      */
     public function needsRehash($hashedValue, array $options = [])
     {
-        $info = $this->info($hashedValue);
-        if ($info['algo'] === 'SHA512') {
-            return $info['options']['rounds'] !== $this->rounds($options);
-        }
         return false;
-    }
-
-    /**
-     * Set the default password work factor.
-     *
-     * @param  int $rounds
-     * @return $this
-     */
-    public function setRounds($rounds)
-    {
-        $this->rounds = (int)$rounds;
-
-        return $this;
-    }
-
-    /**
-     * Extract the rounds value from the options array.
-     *
-     * @param  array $options
-     * @return int
-     */
-    protected function rounds(array $options = [])
-    {
-        return $options['rounds'] ?? $this->rounds;
     }
 
     /**
