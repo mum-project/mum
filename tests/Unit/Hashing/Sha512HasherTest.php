@@ -13,10 +13,9 @@ class Sha512HasherTest extends TestCase
     public function testInfo()
     {
         $options = [
-            'rounds' => 5001,
             'salt'   => bin2hex(random_bytes(8))
         ];
-        $hash = crypt($this->faker->sentence, '$6$rounds=' . $options['rounds'] . '$' . $options['salt'] . '$');
+        $hash = crypt($this->faker->sentence, '$6$' . $options['salt'] . '$');
 
         $hasher = new Sha512Hasher();
         $info = $hasher->info($hash);
@@ -29,37 +28,22 @@ class Sha512HasherTest extends TestCase
     public function testMake()
     {
         $options = [
-            'rounds' => 5001,
             'salt'   => bin2hex(random_bytes(8))
         ];
         $password = $this->faker->sentence;
-        $expectedHash = crypt($password, '$6$rounds=' . $options['rounds'] . '$' . $options['salt'] . '$');
+        $expectedHash = crypt($password, '$6$' . $options['salt'] . '$');
         $hasher = new Sha512Hasher();
         $hash = $hasher->make($password, $options);
-        $this->assertTrue(hash_equals($expectedHash, $hash));
-    }
-
-    public function testMakeWithFixedRounds()
-    {
-        $options = [
-            'rounds' => 5001,
-            'salt'   => bin2hex(random_bytes(8))
-        ];
-        $password = $this->faker->sentence;
-        $expectedHash = crypt($password, '$6$rounds=' . $options['rounds'] . '$' . $options['salt'] . '$');
-        $hasher = new Sha512Hasher(['rounds' => $options['rounds']]);
-        $hash = $hasher->make($password, ['salt' => $options['salt']]);
         $this->assertTrue(hash_equals($expectedHash, $hash));
     }
 
     public function testCheck()
     {
         $options = [
-            'rounds' => 5001,
             'salt'   => bin2hex(random_bytes(8))
         ];
         $password = $this->faker->unique()->sentence;
-        $hash = crypt($password, '$6$rounds=' . $options['rounds'] . '$' . $options['salt'] . '$');
+        $hash = crypt($password, '$6$' . $options['salt'] . '$');
         $hasher = new Sha512Hasher();
         $this->assertTrue($hasher->check($password, $hash));
         $this->assertFalse($hasher->check($this->faker->unique()->sentence, $hash));
@@ -73,14 +57,12 @@ class Sha512HasherTest extends TestCase
 
     public function testNeedsRehash()
     {
-        $oldOptions = ['rounds' => 5000];
-        $options = ['rounds' => 5001];
         $password = $this->faker->unique()->sentence;
-        $hash = crypt($password, '$6$rounds=' . $oldOptions['rounds'] . '$' . bin2hex(random_bytes(8)) . '$');
-        $sha256hash = crypt($password, '$5$rounds=' . $oldOptions['rounds'] . '$' . bin2hex(random_bytes(8)) . '$');
-        $hasher = new Sha512Hasher($options);
-        $this->assertTrue($hasher->needsRehash($hash));
-        $this->assertFalse($hasher->needsRehash($hash, $oldOptions));
+        $hash = crypt($password, '$6$' . bin2hex(random_bytes(8)) . '$');
+        $sha256hash = crypt($password, '$5$' . bin2hex(random_bytes(8)) . '$');
+        $hasher = new Sha512Hasher();
+        $this->assertFalse($hasher->needsRehash($hash));
+        $this->assertFalse($hasher->needsRehash($hash, []));
         $this->assertFalse($hasher->needsRehash($sha256hash));
     }
 }
