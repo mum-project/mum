@@ -1,7 +1,7 @@
 #!/bin/bash
 # MUM - Mailserver User Management
 # Mailbox Size Crawler
-# v0.1.0 / Author: Martin Bock
+# v0.1.1 / Author: Martin Bock
 
 if [[ $# != 2 ]]; then
     >&2 echo "Usage: $0 </path/to/dovecot/home/root> </path/to/mum/artisan>"
@@ -22,5 +22,5 @@ fi
 du -d 2 $1 |
 while read size name
 do
-    /usr/bin/php $2 size-measurements:report ${name} ${size}
+    sudo -u www-data /usr/bin/php $2 size-measurements:report ${name} ${size}
 done

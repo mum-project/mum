@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Domain;
 use App\Mailbox;
 use App\SizeMeasurement;
-use App\Traits\SizeMeasurable;
 use function array_filter;
 use function array_intersect;
 use function array_keys;
@@ -80,7 +79,8 @@ class SizeMeasurementsReport extends Command
         }
 
         if (!$measurable) {
-            throw new InvalidArgumentException('Could not find a mailbox or domain with this home directory.');
+            throw new InvalidArgumentException(sprintf('Could not find a mailbox or domain with the home directory "%s".',
+                $this->argument('directory')));
         }
 
         $size = $this->getSizeInKibibyte();
