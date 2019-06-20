@@ -13,3 +13,4 @@ RUN chown -R mum:mum /app
 RUN chmod +x /app/docker/install_composer.sh && /app/docker/install_composer.sh
 USER mum
 RUN composer install
+RUN cd ./docker && ./start.sh
