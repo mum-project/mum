@@ -1,3 +1,4 @@
 #!/bin/sh
 
-php ../artisan migrate --force
+php /app/artisan migrate --env=production
+

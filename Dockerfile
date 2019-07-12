@@ -2,6 +2,7 @@ FROM php:7.2-apache
 
 WORKDIR /app
 RUN apt-get update && apt-get install -y wget zip unzip git
+RUN docker-php-ext-install pdo_mysql mysqli
 ENV APACHE_DOCUMENT_ROOT /app/public
 RUN sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
