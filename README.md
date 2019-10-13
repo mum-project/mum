@@ -14,7 +14,7 @@ better by contributing!
 
 ### Documentation
 The up-to-date version of the documentation is hosted 
-[right here](https://mum-project.github.io/docs/).
+[right here](https://mum-project.github.io/).
 The [docs repository](https://github.com/mum-project/docs) is tagged using MUM's
 version numbers, so you may access older documentation simply by downloading the
 corresponding documentation version and building the static site yourself.
