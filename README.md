@@ -1,4 +1,4 @@
-<p align="center"><img src="https://mum-project.github.io/docs/img/mum.svg" height="128"></p>
+<p align="center"><img src="https://mum-project.github.io/img/mum.svg" height="128"></p>
 
 <p align="center">
     <a href="https://travis-ci.com/mum-project/mum"><img src="https://travis-ci.com/mum-project/mum.svg?branch=master" alt="Build Status"></a>
