@@ -20,7 +20,7 @@ class ChangePasswordController extends Controller
      */
     public function showPasswordChangeForm()
     {
-        return response()->view('auth.passwords.change', compact('mailbox'));
+        return response()->view('auth.passwords.change');
     }
 
     /**
