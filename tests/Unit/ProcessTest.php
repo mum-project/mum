@@ -12,7 +12,7 @@ class ProcessTest extends TestCase
     public function testRun()
     {
         $process = new Process();
-        $symphonyProcess = $process->run(null);
+        $symphonyProcess = $process->run('date');
         $this->assertTrue($symphonyProcess instanceof \Symfony\Component\Process\Process);
     }
 }
