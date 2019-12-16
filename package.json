@@ -26,7 +26,7 @@
         "vue-select": "^2.4.0"
     },
     "dependencies": {
-        "npm": "^5.10.0",
+        "npm": "^6.13.4",
         "v-tooltip": "^2.0.0-rc.33"
     }
 }
