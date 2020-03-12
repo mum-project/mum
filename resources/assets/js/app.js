@@ -10,51 +10,51 @@ window.Vue = require('vue');
 
 import VueSelect from 'vue-select';
 
-window.Fuse = require('fuse.js');
+window.Fuse = require('fuse.js').default;
 
-window.moment = require('moment');
+window.moment = require('moment').default;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.use(require('v-tooltip'));
+Vue.use(require('v-tooltip').default);
 Vue.component('v-select', VueSelect);
 
-Vue.component('mu-alert', require('./components/Alert.vue'));
-Vue.component('custom-password', require('./components/PasswordInput.vue'));
-Vue.component('ajax-select', require('./components/AjaxSelect.vue'));
+Vue.component('mu-alert', require('./components/Alert.vue').default);
+Vue.component('custom-password', require('./components/PasswordInput.vue').default);
+Vue.component('ajax-select', require('./components/AjaxSelect.vue').default);
 Vue.component(
   'alias-deactivate-at-input',
-  require('./components/AliasDeactivateAtInput.vue')
+  require('./components/AliasDeactivateAtInput.vue').default
 );
-Vue.component('popup-modal', require('./components/PopupModal.vue'));
+Vue.component('popup-modal', require('./components/PopupModal.vue').default);
 Vue.component(
   'integrations-form',
-  require('./components/integrations/IntegrationsForm.vue')
+  require('./components/integrations/IntegrationsForm.vue').default
 );
 Vue.component(
   'edit-integration-parameters',
-  require('./components/integrations/IntegrationParametersForm.vue')
+  require('./components/integrations/IntegrationParametersForm.vue').default
 );
 Vue.component(
   'size-measurements-chart',
-  require('./components/SizeMeasurementsChart.vue')
+  require('./components/SizeMeasurementsChart.vue').default
 );
 Vue.component(
   'input-with-random-generator',
-  require('./components/InputWithRandomGenerator.vue')
+  require('./components/InputWithRandomGenerator.vue').default
 );
 Vue.component(
   'alias-senders-recipients-form',
-  require('./components/aliasSendersRecipients/AliasSendersRecipientsForm.vue')
+  require('./components/aliasSendersRecipients/AliasSendersRecipientsForm.vue').default
 );
 Vue.component(
   'modal-content-provider',
-  require('./components/ModalContentProvider.vue')
+  require('./components/ModalContentProvider.vue').default
 );
-Vue.component('index-search', require('./components/IndexSearch.vue'));
+Vue.component('index-search', require('./components/IndexSearch.vue').default);
 
 const app = new Vue({
   el: '#root',

@@ -17,13 +17,16 @@
         "diceware-generator": "^3.0.1",
         "diceware-wordlist-en-eff": "^1.0.1",
         "fuse.js": "^3.2.1",
-        "laravel-mix": "^2.0",
+        "laravel-mix": "^5.0.1",
         "lodash": "^4.17.10",
         "moment": "^2.22.2",
         "popper.js": "^1.12",
+        "sass": "^1.26.3",
+        "sass-loader": "^8.0.2",
         "tailwindcss": "^0.6.1",
         "vue": "^2.5.7",
-        "vue-select": "^2.4.0"
+        "vue-select": "^2.4.0",
+        "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
         "npm": "^6.13.4",
