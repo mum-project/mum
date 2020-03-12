@@ -10,16 +10,16 @@ window.Vue = require('vue');
 
 import VueSelect from 'vue-select';
 
-window.Fuse = require('fuse.js').default;
+window.Fuse = require('fuse.js');
 
-window.moment = require('moment').default;
+window.moment = require('moment');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.use(require('v-tooltip').default);
+Vue.use(require('v-tooltip'));
 Vue.component('v-select', VueSelect);
 
 Vue.component('mu-alert', require('./components/Alert.vue').default);
