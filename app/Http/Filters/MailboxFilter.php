@@ -2,8 +2,10 @@
 
 namespace App\Http\Filters;
 
+use function explode;
 use function filter_var;
 use Illuminate\Database\Eloquent\Builder;
+use function is_string;
 
 class MailboxFilter extends QueryFilter
 {
@@ -170,12 +172,22 @@ class MailboxFilter extends QueryFilter
      */
     protected function search($searchQuery)
     {
-        return $this->builder->where(function (Builder $query) use ($searchQuery) {
+        $exploded = is_string($searchQuery) ? explode('@', $searchQuery) : [];
+
+        return $this->builder->where(function (Builder $query) use ($searchQuery, $exploded) {
             $query->where('local_part', 'LIKE', $searchQuery . '%')
                 ->orWhere('name', 'LIKE', $searchQuery . '%')
                 ->orWhereHas('domain', function (Builder $query) use ($searchQuery) {
                     $query->where('domain', 'LIKE', $searchQuery . '%');
                 });
+            if (sizeof($exploded) >= 2) {
+                $query->orWhere(function (Builder $query) use ($exploded) {
+                    $query->where('local_part', 'LIKE', $exploded[0])
+                        ->whereHas('domain', function (Builder $query) use ($exploded) {
+                            $query->where('domain', 'LIKE', $exploded[1] . '%');
+                        });
+                });
+            }
         });
     }
 }
