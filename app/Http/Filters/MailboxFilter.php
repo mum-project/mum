@@ -182,7 +182,7 @@ class MailboxFilter extends QueryFilter
                 });
             if (sizeof($exploded) >= 2) {
                 $query->orWhere(function (Builder $query) use ($exploded) {
-                    $query->where('local_part', 'LIKE', $exploded[0])
+                    $query->where('local_part', '=', $exploded[0])
                         ->whereHas('domain', function (Builder $query) use ($exploded) {
                             $query->where('domain', 'LIKE', $exploded[1] . '%');
                         });

@@ -5,7 +5,9 @@ namespace App\Http\Filters;
 use App\Scopes\ExcludeAutoDeactivatedAliasesScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use function explode;
 use function is_array;
+use function is_string;
 
 class AliasFilter extends QueryFilter
 {
@@ -299,11 +301,22 @@ class AliasFilter extends QueryFilter
      */
     protected function search($searchQuery)
     {
-        return $this->builder->where(function (Builder $query) use ($searchQuery) {
+        $exploded = is_string($searchQuery) ? explode('@', $searchQuery) : [];
+
+        return $this->builder->where(function (Builder $query) use ($searchQuery, $exploded) {
             $query->where('local_part', 'LIKE', $searchQuery . '%')
                 ->orWhereHas('domain', function (Builder $query) use ($searchQuery) {
                     $query->where('domain', 'LIKE', $searchQuery . '%');
                 });
+
+            if (sizeof($exploded) >= 2) {
+                $query->orWhere(function (Builder $query) use ($exploded) {
+                    $query->where('local_part', '=', $exploded[0])
+                        ->whereHas('domain', function (Builder $query) use ($exploded) {
+                            $query->where('domain', 'LIKE', $exploded[1] . '%');
+                        });
+                });
+            }
         });
     }
 
