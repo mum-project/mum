@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group md:w-1/2">
                         @component('layout.components.passwordInput')
-                            @slot('name', 'new_password_confirmation')
+                            @slot('name', 'password_confirmation')
                             @slot('label', 'Confirm Password')
                             @slot('minlength', config('auth.password_min_length'))
                             Leave blank if you don't want to change the password.<br>
