@@ -21,7 +21,7 @@ class AliasPolicy
     /**
      * Determine whether the user can view a list of aliases.
      *
-     * @param  \App\Mailbox $user
+     * @param \App\Mailbox $user
      * @return mixed
      */
     public function index(Mailbox $user)
@@ -35,8 +35,8 @@ class AliasPolicy
     /**
      * Determine whether the user can view the alias.
      *
-     * @param  \App\Mailbox $user
-     * @param  \App\Alias   $alias
+     * @param \App\Mailbox $user
+     * @param \App\Alias   $alias
      * @return mixed
      */
     public function view(Mailbox $user, Alias $alias)
@@ -49,7 +49,7 @@ class AliasPolicy
     /**
      * Determine whether the user can create aliases.
      *
-     * @param  \App\Mailbox $user
+     * @param \App\Mailbox $user
      * @return mixed
      */
     public function create(Mailbox $user)
@@ -61,30 +61,28 @@ class AliasPolicy
     /**
      * Determine whether the user can update the alias.
      *
-     * @param  \App\Mailbox $user
-     * @param  \App\Alias   $alias
+     * @param \App\Mailbox $user
+     * @param \App\Alias   $alias
      * @return mixed
      */
     public function update(Mailbox $user, Alias $alias)
     {
         return $user->administratedDomains()
             ->get()
-            ->contains($alias->domain()
-                ->get());
+            ->contains($alias->domain()->first());
     }
 
     /**
      * Determine whether the user can delete the alias.
      *
-     * @param  \App\Mailbox $user
-     * @param  \App\Alias   $alias
+     * @param \App\Mailbox $user
+     * @param \App\Alias   $alias
      * @return mixed
      */
     public function delete(Mailbox $user, Alias $alias)
     {
         return $user->administratedDomains()
             ->get()
-            ->contains($alias->domain()
-                ->get());
+            ->contains($alias->domain()->first());
     }
 }
