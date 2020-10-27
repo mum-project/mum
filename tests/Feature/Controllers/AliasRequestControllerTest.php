@@ -23,7 +23,7 @@ class AliasRequestControllerTest extends TestCase
 
     private $mailbox;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         factory(Domain::class)->create();

@@ -9,8 +9,8 @@ use App\WebHookIntegration;
 use function config;
 use const FILTER_VALIDATE_URL;
 use function filter_var;
-use Http\Client\Exception\RequestException;
-use Http\Httplug\Facade\Httplug;
+//use Http\Client\Exception\RequestException;
+//use Http\Httplug\Facade\Httplug;
 use Psr\Http\Message\ResponseInterface;
 use function str_replace;
 use function urlencode;
@@ -105,9 +105,9 @@ trait IntegratesWebHooks
      */
     private function sendHttpRequest(string $url, string $method = 'GET')
     {
-        $factory = app()->make('httplug.message_factory.default');
-        $request = $factory->createRequest($method, $url);
+//        $factory = app()->make('httplug.message_factory.default');
+//        $request = $factory->createRequest($method, $url);
 
-        return Httplug::sendRequest($request);
+//        return Httplug::sendRequest($request);
     }
 }
