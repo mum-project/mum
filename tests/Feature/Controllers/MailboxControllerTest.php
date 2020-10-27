@@ -20,24 +20,24 @@ class MailboxControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testIndex()
     {
-        $admin = factory(Mailbox::class)->create([
+        $admin = Mailbox::factory()->create([
             'is_super_admin' => true,
             'active'         => true
         ]);
-        $user = factory(Mailbox::class)->create([
+        $user = Mailbox::factory()->create([
             'is_super_admin' => false,
             'active'         => true
         ]);
         $perPage = $user->getPerPage();
-        factory(Mailbox::class, $perPage - 2)->create();
+        Mailbox::factory( $perPage - 2)->create();
 
         $mailboxes1 = Mailbox::whereAuthorized()
             ->take($perPage)
@@ -76,11 +76,11 @@ class MailboxControllerTest extends TestCase
 
     public function testCreate()
     {
-        $admin = factory(Mailbox::class)->create([
+        $admin = Mailbox::factory()->create([
             'is_super_admin' => true,
             'active'         => true
         ]);
-        $user = factory(Mailbox::class)->create([
+        $user = Mailbox::factory()->create([
             'is_super_admin' => false,
             'active'         => true
         ]);
@@ -100,15 +100,15 @@ class MailboxControllerTest extends TestCase
 
     public function testStore()
     {
-        $admin = factory(Mailbox::class)->create([
+        $admin = Mailbox::factory()->create([
             'is_super_admin' => true,
             'active'         => true
         ]);
-        $user = factory(Mailbox::class)->create([
+        $user = Mailbox::factory()->create([
             'is_super_admin' => false,
             'active'         => true
         ]);
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $password = (string)now();
 
         $data = [
@@ -123,7 +123,7 @@ class MailboxControllerTest extends TestCase
             'send_only'             => $this->faker->boolean,
             'active'                => $this->faker->boolean
         ];
-        $databaseNeedle = array_except($data, [
+        $databaseNeedle = Arr::except($data, [
             'password',
             'password_confirmation'
         ]);
@@ -150,15 +150,15 @@ class MailboxControllerTest extends TestCase
 
     public function testEdit()
     {
-        $admin = factory(Mailbox::class)->create([
+        $admin = Mailbox::factory()->create([
             'is_super_admin' => true,
             'active'         => true
         ]);
-        $user = factory(Mailbox::class)->create([
+        $user = Mailbox::factory()->create([
             'is_super_admin' => false,
             'active'         => true
         ]);
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
 
         $this->get(route('mailboxes.edit', compact('mailbox')))
             ->assertStatus(302);
@@ -175,15 +175,15 @@ class MailboxControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $admin = factory(Mailbox::class)->create([
+        $admin = Mailbox::factory()->create([
             'is_super_admin' => true,
             'active'         => true
         ]);
-        $user = factory(Mailbox::class)->create([
+        $user = Mailbox::factory()->create([
             'is_super_admin' => false,
             'active'         => true
         ]);
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $password = (string)now();
 
         $data = [
@@ -197,7 +197,7 @@ class MailboxControllerTest extends TestCase
             'active'                => $this->faker->boolean
         ];
 
-        $databaseNeedle = array_merge(['id' => $mailbox->id], array_except($data, [
+        $databaseNeedle = array_merge(['id' => $mailbox->id], Arr::except($data, [
             'password',
             'password_confirmation'
         ]));
@@ -224,15 +224,15 @@ class MailboxControllerTest extends TestCase
 
     public function testDestroy()
     {
-        $admin = factory(Mailbox::class)->create([
+        $admin = Mailbox::factory()->create([
             'is_super_admin' => true,
             'active'         => true
         ]);
-        $user = factory(Mailbox::class)->create([
+        $user = Mailbox::factory()->create([
             'is_super_admin' => false,
             'active'         => true
         ]);
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
 
         Session::start();
 

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
-class Handler extends ExceptionHandler
+class Handler extends exceptionhandler
 {
     /**
      * A list of the exception types that are not reported.

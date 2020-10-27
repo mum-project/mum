@@ -2,11 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use function config;
 use UnexpectedValueException;
 
 class ShellCommandIntegration extends Integration
 {
+    use HasFactory;
+
     protected $table = 'integrations';
 
     protected static function boot()

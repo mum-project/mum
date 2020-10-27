@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $exampleDomain = factory(Domain::class)->create(['domain' => 'example.com']);
-        factory(Mailbox::class)->create([
+        $exampleDomain = Domain::factory()->create(['domain' => 'example.com']);
+        Mailbox::factory()->create([
             'local_part'     => 'admin',
             'domain_id'      => $exampleDomain->id,
             'homedir'        => getHomedirForMailbox('admin', $exampleDomain->domain),
@@ -33,9 +33,9 @@ class DatabaseSeeder extends Seeder
             'is_super_admin' => true,
             'active'         => true
         ]);
-        factory(Domain::class, 5)->create();
-        factory(Mailbox::class, 50)->create();
-        factory(Alias::class, 50)
+        Domain::factory(5)->create();
+        Mailbox::factory(50)->create();
+        Alias::factory(50)
             ->create()
             ->each(function (Alias $alias) {
                 $mailboxes = Mailbox::all()
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
                     ->saveMany(Mailbox::all()
                         ->random(2));
             });
-        factory(AliasRequest::class, 10)
+        AliasRequest::factory(10)
             ->create()
             ->each(function (AliasRequest $aliasRequest) {
                 $mailboxes = Mailbox::all()
@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
                     ->saveMany(Mailbox::all()
                         ->random(2));
             });
-        factory(TlsPolicy::class, 3)->create();
+        TlsPolicy::factory(3)->create();
         Domain::all()
             ->random(5)
             ->each(function (Domain $domain) {
@@ -75,10 +75,10 @@ class DatabaseSeeder extends Seeder
                         ->random(2));
             });
         if (config('integrations.shell_commands.01')) {
-            factory(ShellCommandIntegration::class, 3)->create();
+            ShellCommandIntegration::factory(3)->create();
         }
-        factory(WebHookIntegration::class, 3)->create();
-        factory(Mailbox::class)
+        WebHookIntegration::factory(3)->create();
+        Mailbox::factory()
             ->create([
                 'local_part'     => 'domain.admin',
                 'domain_id'      => $exampleDomain->id,
@@ -102,14 +102,11 @@ class DatabaseSeeder extends Seeder
             });
         $this->createSizeMeasurements($faker, null, null, 10 * 1024 * 1024, Carbon::now()
             ->subMonths(2));
-        factory(SystemService::class, 3)
+        SystemService::factory(3)
             ->create()
             ->each(function (SystemService $systemService) {
                 $systemService->serviceHealthChecks()
-                    ->saveMany(factory(
-                        ServiceHealthCheck::class,
-                        20
-                    )->create(['system_service_id' => $systemService->id]));
+                    ->saveMany(ServiceHealthCheck::factory(20)->create(['system_service_id' => $systemService->id]));
             });
     }
 
@@ -117,22 +114,23 @@ class DatabaseSeeder extends Seeder
      * @param \Faker\Generator $faker
      * @param                  $measurableId
      * @param                  $measurableType
-     * @param int              $startSize
-     * @param Carbon           $startedAt
+     * @param int $startSize
+     * @param Carbon $startedAt
      */
     private function createSizeMeasurements(
         Faker\Generator $faker,
         $measurableId,
         $measurableType,
         int $startSize,
-                                            Carbon $startedAt
-    ) {
+        Carbon $startedAt
+    )
+    {
         $size = $startSize;
         $createdAt = $startedAt;
         for ($i = 0; $i < 10; $i++) {
             $size = $size * $faker->randomFloat(4, 0.98, 1.1);
             $createdAt = $createdAt->addDay();
-            factory(SizeMeasurement::class)->create([
+            SizeMeasurement::factory()->create([
                 'measurable_id'   => $measurableId,
                 'measurable_type' => $measurableType,
                 'size'            => $size,

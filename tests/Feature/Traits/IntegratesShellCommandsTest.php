@@ -28,7 +28,7 @@ class IntegratesShellCommandsTest extends TestCase
     /** @var Integratable */
     protected $integratable;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -52,7 +52,7 @@ class IntegratesShellCommandsTest extends TestCase
         Config::set('integrations.enabled.shell_commands', true);
         Config::set('integrations.shell_commands.01', 'foobar_command');
 
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'event_type'  => 'created',
             'model_class' => $this->integratable->getIntegratableClassName(),
             'value'       => '01'
@@ -69,7 +69,7 @@ class IntegratesShellCommandsTest extends TestCase
         Config::set('integrations.enabled.shell_commands', false);
         Config::set('integrations.shell_commands.01', 'foobar_command');
 
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'model_class' => $this->integratable->getIntegratableClassName(),
             'value'       => '01'
         ]);
@@ -86,7 +86,7 @@ class IntegratesShellCommandsTest extends TestCase
         Config::set('integrations.enabled.shell_commands', true);
         Config::set('integrations.shell_commands.01', $command);
 
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'model_class' => $this->integratable->getIntegratableClassName(),
             'value'       => '01'
         ]);
@@ -109,7 +109,7 @@ class IntegratesShellCommandsTest extends TestCase
         Config::set('integrations.enabled.shell_commands', true);
         Config::set('integrations.shell_commands.01', $command);
 
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'model_class' => $this->integratable->getIntegratableClassName(),
             'value'       => '01'
         ]);
@@ -144,7 +144,7 @@ class IntegratesShellCommandsTest extends TestCase
         Config::set('integrations.shell_commands.01', $command);
 
         /** @var ShellCommandIntegration $integration */
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'model_class' => $this->integratable->getIntegratableClassName(),
             'value'       => '01'
         ]);

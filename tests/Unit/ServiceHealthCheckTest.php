@@ -13,17 +13,17 @@ class ServiceHealthCheckTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(SystemService::class)->create();
+        SystemService::factory()->create();
     }
 
     public function testSystemService()
     {
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
         /** @var ServiceHealthCheck $serviceHealthCheck */
-        $serviceHealthCheck = factory(ServiceHealthCheck::class)->create([
+        $serviceHealthCheck = ServiceHealthCheck::factory()->create([
             'system_service_id' => $systemService->id,
             'output'            => 'foobar'
         ]);
@@ -33,7 +33,7 @@ class ServiceHealthCheckTest extends TestCase
     public function testWasRunning()
     {
         /** @var ServiceHealthCheck $serviceHealthCheck */
-        $serviceHealthCheck = factory(ServiceHealthCheck::class)->create([
+        $serviceHealthCheck = ServiceHealthCheck::factory()->create([
             'output'            => 'running'
         ]);
         $this->assertTrue($serviceHealthCheck->wasRunning());
@@ -42,7 +42,7 @@ class ServiceHealthCheckTest extends TestCase
     public function testWasNotRunning()
     {
         /** @var ServiceHealthCheck $serviceHealthCheck */
-        $serviceHealthCheck = factory(ServiceHealthCheck::class)->create([
+        $serviceHealthCheck = ServiceHealthCheck::factory()->create([
             'output'            => 'dead'
         ]);
         $this->assertFalse($serviceHealthCheck->wasRunning());

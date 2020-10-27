@@ -14,16 +14,16 @@ class DomainPolicyTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testBefore()
     {
-        $admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
         $policy = new DomainPolicy();
         $this->assertTrue($policy->before($admin, null));
         $this->assertNull($policy->before($mailbox, null));
@@ -31,31 +31,31 @@ class DomainPolicyTest extends TestCase
 
     public function testView()
     {
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
-        $domain = factory(Domain::class)->create();
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
+        $domain = Domain::factory()->create();
         $policy = new DomainPolicy();
         $this->assertFalse($policy->view($mailbox, $domain));
     }
 
     public function testCreate()
     {
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
         $policy = new DomainPolicy();
         $this->assertFalse($policy->create($mailbox));
     }
 
     public function testUpdate()
     {
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
-        $domain = factory(Domain::class)->create();
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
+        $domain = Domain::factory()->create();
         $policy = new DomainPolicy();
         $this->assertFalse($policy->update($mailbox, $domain));
     }
 
     public function testDelete()
     {
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
-        $domain = factory(Domain::class)->create();
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
+        $domain = Domain::factory()->create();
         $policy = new DomainPolicy();
         $this->assertFalse($policy->delete($mailbox, $domain));
     }

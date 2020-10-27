@@ -6,12 +6,13 @@ use App\Interfaces\Integratable;
 use App\Traits\QueryFilterTrait;
 use App\Traits\SizeMeasurable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Domain extends Model implements Integratable
 {
-    use QueryFilterTrait, SizeMeasurable;
+    use HasFactory, QueryFilterTrait, SizeMeasurable;
 
     /**
      * The attributes that aren't mass assignable.

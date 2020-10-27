@@ -2,12 +2,15 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use const FILTER_VALIDATE_URL;
 use function filter_var;
 use UnexpectedValueException;
 
 class WebHookIntegration extends Integration
 {
+    use HasFactory;
+
     protected $table = 'integrations';
 
     protected static function boot()

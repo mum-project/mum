@@ -3,11 +3,12 @@
 namespace App;
 
 use App\Traits\QueryFilterTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SystemService extends Model
 {
-    use QueryFilterTrait;
+    use HasFactory, QueryFilterTrait;
 
     /**
      * The attributes that aren't mass assignable.

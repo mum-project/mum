@@ -68,7 +68,7 @@ class IntegratesWebHooksTest extends TestCase
 //        Config::set('integrations.enabled.generally', false);
 //        Config::set('integrations.enabled.web_hooks', true);
 //
-//        $integration = factory(WebHookIntegration::class)->create([
+//        $integration = WebHookIntegration::factory()->create([
 //            'model_class' => $this->integratable->getIntegratableClassName(),
 //            'value'       => 'http://localhost'
 //        ]);
@@ -83,7 +83,7 @@ class IntegratesWebHooksTest extends TestCase
 //        Config::set('integrations.enabled.generally', true);
 //        Config::set('integrations.enabled.web_hooks', false);
 //
-//        $integration = factory(WebHookIntegration::class)->create([
+//        $integration = WebHookIntegration::factory()->create([
 //            'model_class' => $this->integratable->getIntegratableClassName(),
 //            'value'       => 'http://localhost'
 //        ]);
@@ -98,7 +98,7 @@ class IntegratesWebHooksTest extends TestCase
 //        Config::set('integrations.enabled.generally', true);
 //        Config::set('integrations.enabled.web_hooks', true);
 //
-//        $integration = factory(WebHookIntegration::class)->create([
+//        $integration = WebHookIntegration::factory()->create([
 //            'model_class' => $this->integratable->getIntegratableClassName(),
 //            'value'       => 'http://example.com/%{foo}?id=%{id}'
 //        ]);
@@ -120,7 +120,7 @@ class IntegratesWebHooksTest extends TestCase
 //        Config::set('integrations.enabled.generally', true);
 //        Config::set('integrations.enabled.web_hooks', true);
 //
-//        $integration = factory(WebHookIntegration::class)->create([
+//        $integration = WebHookIntegration::factory()->create([
 //            'model_class' => $this->integratable->getIntegratableClassName(),
 //            'value'       => 'http://example.com/%{foo}?id=%{id}'
 //        ]);
@@ -163,7 +163,7 @@ class IntegratesWebHooksTest extends TestCase
 //        Config::set('integrations.enabled.generally', true);
 //        Config::set('integrations.enabled.web_hooks', true);
 //
-//        $integration = factory(WebHookIntegration::class)->create([
+//        $integration = WebHookIntegration::factory()->create([
 //            'model_class' => $this->integratable->getIntegratableClassName(),
 //            'value'       => 'http://example.com/%{foo}?id=%{id}'
 //        ]);

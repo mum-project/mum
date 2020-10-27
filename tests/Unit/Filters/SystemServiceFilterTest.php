@@ -32,9 +32,9 @@ class SystemServiceFilterTest extends TestCase
 
     public function testSearch()
     {
-        $systemService1 = factory(SystemService::class)->create(['service' => 'foobarABC']);
-        $systemService2 = factory(SystemService::class)->create(['name' => 'foobarXYZ']);
-        $otherSystemService = factory(SystemService::class)->create();
+        $systemService1 = SystemService::factory()->create(['service' => 'foobarABC']);
+        $systemService2 = SystemService::factory()->create(['name' => 'foobarXYZ']);
+        $otherSystemService = SystemService::factory()->create();
 
         $systemServiceFilter = $this->createSystemServiceFilter(['search' => 'foobar']);
         $results = $systemServiceFilter->apply(SystemService::query())->get();

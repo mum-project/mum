@@ -20,15 +20,15 @@ class AlternativeMailChannelTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testSend()
     {
-        $user = factory(Mailbox::class)->create();
+        $user = Mailbox::factory()->create();
         $notification = Mockery::mock(Notification::class);
         $message = Mockery::mock(Message::class);
         $message->shouldReceive(['data' => []]);
@@ -46,7 +46,7 @@ class AlternativeMailChannelTest extends TestCase
 
     public function testSendWithMailable()
     {
-        $user = factory(Mailbox::class)->create();
+        $user = Mailbox::factory()->create();
         $notification = Mockery::mock(Notification::class);
         $message = Mockery::mock(Mailable::class);
         $message->shouldReceive(['data' => []]);

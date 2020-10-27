@@ -23,7 +23,7 @@ class SizeMeasurementsDeleteOldTest extends TestCase
         Config::set('mum.size_measurements.delete_after.days', 1);
 
         /** @var Domain $domain */
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $this->createSizeMeasurements($domain);
 
         $this->assertTrue($domain->sizeMeasurements()
@@ -48,7 +48,7 @@ class SizeMeasurementsDeleteOldTest extends TestCase
         Config::set('mum.size_measurements.delete_old', false);
 
         /** @var Domain $domain */
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $this->createSizeMeasurements($domain);
 
         $this->assertTrue($domain->sizeMeasurements()

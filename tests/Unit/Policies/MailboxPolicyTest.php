@@ -13,16 +13,16 @@ class MailboxPolicyTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testBefore()
     {
-        $admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
         $policy = new MailboxPolicy();
         $this->assertTrue($policy->before($admin, null));
         $this->assertNull($policy->before($mailbox, null));

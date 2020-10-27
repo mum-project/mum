@@ -13,15 +13,15 @@ class HomeControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testIndex()
     {
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $this->get(route('home'))->assertRedirect();
         $this->actingAs($mailbox)->get(route('home'))->assertStatus(200);
     }

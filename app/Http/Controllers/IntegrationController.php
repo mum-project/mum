@@ -125,7 +125,7 @@ class IntegrationController extends Controller
 
         $validated = $request->validate($validationRules);
 
-        $integration = $integrationClass::create(array_except($validated, ['parameters']));
+        $integration = $integrationClass::create(Arr::except($validated, ['parameters']));
 
         $this->setIntegrationParameters($validated, $integration);
 
@@ -204,7 +204,7 @@ class IntegrationController extends Controller
 
         $validated = $request->validate($validationRules);
 
-        $integration->update(array_except($validated, ['parameters']));
+        $integration->update(Arr::except($validated, ['parameters']));
 
         $this->setIntegrationParameters($validated, $integration);
 

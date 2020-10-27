@@ -26,13 +26,13 @@ class IntegrationControllerTest extends TestCase
 
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
-        factory(Alias::class)->create();
-        $this->admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
+        Domain::factory()->create();
+        Mailbox::factory()->create();
+        Alias::factory()->create();
+        $this->admin = Mailbox::factory()->create(['is_super_admin' => true]);
 
         Config::set('integrations.enabled.generally', true);
         Config::set('integrations.enabled.web_hooks', true);
@@ -54,8 +54,8 @@ class IntegrationControllerTest extends TestCase
         $perPage = (new ShellCommandIntegration())->getPerPage();
 
         /** @var Collection $shellCommandIntegrations */
-        $shellCommandIntegrations = factory(ShellCommandIntegration::class, $perPage)->create();
-        $webHookIntegrations = factory(WebHookIntegration::class, $perPage)->create();
+        $shellCommandIntegrations = ShellCommandIntegration::factory( $perPage)->create();
+        $webHookIntegrations = WebHookIntegration::factory( $perPage)->create();
 
         $guestResponsePage = $this->followingRedirects()
             ->get(route('integrations.index'));
@@ -287,7 +287,7 @@ class IntegrationControllerTest extends TestCase
 
     public function testShow()
     {
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'name'  => $this->faker->word,
             'value' => '01'
         ]);
@@ -301,12 +301,12 @@ class IntegrationControllerTest extends TestCase
 
     public function testEdit()
     {
-        $integration = factory(ShellCommandIntegration::class)->create(['value' => '01']);
+        $integration = ShellCommandIntegration::factory()->create(['value' => '01']);
         $this->actingAs($this->admin)
             ->get(route('integrations.edit', compact('integration')))
             ->assertSuccessful();
 
-        $integration = factory(WebHookIntegration::class)->create();
+        $integration = WebHookIntegration::factory()->create();
         $this->actingAs($this->admin)
             ->get(route('integrations.edit', compact('integration')))
             ->assertSuccessful();
@@ -318,7 +318,7 @@ class IntegrationControllerTest extends TestCase
 
         Session::start();
 
-        $integration = factory(ShellCommandIntegration::class)->create([
+        $integration = ShellCommandIntegration::factory()->create([
             'name'  => $this->faker->word,
             'value' => '01'
         ]);
@@ -347,7 +347,7 @@ class IntegrationControllerTest extends TestCase
     {
         Session::start();
 
-        $integration = factory(WebHookIntegration::class)->create(['name' => $this->faker->word]);
+        $integration = WebHookIntegration::factory()->create(['name' => $this->faker->word]);
         $data = [
             'name'  => $this->faker->word,
             'value' => $this->faker->url,
@@ -398,7 +398,7 @@ class IntegrationControllerTest extends TestCase
     {
         Session::start();
 
-        $integration = factory(WebHookIntegration::class)->create();
+        $integration = WebHookIntegration::factory()->create();
         $this->followingRedirects()
             ->actingAs($this->admin)
             ->delete(route('integrations.destroy', compact('integration')), ['_token' => csrf_token()])

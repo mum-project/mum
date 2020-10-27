@@ -18,11 +18,11 @@ class AliasRequestFilterTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
+        Domain::factory()->create();
+        Mailbox::factory()->create();
     }
 
     /**
@@ -53,10 +53,10 @@ class AliasRequestFilterTest extends TestCase
 
     public function testDomain()
     {
-        $domain = factory(Domain::class)->create();
-        $aliasRequest = factory(AliasRequest::class)->create(['domain_id' => $domain->id]);
-        $otherDomain = factory(Domain::class)->create();
-        $otherAliasRequest = factory(AliasRequest::class)->create(['domain_id' => $otherDomain->id]);
+        $domain = Domain::factory()->create();
+        $aliasRequest = AliasRequest::factory()->create(['domain_id' => $domain->id]);
+        $otherDomain = Domain::factory()->create();
+        $otherAliasRequest = AliasRequest::factory()->create(['domain_id' => $otherDomain->id]);
 
         $aliasRequestFilter = $this->createAliasRequestFilter(['domain' => $domain->id]);
         $this->assertForOneAliasRequest($aliasRequestFilter, AliasRequest::query(), $aliasRequest);
@@ -67,9 +67,9 @@ class AliasRequestFilterTest extends TestCase
 
     public function testOrderById()
     {
-        $aliasRequest1 = factory(AliasRequest::class)->create(['local_part' => 'b']);
-        $aliasRequest2 = factory(AliasRequest::class)->create(['local_part' => 'c']);
-        $aliasRequest3 = factory(AliasRequest::class)->create(['local_part' => 'a']);
+        $aliasRequest1 = AliasRequest::factory()->create(['local_part' => 'b']);
+        $aliasRequest2 = AliasRequest::factory()->create(['local_part' => 'c']);
+        $aliasRequest3 = AliasRequest::factory()->create(['local_part' => 'a']);
 
         $aliasRequestFilter = $this->createAliasRequestFilter(['orderById' => 'asc']);
         $query = $aliasRequestFilter->apply(AliasRequest::query());
@@ -88,9 +88,9 @@ class AliasRequestFilterTest extends TestCase
 
     public function testOrderByLocalPart()
     {
-        $aliasRequestB = factory(AliasRequest::class)->create(['local_part' => 'b']);
-        $aliasRequestC = factory(AliasRequest::class)->create(['local_part' => 'c']);
-        $aliasRequestA = factory(AliasRequest::class)->create(['local_part' => 'a']);
+        $aliasRequestB = AliasRequest::factory()->create(['local_part' => 'b']);
+        $aliasRequestC = AliasRequest::factory()->create(['local_part' => 'c']);
+        $aliasRequestA = AliasRequest::factory()->create(['local_part' => 'a']);
 
         $aliasRequestFilter = $this->createAliasRequestFilter(['orderByLocalPart' => 'asc']);
         $query = $aliasRequestFilter->apply(AliasRequest::query());
@@ -109,10 +109,10 @@ class AliasRequestFilterTest extends TestCase
 
     public function testSearch()
     {
-        $otherAliasRequest = factory(AliasRequest::class)->create();
-        $foobarDomain = factory(Domain::class)->create(['domain' => 'foobar.com']);
-        $aliasRequestLocalPart = factory(AliasRequest::class)->create(['local_part' => 'foobarABC']);
-        $aliasRequestDomain = factory(AliasRequest::class)->create(['domain_id' => $foobarDomain]);
+        $otherAliasRequest = AliasRequest::factory()->create();
+        $foobarDomain = Domain::factory()->create(['domain' => 'foobar.com']);
+        $aliasRequestLocalPart = AliasRequest::factory()->create(['local_part' => 'foobarABC']);
+        $aliasRequestDomain = AliasRequest::factory()->create(['domain_id' => $foobarDomain]);
 
         $aliasRequestFilter = $this->createAliasRequestFilter(['search' => 'foobar']);
         $query = $aliasRequestFilter->apply(AliasRequest::query());
@@ -125,8 +125,8 @@ class AliasRequestFilterTest extends TestCase
 
     public function testSearchWithoutKeyword()
     {
-        $aliasRequest1 = factory(AliasRequest::class)->create();
-        $aliasRequest2 = factory(AliasRequest::class)->create();
+        $aliasRequest1 = AliasRequest::factory()->create();
+        $aliasRequest2 = AliasRequest::factory()->create();
 
         $aliasRequestFilter = $this->createAliasRequestFilter(['search' => '']);
         $query = $aliasRequestFilter->apply(AliasRequest::query());

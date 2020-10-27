@@ -4,13 +4,14 @@ namespace App;
 
 use App\Traits\QueryFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AliasRequest extends Model
 {
-    use QueryFilterTrait;
+    use HasFactory, QueryFilterTrait;
 
     /**
      * The attributes that aren't mass assignable.

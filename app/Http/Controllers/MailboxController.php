@@ -175,7 +175,7 @@ class MailboxController extends Controller
         }
 
         $validated = $request->validate($validationRules);
-        $mailbox->update(array_except($validated, 'password'));
+        $mailbox->update(Arr::except($validated, 'password'));
 
         if (array_key_exists('password', $validated) && $validated['password']) {
             $mailbox->password = Hash::make($validated['password']);

@@ -17,7 +17,7 @@ class CheckSystemServicesHealthTest extends TestCase
 
     public function testBasicCheck()
     {
-        $systemServices = factory(SystemService::class, 3)->create();
+        $systemServices = SystemService::factory(3)->create();
         $fakeSubState = $this->faker->word;
 
         $mockedSymfonyProcess = Mockery::mock();
@@ -42,7 +42,7 @@ class CheckSystemServicesHealthTest extends TestCase
     public function testFailingCheck()
     {
         /** @var SystemService $systemService */
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $mockedSymfonyProcess = Mockery::mock();
         $mockedSymfonyProcess->shouldReceive('isSuccessful')
@@ -65,7 +65,7 @@ class CheckSystemServicesHealthTest extends TestCase
     public function testDeleteOldChecksWithRunningState()
     {
         /** @var SystemService $systemService */
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $mockedSymfonyProcess = Mockery::mock();
         $mockedSymfonyProcess->shouldReceive('isSuccessful')
@@ -90,7 +90,7 @@ class CheckSystemServicesHealthTest extends TestCase
     public function testSaveOldNotRunningChecks()
     {
         /** @var SystemService $systemService */
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $mockedSymfonyProcess = Mockery::mock();
         $mockedSymfonyProcess->shouldReceive('isSuccessful')
@@ -115,7 +115,7 @@ class CheckSystemServicesHealthTest extends TestCase
     public function testDeleteOldestNotRunningChecks()
     {
         /** @var SystemService $systemService */
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $mockedSymfonyProcess = Mockery::mock();
         $mockedSymfonyProcess->shouldReceive('isSuccessful')

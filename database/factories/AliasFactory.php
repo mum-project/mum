@@ -1,16 +1,35 @@
 <?php
 
+namespace Database\Factories;
+
+use App\Alias;
 use App\Domain;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(App\Alias::class, function (Faker $faker) {
-    $domain = Domain::all()
-        ->random(1)
-        ->first();
+class AliasFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Alias::class;
 
-    return [
-        'local_part'  => $faker->unique()->username,
-        'description' => $faker->boolean ? $faker->sentence : null,
-        'domain_id'   => $domain->id
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $domain = Domain::all()
+            ->random(1)
+            ->first();
+
+        return [
+            'local_part'  => $this->faker->unique()->username,
+            'description' => $this->faker->boolean ? $this->faker->sentence : null,
+            'domain_id'   => $domain->id
+        ];
+    }
+}

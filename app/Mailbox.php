@@ -6,6 +6,7 @@ use App\Interfaces\Integratable;
 use App\Traits\QueryFilterTrait;
 use App\Traits\SizeMeasurable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
@@ -14,7 +15,7 @@ use function isUserSuperAdmin;
 
 class Mailbox extends Authenticatable implements Integratable
 {
-    use Notifiable, QueryFilterTrait, SizeMeasurable;
+    use HasFactory, Notifiable, QueryFilterTrait, SizeMeasurable;
 
     /**
      * The attributes that aren't mass assignable.

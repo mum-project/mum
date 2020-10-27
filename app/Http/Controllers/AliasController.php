@@ -10,6 +10,7 @@ use App\Http\Resources\MailboxResource;
 use App\Mailbox;
 use App\Rules\AliasesAvailable;
 use App\Rules\UniqueEmailAddress;
+use Illuminate\Support\Arr;
 use function array_key_exists;
 use function array_push;
 use function compact;
@@ -101,7 +102,7 @@ class AliasController extends Controller
 
         $validated['deactivate_at'] = $this->getDeactivateAtValue($validated);
 
-        $alias = Alias::create(array_except($validated, [
+        $alias = Alias::create(Arr::except($validated, [
             'sender_mailboxes',
             'recipient_mailboxes',
             'external_recipients',
@@ -213,7 +214,7 @@ class AliasController extends Controller
 
         $validated['deactivate_at'] = $this->getDeactivateAtValue($validated);
 
-        $alias->update(array_except($validated, [
+        $alias->update(Arr::except($validated, [
             'sender_mailboxes',
             'recipient_mailboxes',
             'external_recipients',

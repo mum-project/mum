@@ -17,11 +17,11 @@ class LoginControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
+        Domain::factory()->create();
+        Mailbox::factory()->create();
     }
 
     public function testValidateLoginInvalidEmail()
@@ -38,7 +38,7 @@ class LoginControllerTest extends TestCase
 
     public function testSuccessfulLogin()
     {
-        $mailbox = factory(Mailbox::class)->create(['active' => true]);
+        $mailbox = Mailbox::factory()->create(['active' => true]);
         Session::start();
         $this->assertNull(Auth::user());
         $this->followingRedirects()

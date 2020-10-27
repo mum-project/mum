@@ -19,11 +19,11 @@ class AliasFilterTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
+        Domain::factory()->create();
+        Mailbox::factory()->create();
     }
 
     /**
@@ -72,10 +72,10 @@ class AliasFilterTest extends TestCase
 
     public function testDomain()
     {
-        $domain = factory(Domain::class)->create();
-        $alias = factory(Alias::class)->create(['domain_id' => $domain->id]);
-        $otherDomain = factory(Domain::class)->create();
-        $otherAlias = factory(Alias::class)->create(['domain_id' => $otherDomain->id]);
+        $domain = Domain::factory()->create();
+        $alias = Alias::factory()->create(['domain_id' => $domain->id]);
+        $otherDomain = Domain::factory()->create();
+        $otherAlias = Alias::factory()->create(['domain_id' => $otherDomain->id]);
 
         $aliasFilter = $this->createAliasFilter(['domain' => $domain->id]);
         $this->assertForOneAlias($aliasFilter, Alias::query(), $alias);
@@ -87,18 +87,18 @@ class AliasFilterTest extends TestCase
     public function testSenderMailboxes()
     {
         /** @var Alias $alias1 */
-        $alias1 = factory(Alias::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
+        $alias1 = Alias::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
         $alias1->senderMailboxes()
             ->save($mailbox1);
 
-        $alias2 = factory(Alias::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $alias2 = Alias::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $alias2->senderMailboxes()
             ->save($mailbox2);
 
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherMailbox);
 
@@ -119,16 +119,16 @@ class AliasFilterTest extends TestCase
     public function testRecipientMailboxes()
     {
         /** @var Alias $alias1 */
-        $alias1 = factory(Alias::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
+        $alias1 = Alias::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
         $alias1->addRecipientMailbox($mailbox1);
 
-        $alias2 = factory(Alias::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $alias2 = Alias::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $alias2->addRecipientMailbox($mailbox2);
 
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->addRecipientMailbox($otherMailbox);
 
         $aliasFilter = $this->createAliasFilter([
@@ -148,26 +148,26 @@ class AliasFilterTest extends TestCase
     public function testSenderOrRecipientMailboxes()
     {
         /** @var Alias $alias1 */
-        $alias1 = factory(Alias::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
+        $alias1 = Alias::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
         $alias1->senderMailboxes()
             ->save($mailbox1);
 
         /** @var Alias $alias2 */
-        $alias2 = factory(Alias::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $alias2 = Alias::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $alias2->addRecipientMailbox($mailbox2);
 
         /** @var Alias $alias3 */
-        $alias3 = factory(Alias::class)->create();
-        $mailbox3 = factory(Mailbox::class)->create();
+        $alias3 = Alias::factory()->create();
+        $mailbox3 = Mailbox::factory()->create();
         $alias3->senderMailboxes()
             ->save($mailbox3);
         $alias3->addRecipientMailbox($mailbox3);
 
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherMailbox);
         $otherAlias->addRecipientMailbox($otherMailbox);
@@ -191,22 +191,22 @@ class AliasFilterTest extends TestCase
     public function testSenderAndRecipientMailboxes()
     {
         /** @var Alias $alias1 */
-        $alias1 = factory(Alias::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
+        $alias1 = Alias::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
         $alias1->senderMailboxes()
             ->save($mailbox1);
         $alias1->addRecipientMailbox($mailbox1);
 
         /** @var Alias $alias1 */
-        $alias2 = factory(Alias::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $alias2 = Alias::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $alias2->senderMailboxes()
             ->save($mailbox2);
         $alias2->addRecipientMailbox($mailbox2);
 
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherMailbox);
         $otherAlias->addRecipientMailbox($otherMailbox);
@@ -227,13 +227,13 @@ class AliasFilterTest extends TestCase
 
     public function testSenderMailbox()
     {
-        $alias = factory(Alias::class)->create();
-        $mailbox = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $mailbox = Mailbox::factory()->create();
         $alias->senderMailboxes()
             ->save($mailbox);
 
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherMailbox);
 
@@ -247,12 +247,12 @@ class AliasFilterTest extends TestCase
 
     public function testRecipientMailbox()
     {
-        $alias = factory(Alias::class)->create();
-        $mailbox = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $mailbox = Mailbox::factory()->create();
         $alias->addRecipientMailbox($mailbox);
 
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->addRecipientMailbox($otherMailbox);
 
 
@@ -267,26 +267,26 @@ class AliasFilterTest extends TestCase
     public function testSenderOrRecipientMailbox()
     {
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherMailbox);
         $otherAlias->addRecipientMailbox($otherMailbox);
 
         /** @var Alias $alias1 */
-        $alias1 = factory(Alias::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
+        $alias1 = Alias::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
         $alias1->senderMailboxes()
             ->save($mailbox1);
 
         /** @var Alias $alias2 */
-        $alias2 = factory(Alias::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $alias2 = Alias::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $alias2->addRecipientMailbox($mailbox2);
 
         /** @var Alias $alias3 */
-        $alias3 = factory(Alias::class)->create();
-        $mailbox3 = factory(Mailbox::class)->create();
+        $alias3 = Alias::factory()->create();
+        $mailbox3 = Mailbox::factory()->create();
         $alias3->senderMailboxes()
             ->save($mailbox3);
         $alias3->addRecipientMailbox($mailbox3);
@@ -322,15 +322,15 @@ class AliasFilterTest extends TestCase
     public function testSenderAndRecipientMailbox()
     {
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
-        $mailbox = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $mailbox = Mailbox::factory()->create();
         $alias->senderMailboxes()
             ->save($mailbox);
         $alias->addRecipientMailbox($mailbox);
 
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherMailbox);
         $otherAlias->addRecipientMailbox($otherMailbox);
@@ -346,19 +346,19 @@ class AliasFilterTest extends TestCase
     public function testRecipientAddresses()
     {
         /** @var Alias $alias1 */
-        $alias1 = factory(Alias::class)->create();
+        $alias1 = Alias::factory()->create();
         /** @var Mailbox $mailbox1 */
-        $mailbox1 = factory(Mailbox::class)->create();
+        $mailbox1 = Mailbox::factory()->create();
         $alias1->addRecipientMailbox($mailbox1);
 
         /** @var Alias $alias2 */
-        $alias2 = factory(Alias::class)->create();
+        $alias2 = Alias::factory()->create();
         $externalAddress = 'foobar@some.other.domain';
         $alias2->addExternalRecipient($externalAddress);
 
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->addRecipientMailbox($otherMailbox);
 
         $aliasFilter = $this->createAliasFilter([
@@ -378,13 +378,13 @@ class AliasFilterTest extends TestCase
     public function testRecipientAddress()
     {
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
+        $alias = Alias::factory()->create();
         $externalAddress = 'foobar@some.other.domain';
         $alias->addExternalRecipient($externalAddress);
 
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAlias->addRecipientMailbox($otherMailbox);
 
         $aliasFilter = $this->createAliasFilter(['recipientAddress' => $externalAddress]);
@@ -397,25 +397,25 @@ class AliasFilterTest extends TestCase
 
     public function testActive()
     {
-        $aliasWith = factory(Alias::class)->create(['active' => true]);
-        $aliasWithout = factory(Alias::class)->create(['active' => false]);
+        $aliasWith = Alias::factory()->create(['active' => true]);
+        $aliasWithout = Alias::factory()->create(['active' => false]);
 
         $this->assertAllBoolPossibilitiesFor('active', $aliasWith, $aliasWithout);
     }
 
     public function testHasDescription()
     {
-        $aliasWith = factory(Alias::class)->create(['description' => 'foobar']);
-        $aliasWithout = factory(Alias::class)->create(['description' => null]);
+        $aliasWith = Alias::factory()->create(['description' => 'foobar']);
+        $aliasWithout = Alias::factory()->create(['description' => null]);
 
         $this->assertAllBoolPossibilitiesFor('hasDescription', $aliasWith, $aliasWithout);
     }
 
     public function testOrderById()
     {
-        $alias1 = factory(Alias::class)->create(['local_part' => 'b']);
-        $alias2 = factory(Alias::class)->create(['local_part' => 'c']);
-        $alias3 = factory(Alias::class)->create(['local_part' => 'a']);
+        $alias1 = Alias::factory()->create(['local_part' => 'b']);
+        $alias2 = Alias::factory()->create(['local_part' => 'c']);
+        $alias3 = Alias::factory()->create(['local_part' => 'a']);
 
         $aliasFilter = $this->createAliasFilter(['orderById' => 'asc']);
         $query = $aliasFilter->apply(Alias::query());
@@ -434,9 +434,9 @@ class AliasFilterTest extends TestCase
 
     public function testOrderByLocalPart()
     {
-        $aliasB = factory(Alias::class)->create(['local_part' => 'b']);
-        $aliasC = factory(Alias::class)->create(['local_part' => 'c']);
-        $aliasA = factory(Alias::class)->create(['local_part' => 'a']);
+        $aliasB = Alias::factory()->create(['local_part' => 'b']);
+        $aliasC = Alias::factory()->create(['local_part' => 'c']);
+        $aliasA = Alias::factory()->create(['local_part' => 'a']);
 
         $aliasFilter = $this->createAliasFilter(['orderByLocalPart' => 'asc']);
         $query = $aliasFilter->apply(Alias::query());
@@ -455,10 +455,10 @@ class AliasFilterTest extends TestCase
 
     public function testSearch()
     {
-        $otherAlias = factory(Alias::class)->create();
-        $foobarDomain = factory(Domain::class)->create(['domain' => 'foobar.com']);
-        $aliasLocalPart = factory(Alias::class)->create(['local_part' => 'foobarABC']);
-        $aliasDomain = factory(Alias::class)->create(['domain_id' => $foobarDomain]);
+        $otherAlias = Alias::factory()->create();
+        $foobarDomain = Domain::factory()->create(['domain' => 'foobar.com']);
+        $aliasLocalPart = Alias::factory()->create(['local_part' => 'foobarABC']);
+        $aliasDomain = Alias::factory()->create(['domain_id' => $foobarDomain]);
 
         $aliasFilter = $this->createAliasFilter(['search' => 'foobar']);
         $query = $aliasFilter->apply(Alias::query());
@@ -471,8 +471,8 @@ class AliasFilterTest extends TestCase
 
     public function testSearchWithoutKeyword()
     {
-        $alias1 = factory(Alias::class)->create();
-        $alias2 = factory(Alias::class)->create();
+        $alias1 = Alias::factory()->create();
+        $alias2 = Alias::factory()->create();
 
         $aliasFilter = $this->createAliasFilter(['search' => '']);
         $query = $aliasFilter->apply(Alias::query());
@@ -484,12 +484,12 @@ class AliasFilterTest extends TestCase
 
     public function testAutomaticallyDeactivated()
     {
-        $aliasWith = factory(Alias::class)->create([
+        $aliasWith = Alias::factory()->create([
             'deactivate_at' => Carbon::now()
                 ->subMinute(),
             'active'        => false
         ]);
-        $aliasWithout = factory(Alias::class)->create([
+        $aliasWithout = Alias::factory()->create([
             'deactivate_at' => null,
             'active'        => true
         ]);

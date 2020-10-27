@@ -24,18 +24,18 @@ class SizeMeasurementControllerTest extends TestCase
     /** @var Mailbox */
     protected $mailbox;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        $this->admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $this->mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        Domain::factory()->create();
+        $this->admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $this->mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
     }
 
     public function testIndexForDomain()
     {
-        $domain = factory(Domain::class)->create();
-        factory(SizeMeasurement::class, 30)->create([
+        $domain = Domain::factory()->create();
+        SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -65,8 +65,8 @@ class SizeMeasurementControllerTest extends TestCase
 
     public function testIndexForMailbox()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        factory(SizeMeasurement::class, 30)->create([
+        $mailbox = Mailbox::factory()->create();
+        SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -97,8 +97,8 @@ class SizeMeasurementControllerTest extends TestCase
     public function testDestroyForDomain()
     {
         /** @var Domain $domain */
-        $domain = factory(Domain::class)->create();
-        factory(SizeMeasurement::class, 30)->create([
+        $domain = Domain::factory()->create();
+        SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -127,8 +127,8 @@ class SizeMeasurementControllerTest extends TestCase
     public function testDestroyForMailbox()
     {
         /** @var Domain $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
-        factory(SizeMeasurement::class, 30)->create([
+        $mailbox = Mailbox::factory()->create();
+        SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -156,8 +156,8 @@ class SizeMeasurementControllerTest extends TestCase
 
     public function testIndexForDomainAsJson()
     {
-        $domain = factory(Domain::class)->create();
-        $sizes = factory(SizeMeasurement::class, 30)->create([
+        $domain = Domain::factory()->create();
+        $sizes = SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -180,8 +180,8 @@ class SizeMeasurementControllerTest extends TestCase
 
     public function testIndexForMailboxAsJson()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        $sizes = factory(SizeMeasurement::class, 30)->create([
+        $mailbox = Mailbox::factory()->create();
+        $sizes = SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -205,8 +205,8 @@ class SizeMeasurementControllerTest extends TestCase
     public function testDestroyForDomainAsJson()
     {
         /** @var Domain $domain */
-        $domain = factory(Domain::class)->create();
-        factory(SizeMeasurement::class, 30)->create([
+        $domain = Domain::factory()->create();
+        SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -233,8 +233,8 @@ class SizeMeasurementControllerTest extends TestCase
     public function testDestroyForMailboxAsJson()
     {
         /** @var Domain $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
-        factory(SizeMeasurement::class, 30)->create([
+        $mailbox = Mailbox::factory()->create();
+        SizeMeasurement::factory( 30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);

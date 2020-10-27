@@ -107,7 +107,7 @@ class AliasRequestController extends Controller
         $validated['mailbox_id'] = Auth::id();
 
         /** @var AliasRequest $aliasRequest */
-        $aliasRequest = AliasRequest::create(array_except($validated, [
+        $aliasRequest = AliasRequest::create(Arr::except($validated, [
             'sender_mailboxes',
             'recipient_mailboxes',
             'external_recipients',
@@ -217,7 +217,7 @@ class AliasRequestController extends Controller
 
         $validated = $request->validate($validationRules);
 
-        $aliasRequest->update(array_except($validated, [
+        $aliasRequest->update(Arr::except($validated, [
             'sender_mailboxes',
             'recipient_mailboxes',
             'external_recipients',

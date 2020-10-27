@@ -24,14 +24,14 @@
             :dismissible="false"
             @endif
     >
-        @if (is_array(session(!empty($session) ? $session : $type)) && count(array_except(session(!empty($session) ? $session : $type), 'title')) > 1)
+        @if (is_array(session(!empty($session) ? $session : $type)) && count(Arr::except(session(!empty($session) ? $session : $type), 'title')) > 1)
             <ul class="p-0 pl-6">
-                @foreach(array_except(session(!empty($session) ? $session : $type), 'title') as $value)
+                @foreach(Arr::except(session(!empty($session) ? $session : $type), 'title') as $value)
                     <li>{{ $value }}</li>
                 @endforeach
             </ul>
         @elseif (is_array(session(!empty($session) ? $session : $type)))
-            {{ array_except(session(!empty($session) ? $session : $type), 'title')[0] }}
+            {{ Arr::except(session(!empty($session) ? $session : $type), 'title')[0] }}
         @else
             {{ session(!empty($session) ? $session : $type) }}
         @endif

@@ -15,21 +15,21 @@ class DeactivateAliasesTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
+        Domain::factory()->create();
+        Mailbox::factory()->create();
     }
 
     public function testDeactivatingAliases()
     {
         $deactivateAt = Carbon::now()
             ->subMinute();
-        $aliasesToDeactivate = factory(Alias::class, 2)->create([
+        $aliasesToDeactivate = Alias::factory( 2)->create([
             'deactivate_at' => $deactivateAt
         ]);
-        $normalAliases = factory(Alias::class, 2)->create();
+        $normalAliases = Alias::factory( 2)->create();
 
         $returnCode = $this->artisan('aliases:deactivate');
         $this->assertEquals(0, $returnCode);
@@ -59,7 +59,7 @@ class DeactivateAliasesTest extends TestCase
     {
         $deactivateAt = Carbon::now()
             ->addHour();
-        $aliasesToDeactivateInFuture = factory(Alias::class, 2)->create([
+        $aliasesToDeactivateInFuture = Alias::factory( 2)->create([
             'deactivate_at' => $deactivateAt
         ]);
 

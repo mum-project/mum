@@ -6,13 +6,14 @@ use App\Interfaces\Integratable;
 use App\Scopes\ExcludeAutoDeactivatedAliasesScope;
 use App\Traits\QueryFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Alias extends Model implements Integratable
 {
-    use QueryFilterTrait;
+    use HasFactory, QueryFilterTrait;
 
     /**
      * The attributes that aren't mass assignable.

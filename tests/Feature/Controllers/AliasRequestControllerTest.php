@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Controllers;
 
 use App\AliasRequest;
 use App\Domain;
@@ -26,13 +26,13 @@ class AliasRequestControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
-        $this->admin = factory(Mailbox::class)->create([
+        Domain::factory()->create();
+        Mailbox::factory()->create();
+        $this->admin = Mailbox::factory()->create([
             'active'         => true,
             'is_super_admin' => true
         ]);
-        $this->mailbox = factory(Mailbox::class)->create([
+        $this->mailbox = Mailbox::factory()->create([
             'active'         => true,
             'is_super_admin' => false
         ]);
@@ -42,11 +42,11 @@ class AliasRequestControllerTest extends TestCase
     public function testIndex()
     {
         $perPage = (new AliasRequest)->getPerPage();
-        $localParts1 = factory(AliasRequest::class, $perPage)
+        $localParts1 = AliasRequest::factory( $perPage)
             ->create(['status' => 'open'])
             ->pluck('local_part')
             ->toArray();
-        $localParts2 = factory(AliasRequest::class, $perPage)
+        $localParts2 = AliasRequest::factory( $perPage)
             ->create(['status' => 'open'])
             ->pluck('local_part')
             ->toArray();
@@ -80,9 +80,9 @@ class AliasRequestControllerTest extends TestCase
     public function testIndexJson()
     {
         $perPage = (new AliasRequest)->getPerPage();
-        $aliasRequests1 = factory(AliasRequest::class, $perPage)->create(['status' => 'open']);
+        $aliasRequests1 = AliasRequest::factory( $perPage)->create(['status' => 'open']);
 
-        $aliasRequests2 = factory(AliasRequest::class, $perPage)->create(['status' => 'open']);
+        $aliasRequests2 = AliasRequest::factory( $perPage)->create(['status' => 'open']);
 
         $response = $this->actingAs($this->admin)
             ->getJson(route('alias-requests.index', ['status' => 'open']));
@@ -124,8 +124,8 @@ class AliasRequestControllerTest extends TestCase
     public function testStore()
     {
         Session::start();
-        $domain = factory(Domain::class)->create();
-        $mailbox = factory(Mailbox::class)->create(['domain_id' => $domain->id]);
+        $domain = Domain::factory()->create();
+        $mailbox = Mailbox::factory()->create(['domain_id' => $domain->id]);
         $data = [
             'domain_id'           => $domain->id,
             'local_part'          => $this->faker->userName,
@@ -150,7 +150,7 @@ class AliasRequestControllerTest extends TestCase
             ->post(route('alias-requests.store', array_merge($data, ['_token' => csrf_token()])))
             ->assertForbidden();
 
-        $this->assertDatabaseMissing('alias_requests', array_except($data, [
+        $this->assertDatabaseMissing('alias_requests', Arr::except($data, [
             'sender_mailboxes',
             'recipient_mailboxes'
         ]));
@@ -160,7 +160,7 @@ class AliasRequestControllerTest extends TestCase
             ->post(route('alias-requests.store', array_merge($data, ['_token' => csrf_token()])))
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('alias_requests', array_except($data, [
+        $this->assertDatabaseHas('alias_requests', Arr::except($data, [
             'sender_mailboxes',
             'recipient_mailboxes'
         ]));
@@ -184,7 +184,7 @@ class AliasRequestControllerTest extends TestCase
 
     public function testShow()
     {
-        $aliasRequest = factory(AliasRequest::class)->create();
+        $aliasRequest = AliasRequest::factory()->create();
         $response = $this->actingAs($this->admin)
             ->get(route('alias-requests.show', compact('aliasRequest')));
         $response->assertSuccessful();
@@ -193,7 +193,7 @@ class AliasRequestControllerTest extends TestCase
 
     public function testEdit()
     {
-        $aliasRequest = factory(AliasRequest::class)->create();
+        $aliasRequest = AliasRequest::factory()->create();
         $response = $this->actingAs($this->admin)
             ->get(route('alias-requests.edit', compact('aliasRequest')));
         $response->assertSuccessful();
@@ -205,10 +205,10 @@ class AliasRequestControllerTest extends TestCase
         Session::start();
 
         /** @var AliasRequest $aliasRequest */
-        $aliasRequest = factory(AliasRequest::class)->create();
-        $oldMailbox = factory(Mailbox::class)->create();
-        $newMailbox1 = factory(Mailbox::class)->create();
-        $newMailbox2 = factory(Mailbox::class)->create();
+        $aliasRequest = AliasRequest::factory()->create();
+        $oldMailbox = Mailbox::factory()->create();
+        $newMailbox1 = Mailbox::factory()->create();
+        $newMailbox2 = Mailbox::factory()->create();
         $aliasRequest->senderMailboxes()
             ->attach($oldMailbox);
         $aliasRequest->addRecipientMailbox($oldMailbox);
@@ -261,7 +261,7 @@ class AliasRequestControllerTest extends TestCase
         Session::start();
 
         /** @var AliasRequest $aliasRequest */
-        $aliasRequest = factory(AliasRequest::class)->create(['status' => 'open']);
+        $aliasRequest = AliasRequest::factory()->create(['status' => 'open']);
 
         $data = [
             'status' => 'approved',
@@ -292,7 +292,7 @@ class AliasRequestControllerTest extends TestCase
         Session::start();
 
         /** @var AliasRequest $aliasRequest */
-        $aliasRequest = factory(AliasRequest::class)->create(['status' => 'open']);
+        $aliasRequest = AliasRequest::factory()->create(['status' => 'open']);
 
         $data = [
             'status' => 'dismissed',
@@ -323,7 +323,7 @@ class AliasRequestControllerTest extends TestCase
         Session::start();
 
         /** @var AliasRequest $aliasRequest */
-        $aliasRequest = factory(AliasRequest::class)->create();
+        $aliasRequest = AliasRequest::factory()->create();
 
         $response = $this->followingRedirects()
             ->actingAs($this->admin)

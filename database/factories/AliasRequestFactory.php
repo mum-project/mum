@@ -1,22 +1,41 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
+
+use App\AliasRequest;
 use App\Domain;
 use App\Mailbox;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(App\AliasRequest::class, function (Faker $faker) {
-    $domain = Domain::all()
-        ->random(1)
-        ->first();
+class AliasRequestFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = AliasRequest::class;
 
-    $mailbox = Mailbox::all()
-        ->random(1)
-        ->first();
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $domain = Domain::all()
+            ->random(1)
+            ->first();
 
-    return [
-        'mailbox_id' => $mailbox->id,
-        'domain_id' => $domain->id,
-        'local_part' => $faker->unique()->username,
-        'status' => $faker->randomElement(['open', 'dismissed'])
-    ];
-});
+        $mailbox = Mailbox::all()
+            ->random(1)
+            ->first();
+
+        return [
+            'mailbox_id' => $mailbox->id,
+            'domain_id'  => $domain->id,
+            'local_part' => $this->faker->unique()->username,
+            'status'     => $this->faker->randomElement(['open', 'dismissed'])
+        ];
+    }
+}

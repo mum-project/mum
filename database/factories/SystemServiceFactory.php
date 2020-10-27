@@ -1,12 +1,31 @@
 <?php
 
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(App\SystemService::class, function (Faker $faker) {
-    $selectedService = $faker->unique()->words(5, true);
+use App\SystemService;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-    return [
-        'service' => strtolower($selectedService),
-        'name'    => $selectedService
-    ];
-});
+class SystemServiceFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = SystemService::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $selectedService = $this->faker->unique()->words(5, true);
+
+        return [
+            'service' => strtolower($selectedService),
+            'name'    => $selectedService
+        ];
+    }
+}

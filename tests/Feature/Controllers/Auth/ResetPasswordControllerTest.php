@@ -16,15 +16,15 @@ class ResetPasswordControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testCredentials()
     {
-        $user = factory(Mailbox::class)->create(['active' => true]);
+        $user = Mailbox::factory()->create(['active' => true]);
         $token = app('auth.password.broker')->createToken($user);
         $newPassword = $this->faker->sentence;
         $credentials = [

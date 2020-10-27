@@ -1,23 +1,42 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Domain;
-use Faker\Generator as Faker;
+use App\Mailbox;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
-$factory->define(App\Mailbox::class, function (Faker $faker) {
-    $domain = Domain::all()->random(1)->first();
-    $username = $faker->unique()->userName;
-    return [
-        'local_part'        => $username,
-        'password'          => Hash::make('secret'),
-        'name'              => $faker->name,
-        'domain_id'         => $domain->id,
-        'alternative_email' => $faker->boolean ? $faker->safeEmail : null,
-        'quota'             => null,
-        'homedir'           => getHomedirForMailbox($username, $domain->domain),
-        'maildir'           => getMaildirForMailbox($username, $domain->domain),
-        'is_super_admin'    => $faker->boolean(20),
-        'send_only'         => $faker->boolean(20),
-        'active'            => $faker->boolean(80)
-    ];
-});
+class MailboxFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Mailbox::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $domain = Domain::all()->random(1)->first();
+        $username = $this->faker->unique()->userName;
+        return [
+            'local_part'        => $username,
+            'password'          => Hash::make('secret'),
+            'name'              => $this->faker->name,
+            'domain_id'         => $domain->id,
+            'alternative_email' => $this->faker->boolean ? $this->faker->safeEmail : null,
+            'quota'             => null,
+            'homedir'           => getHomedirForMailbox($username, $domain->domain),
+            'maildir'           => getMaildirForMailbox($username, $domain->domain),
+            'is_super_admin'    => $this->faker->boolean(20),
+            'send_only'         => $this->faker->boolean(20),
+            'active'            => $this->faker->boolean(80)
+        ];
+    }
+}

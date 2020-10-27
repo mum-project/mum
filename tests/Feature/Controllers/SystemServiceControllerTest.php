@@ -27,21 +27,21 @@ class SystemServiceControllerTest extends TestCase
     /** @var Mailbox */
     protected $mailbox;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Config::set('mum.system_health.check_services', true);
-        factory(Domain::class)->create();
-        $this->admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $this->mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        Domain::factory()->create();
+        $this->admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $this->mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
     }
 
     public function testIndex()
     {
         $perPage = (new SystemService)->getPerPage();
         /** @var Collection $systemServices1 */
-        $systemServices1 = factory(SystemService::class, $perPage)->create();
-        $systemServices2 = factory(SystemService::class, $perPage)->create();
+        $systemServices1 = SystemService::factory( $perPage)->create();
+        $systemServices2 = SystemService::factory( $perPage)->create();
 
         $this->get(route('system-services.index'))
             ->assertRedirect(route('login'));
@@ -77,8 +77,8 @@ class SystemServiceControllerTest extends TestCase
     {
         $perPage = (new SystemService)->getPerPage();
         /** @var Collection $systemServices1 */
-        $systemServices1 = factory(SystemService::class, $perPage)->create();
-        $systemServices2 = factory(SystemService::class, $perPage)->create();
+        $systemServices1 = SystemService::factory( $perPage)->create();
+        $systemServices2 = SystemService::factory( $perPage)->create();
 
         $this->getJson(route('system-services.index'))
             ->assertStatus(401);
@@ -149,7 +149,7 @@ class SystemServiceControllerTest extends TestCase
     public function testShow()
     {
         /** @var SystemService $systemService */
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $this->get(route('system-services.show', compact('systemService')))
             ->assertRedirect(route('login'));
@@ -169,7 +169,7 @@ class SystemServiceControllerTest extends TestCase
 
     public function testEdit()
     {
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $this->get(route('system-services.edit', compact('systemService')))
             ->assertRedirect(route('login'));
@@ -187,7 +187,7 @@ class SystemServiceControllerTest extends TestCase
     {
         Session::start();
 
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
         $data = [
             'service' => 'my-updated-service',
             'name'    => 'My Updated Service'
@@ -223,7 +223,7 @@ class SystemServiceControllerTest extends TestCase
     {
         Session::start();
         /** @var SystemService $systemService */
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
 
         $this->delete(route('system-services.destroy', compact('systemService')), ['_token' => csrf_token()])
             ->assertRedirect(route('login'));
@@ -254,7 +254,7 @@ class SystemServiceControllerTest extends TestCase
     {
         Session::start();
         Config::set('mum.system_health.check_services', false);
-        $systemService = factory(SystemService::class)->create();
+        $systemService = SystemService::factory()->create();
         $this->actingAs($this->admin)
             ->get(route('system-services.index'))
             ->assertForbidden();

@@ -15,7 +15,7 @@ class IntegrationParameterTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Config::set('integrations.enabled.generally', true);
@@ -25,7 +25,7 @@ class IntegrationParameterTest extends TestCase
 
     public function testIntegration()
     {
-        $integration = factory(ShellCommandIntegration::class)->create(['value' => '01']);
+        $integration = ShellCommandIntegration::factory()->create(['value' => '01']);
         $integrationParameter = $integration->parameters()
             ->create([
                 'option' => '--foo',
@@ -36,7 +36,7 @@ class IntegrationParameterTest extends TestCase
 
     public function testGetParameterString()
     {
-        $integration = factory(ShellCommandIntegration::class)->create(['value' => '01']);
+        $integration = ShellCommandIntegration::factory()->create(['value' => '01']);
         $integrationParameter1 = $integration->parameters()
             ->create([
                 'option' => '--foo',

@@ -21,10 +21,10 @@ class MailboxTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     /**
@@ -32,8 +32,8 @@ class MailboxTest extends TestCase
      */
     public function testDomain()
     {
-        $domain = factory(Domain::class)->create();
-        $mailbox = factory(Mailbox::class)->create(['domain_id' => $domain->id]);
+        $domain = Domain::factory()->create();
+        $mailbox = Mailbox::factory()->create(['domain_id' => $domain->id]);
         $this->assertTrue($mailbox->fresh()->domain == $domain->fresh());
     }
 
@@ -42,14 +42,14 @@ class MailboxTest extends TestCase
      */
     public function testSizeMeasurements()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        $size1 = factory(SizeMeasurement::class)->create(['measurable_id' => $mailbox->id, 'measurable_type' => Mailbox::class]);
-        $size2 = factory(SizeMeasurement::class)->create(['measurable_id' => $mailbox->id, 'measurable_type' => Mailbox::class]);
+        $mailbox = Mailbox::factory()->create();
+        $size1 = SizeMeasurement::factory()->create(['measurable_id' => $mailbox->id, 'measurable_type' => Mailbox::class]);
+        $size2 = SizeMeasurement::factory()->create(['measurable_id' => $mailbox->id, 'measurable_type' => Mailbox::class]);
         $this->assertTrue($mailbox->sizeMeasurements->contains($size1));
         $this->assertTrue($mailbox->sizeMeasurements->contains($size2));
 
-        $otherMailbox = factory(Mailbox::class)->create();
-        $otherSize = factory(SizeMeasurement::class)->create(['measurable_id' => $otherMailbox->id, 'measurable_type' => Mailbox::class]);
+        $otherMailbox = Mailbox::factory()->create();
+        $otherSize = SizeMeasurement::factory()->create(['measurable_id' => $otherMailbox->id, 'measurable_type' => Mailbox::class]);
         $this->assertFalse($mailbox->sizeMeasurements->contains($otherSize));
     }
 
@@ -58,9 +58,9 @@ class MailboxTest extends TestCase
      */
     public function testAdmins()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        $admin1 = factory(Mailbox::class)->create();
-        $admin2 = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
+        $admin1 = Mailbox::factory()->create();
+        $admin2 = Mailbox::factory()->create();
         $mailbox->admins()->saveMany([
             $admin1,
             $admin2
@@ -68,8 +68,8 @@ class MailboxTest extends TestCase
         $this->assertTrue($mailbox->fresh()->admins->contains($admin1));
         $this->assertTrue($mailbox->fresh()->admins->contains($admin2));
 
-        $otherMailbox = factory(Mailbox::class)->create();
-        $otherAdmin = factory(Mailbox::class)->create();
+        $otherMailbox = Mailbox::factory()->create();
+        $otherAdmin = Mailbox::factory()->create();
         $otherMailbox->admins()->save($otherAdmin);
         $this->assertFalse($mailbox->fresh()->admins->contains($otherAdmin));
     }
@@ -79,9 +79,9 @@ class MailboxTest extends TestCase
      */
     public function testSendingAliases()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        $alias1 = factory(Alias::class)->create();
-        $alias2 = factory(Alias::class)->create();
+        $mailbox = Mailbox::factory()->create();
+        $alias1 = Alias::factory()->create();
+        $alias2 = Alias::factory()->create();
         $mailbox->sendingAliases()->saveMany([
             $alias1,
             $alias2
@@ -89,8 +89,8 @@ class MailboxTest extends TestCase
         $this->assertTrue($mailbox->fresh()->sendingAliases->contains($alias1));
         $this->assertTrue($mailbox->fresh()->sendingAliases->contains($alias2));
 
-        $otherMailbox = factory(Mailbox::class)->create();
-        $otherAlias = factory(Alias::class)->create();
+        $otherMailbox = Mailbox::factory()->create();
+        $otherAlias = Alias::factory()->create();
         $otherMailbox->sendingAliases()->save($otherAlias);
         $this->assertFalse($mailbox->fresh()->sendingAliases->contains($otherAlias));
     }
@@ -100,9 +100,9 @@ class MailboxTest extends TestCase
      */
     public function testReceivingAliases()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        $alias1 = factory(Alias::class)->create();
-        $alias2 = factory(Alias::class)->create();
+        $mailbox = Mailbox::factory()->create();
+        $alias1 = Alias::factory()->create();
+        $alias2 = Alias::factory()->create();
         DB::table('alias_recipients')->insert([
             [
                 'alias_id'          => $alias1->id,
@@ -118,8 +118,8 @@ class MailboxTest extends TestCase
         $this->assertTrue($mailbox->receivingAliases->contains($alias1));
         $this->assertTrue($mailbox->receivingAliases->contains($alias2));
 
-        $otherMailbox = factory(Mailbox::class)->create();
-        $otherAlias = factory(Alias::class)->create();
+        $otherMailbox = Mailbox::factory()->create();
+        $otherAlias = Alias::factory()->create();
         DB::table('alias_recipients')->insert([
             'alias_id'          => $otherAlias->id,
             'recipient_address' => $otherMailbox->local_part . '@' . $otherMailbox->domain->domain,
@@ -133,9 +133,9 @@ class MailboxTest extends TestCase
      */
     public function testAdministratedDomains()
     {
-        $mailbox = factory(Mailbox::class)->create();
-        $domain1 = factory(Domain::class)->create();
-        $domain2 = factory(Domain::class)->create();
+        $mailbox = Mailbox::factory()->create();
+        $domain1 = Domain::factory()->create();
+        $domain2 = Domain::factory()->create();
         $mailbox->administratedDomains()->saveMany([
             $domain1,
             $domain2
@@ -143,8 +143,8 @@ class MailboxTest extends TestCase
         $this->assertTrue($mailbox->fresh()->administratedDomains->contains($domain1));
         $this->assertTrue($mailbox->fresh()->administratedDomains->contains($domain2));
 
-        $otherMailbox = factory(Mailbox::class)->create();
-        $otherDomain = factory(Domain::class)->create();
+        $otherMailbox = Mailbox::factory()->create();
+        $otherDomain = Domain::factory()->create();
         $otherMailbox->administratedDomains()->save($otherDomain);
         $this->assertFalse($mailbox->fresh()->administratedDomains->contains($otherDomain));
     }
@@ -154,9 +154,9 @@ class MailboxTest extends TestCase
      */
     public function testAdministratedMailboxes()
     {
-        $admin = factory(Mailbox::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $admin = Mailbox::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $admin->administratedMailboxes()->saveMany([
             $mailbox1,
             $mailbox2
@@ -164,27 +164,27 @@ class MailboxTest extends TestCase
         $this->assertTrue($admin->fresh()->administratedMailboxes->contains($mailbox1));
         $this->assertTrue($admin->fresh()->administratedMailboxes->contains($mailbox2));
 
-        $otherAdmin = factory(Mailbox::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherAdmin = Mailbox::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherAdmin->administratedMailboxes()->save($otherMailbox);
         $this->assertFalse($admin->fresh()->administratedMailboxes->contains($otherMailbox));
     }
 
     public function testAddress()
     {
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $this->assertEquals($mailbox->local_part . '@' . $mailbox->domain->domain, $mailbox->address());
     }
 
     public function testRouteNotificationForAlternativeMail()
     {
-        $mailbox = factory(Mailbox::class)->create(['alternative_email' => $this->faker->email]);
+        $mailbox = Mailbox::factory()->create(['alternative_email' => $this->faker->email]);
         $this->assertEquals($mailbox->routeNotificationFor('alternative_mail'), $mailbox->alternative_email);
     }
 
     public function testGetEmailForPasswordReset()
     {
-        $mailbox = factory(Mailbox::class)->create(['alternative_email' => $this->faker->email]);
+        $mailbox = Mailbox::factory()->create(['alternative_email' => $this->faker->email]);
         $this->assertEquals($mailbox->getEmailForPasswordReset(), $mailbox->address());
     }
 
@@ -192,7 +192,7 @@ class MailboxTest extends TestCase
     {
         Notification::fake();
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $token = Str::random(10);
         $mailbox->sendPasswordResetNotification($token);
         Notification::assertSentTo($mailbox, ResetPassword::class, function ($notification, $channels) use ($token) {
@@ -204,7 +204,7 @@ class MailboxTest extends TestCase
     {
         Notification::fake();
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create(['alternative_email' => $this->faker->safeEmail]);
+        $mailbox = Mailbox::factory()->create(['alternative_email' => $this->faker->safeEmail]);
         $token = Str::random(10);
         $mailbox->sendPasswordResetNotification($token);
         Notification::assertSentTo($mailbox, ResetPassword::class, function ($notification, $channels) use ($token) {
@@ -214,8 +214,8 @@ class MailboxTest extends TestCase
 
     public function testIsSuperAdmin()
     {
-        $admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
         $this->assertTrue($admin->isSuperAdmin());
         $this->assertFalse($mailbox->isSuperAdmin());
     }

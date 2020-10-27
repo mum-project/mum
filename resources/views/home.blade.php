@@ -209,7 +209,7 @@
                                         <div class="w-3 h-3 rounded-full bg-grey-light mr-3"></div>
                                     @endif
                                     <a class="no-underline text-black hover:underline focus:underline"
-                                       href="{{ route('system-services.show', compact('systemService')) }}">
+                                       href="{{ route('system-services.show', ['system_service' => $systemService]) }}">
                                         {{ $systemService->name() }}
                                     </a>
                                 </div>
