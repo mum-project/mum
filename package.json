@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
-        "axios": "^0.18",
+        "axios": "^0.21",
         "chart.js": "^2.7.2",
         "cross-env": "^5.2.0",
         "diceware-generator": "^3.0.1",
