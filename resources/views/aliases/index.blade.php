@@ -21,10 +21,7 @@
                            @can('create', App\Alias::class)
                            href="{{ request()->get('domain') ? route('aliases.create', ['domain' => request()->get('domain')]) : route('aliases.create') }}"
                            title="Create Alias"
-                           @else
-                           href="{{ route('alias-requests.create') }}"
-                           title="Request Alias"
-                                @endif
+                            @endif
                         >
                             <i class="fas fa-plus mr-2" aria-hidden="true"></i>
                         </a>
@@ -59,17 +56,6 @@
                                 automatically deactivated
                             </div>
                         @endif
-                    </div>
-
-                    <div class="ml-auto mt-5">
-                        <a class="flex flex-row items-center text-grey-darker no-underline hover:text-grey-darkest focus:text-grey-darkest"
-                           href="{{ route('alias-requests.index') }}"
-                           title="Show Alias Requests">
-                            <div>Show Requests</div>
-                            @if(isUserSuperAdmin())
-                                <div class="text-sm ml-2 text-center flex flex-col items-center justify-center text-white leading-none w-6 h-6 block bg-red rounded-full">{{ App\AliasRequest::open()->count() }}</div>
-                            @endif
-                        </a>
                     </div>
                 </div>
             </div>

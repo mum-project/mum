@@ -181,43 +181,6 @@
                     @endif
                 </div>
             </div>
-            @if (config('mum.system_health.check_services'))
-                <div class="flex flex-row flex-wrap">
-                    <div class="dashboard-tile">
-                        <div class="flex flex-row flex-wrap items-center mb-6">
-                            <h3 class="font-bold">
-                                System Health
-                            </h3>
-                            <span class="ml-auto font-normal text-sm text-grey-dark">
-                            @if ($latestServiceHealthCheck)
-                                    last checked {{ $latestServiceHealthCheck->created_at->diffForHumans()}}
-                                @else
-                                    not checked yet
-                                @endif
-                        </span>
-                        </div>
-                        <div class="flex flex-row flex-wrap justify-between leading-loose -mx-6">
-                            @foreach($systemServices as $systemService)
-                                <div class="flex flex-row items-center mx-6">
-                                    @if ($systemService->latestServiceHealthCheck())
-                                        @if ($systemService->latestServiceHealthCheck()->wasRunning())
-                                            <div class="w-3 h-3 rounded-full bg-green mr-3"></div>
-                                        @else
-                                            <div class="w-3 h-3 rounded-full bg-red mr-3"></div>
-                                        @endif
-                                    @else
-                                        <div class="w-3 h-3 rounded-full bg-grey-light mr-3"></div>
-                                    @endif
-                                    <a class="no-underline text-black hover:underline focus:underline"
-                                       href="{{ route('system-services.show', ['system_service' => $systemService]) }}">
-                                        {{ $systemService->name() }}
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 @endsection

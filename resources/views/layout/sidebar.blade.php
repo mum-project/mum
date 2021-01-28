@@ -28,22 +28,12 @@
                class="sidebar-link{{ strpos(Route::currentRouteName(), 'mailboxes') === 0 ? ' active' : '' }}"><i
                         class="fas fa-fw fa-inbox mr-4"></i>Mailboxes</a>
             <a href="{{ route('aliases.index') }}"
-               class="sidebar-link{{ strpos(Route::currentRouteName(), 'aliases') === 0 || strpos(Route::currentRouteName(), 'alias-requests') === 0 ? ' active' : '' }}"><i
+               class="sidebar-link{{ strpos(Route::currentRouteName(), 'aliases') === 0 ? ' active' : '' }}"><i
                         class="fas fa-fw fa-paper-plane mr-4"></i>Aliases</a>
             @if (isUserSuperAdmin())
                 <a href="{{ route('tls-policies.index') }}"
                    class="sidebar-link{{ strpos(Route::currentRouteName(), 'tls-policies') === 0 ? ' active' : '' }}"><i
                             class="fas fa-fw fa-shield-alt  mr-4"></i>TLS Policies</a>
-            @endif
-            @if (config('integrations.enabled.generally') && isUserSuperAdmin())
-                <a href="{{ route('integrations.index') }}"
-                   class="sidebar-link{{ strpos(Route::currentRouteName(), 'integrations') === 0 ? ' active' : '' }}"><i
-                            class="fas fa-fw fa-puzzle-piece mr-4"></i>Integrations</a>
-            @endif
-            @if (config('mum.system_health.check_services') && isUserSuperAdmin())
-                <a href="{{ route('system-services.index') }}"
-                   class="sidebar-link{{ strpos(Route::currentRouteName(), 'system-services') === 0 ? ' active' : '' }}"><i
-                            class="fas fa-fw fa-heart mr-4"></i>System Health</a>
             @endif
         </div>
 
