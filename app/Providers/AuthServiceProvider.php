@@ -33,10 +33,6 @@ class AuthServiceProvider extends ServiceProvider
         Domain::class               => DomainPolicy::class,
         Mailbox::class              => MailboxPolicy::class,
         TlsPolicy::class            => TlsPolicyPolicy::class,
-        Integration::class          => IntegrationPolicy::class,
-        IntegrationParameter::class => IntegrationParameterPolicy::class,
-        AliasRequest::class         => AliasRequestPolicy::class,
-        SystemService::class        => SystemServicePolicy::class
     ];
 
     /**

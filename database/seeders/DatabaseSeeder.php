@@ -3,21 +3,14 @@
 namespace Database\Seeders;
 
 use App\Alias;
-use App\AliasRequest;
 use App\Domain;
 use App\Mailbox;
-use App\ServiceHealthCheck;
 use App\SizeMeasurement;
-use App\ShellCommandIntegration;
-use App\SystemService;
 use App\TlsPolicy;
-use App\WebHookIntegration;
 use Carbon\Carbon;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class DatabaseSeeder extends Seeder
 {
@@ -51,18 +44,6 @@ class DatabaseSeeder extends Seeder
                     ->saveMany(Mailbox::all()
                         ->random(2));
             });
-        AliasRequest::factory(10)
-            ->create()
-            ->each(function (AliasRequest $aliasRequest) {
-                $mailboxes = Mailbox::all()
-                    ->random(2);
-                foreach ($mailboxes as $mailbox) {
-                    $aliasRequest->addRecipientMailbox($mailbox);
-                }
-                $aliasRequest->senderMailboxes()
-                    ->saveMany(Mailbox::all()
-                        ->random(2));
-            });
         TlsPolicy::factory(3)->create();
         Domain::all()
             ->random(5)
@@ -78,10 +59,6 @@ class DatabaseSeeder extends Seeder
                     ->saveMany(Mailbox::all()
                         ->random(2));
             });
-        if (config('integrations.shell_commands.01')) {
-//            ShellCommandIntegration::factory(3)->create();
-        }
-//        WebHookIntegration::factory(3)->create();
         Mailbox::factory()
             ->create([
                 'local_part'     => 'domain.admin',
@@ -106,12 +83,6 @@ class DatabaseSeeder extends Seeder
             });
         $this->createSizeMeasurements($faker, null, null, 10 * 1024 * 1024, Carbon::now()
             ->subMonths(2));
-        SystemService::factory(3)
-            ->create()
-            ->each(function (SystemService $systemService) {
-                $systemService->serviceHealthChecks()
-                    ->saveMany(ServiceHealthCheck::factory(20)->create(['system_service_id' => $systemService->id]));
-            });
     }
 
     /**

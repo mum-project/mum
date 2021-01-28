@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class SizeMeasurement extends Model
 {
@@ -20,9 +21,9 @@ class SizeMeasurement extends Model
     /**
      * Gets the size measurable models that this size measurement belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
-    public function Measurable()
+    public function Measurable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -31,11 +32,11 @@ class SizeMeasurement extends Model
      * Scope a query to only include size measurements that do not
      * belong to a specific model but the whole application.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param null                                  $amount
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @param null $amount
+     * @return Builder
      */
-    public function scopeOfRootFolder(Builder $query, $amount = null)
+    public function scopeOfRootFolder(Builder $query, $amount = null): Builder
     {
         $query = $query->whereNull('measurable_id')
             ->whereNull('measurable_type')

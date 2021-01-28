@@ -2,16 +2,18 @@
 
 namespace App;
 
-use App\Interfaces\Integratable;
 use App\Scopes\ExcludeAutoDeactivatedAliasesScope;
 use App\Traits\QueryFilterTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class Alias extends Model implements Integratable
+class Alias extends Model
 {
     use HasFactory, QueryFilterTrait;
 
@@ -43,9 +45,9 @@ class Alias extends Model implements Integratable
     /**
      * Gets the domain that this alias belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function domain()
+    public function domain(): BelongsTo
     {
         return $this->belongsTo(Domain::class);
     }
@@ -54,9 +56,9 @@ class Alias extends Model implements Integratable
      * Gets all mailboxes that have permission to send emails with this alias as the sender address (MAIL FROM).
      * This collection does NOT include mailboxes that match one of the destination addresses of the alias.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function senderMailboxes()
+    public function senderMailboxes(): BelongsToMany
     {
         return $this->belongsToMany(Mailbox::class, 'alias_senders');
     }
@@ -70,9 +72,9 @@ class Alias extends Model implements Integratable
      *              you have to insert values into the table manually.
      *              It is NOT possible to use the Eloquent relationship save() method.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function recipientMailboxes()
+    public function recipientMailboxes(): BelongsToMany
     {
         return $this->belongsToMany(Mailbox::class, 'alias_recipients');
     }
@@ -80,9 +82,9 @@ class Alias extends Model implements Integratable
     /**
      * Gets all entries of alias recipients, whether they are local mailboxes or external addresses.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function recipients()
+    public function recipients(): Collection
     {
         return DB::table('alias_recipients')
             ->where('alias_id', '=', $this->id)
@@ -92,9 +94,9 @@ class Alias extends Model implements Integratable
     /**
      * Gets all external alias recipient addresses.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function externalRecipients()
+    public function externalRecipients(): Collection
     {
         return DB::table('alias_recipients')
             ->where('alias_id', '=', $this->id)
@@ -106,9 +108,9 @@ class Alias extends Model implements Integratable
      * Gets a collection of external recipients that is
      * compatible with the Javascript frontend code.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public function getExternalRecipientResource()
+    public function getExternalRecipientResource(): Collection
     {
         return $this->externalRecipients()
             ->map(function ($externalRecipient) {
@@ -122,9 +124,9 @@ class Alias extends Model implements Integratable
     /**
      * Gets all recipient addresses (as a string) INCLUDING external ones.
      *
-     * @return mixed
+     * @return Collection
      */
-    public function recipientAddresses()
+    public function recipientAddresses(): Collection
     {
         return DB::table('alias_recipients')
             ->where('alias_id', $this->id)
@@ -136,7 +138,7 @@ class Alias extends Model implements Integratable
      *
      * @return string
      */
-    public function address()
+    public function address(): string
     {
         return $this->local_part . '@' . $this->domain->domain;
     }
@@ -147,7 +149,7 @@ class Alias extends Model implements Integratable
      * @param Mailbox $mailbox
      * @return bool
      */
-    public function addRecipientMailbox(Mailbox $mailbox)
+    public function addRecipientMailbox(Mailbox $mailbox): bool
     {
         return DB::table('alias_recipients')
             ->insert([
@@ -163,7 +165,7 @@ class Alias extends Model implements Integratable
      * @param Mailbox $mailbox
      * @return bool
      */
-    public function removeRecipientMailbox(Mailbox $mailbox)
+    public function removeRecipientMailbox(Mailbox $mailbox): bool
     {
         return DB::table('alias_recipients')
             ->where([
@@ -187,7 +189,7 @@ class Alias extends Model implements Integratable
      * @param string $address
      * @return bool
      */
-    public function addExternalRecipient(string $address)
+    public function addExternalRecipient(string $address): bool
     {
         return DB::table('alias_recipients')
             ->insert([
@@ -202,7 +204,7 @@ class Alias extends Model implements Integratable
      * @param string $address
      * @return bool
      */
-    public function removeExternalRecipient(string $address)
+    public function removeExternalRecipient(string $address): bool
     {
         return DB::table('alias_recipients')
             ->whereNull('mailbox_id')
@@ -226,7 +228,7 @@ class Alias extends Model implements Integratable
      *
      * @return bool
      */
-    public function removeAllExternalRecipients()
+    public function removeAllExternalRecipients(): bool
     {
         return DB::table('alias_recipients')
             ->whereNull('mailbox_id')
@@ -245,7 +247,7 @@ class Alias extends Model implements Integratable
      *
      * @return int
      */
-    public function removeAllRecipientMailboxes()
+    public function removeAllRecipientMailboxes(): int
     {
         return DB::table('alias_recipients')
             ->whereNotNull('mailbox_id')
@@ -260,42 +262,14 @@ class Alias extends Model implements Integratable
     }
 
     /**
-     * Gets all available placeholders for integrations.
-     * Example: ['placeholder' => $model->value]
-     *
-     * @return array
-     */
-    public function getIntegratablePlaceholders()
-    {
-        return [
-            'id'          => $this->id,
-            'local_part'  => $this->local_part,
-            'address'     => $this->address(),
-            'description' => $this->description,
-            'domain'      => $this->domain->domain,
-            'active'      => $this->active
-        ];
-    }
-
-    /**
-     * Gets the class name of the integratable.
-     *
-     * @return string
-     */
-    public function getIntegratableClassName()
-    {
-        return static::class;
-    }
-
-    /**
      * Scope a query to only include aliases that the authenticated
      * mailbox user is authorized to view.
      *
-     * @param Builder      $query
+     * @param Builder $query
      * @param Mailbox|null $mailbox
      * @return Builder
      */
-    public function scopeWhereAuthorized(Builder $query, Mailbox $mailbox = null)
+    public function scopeWhereAuthorized(Builder $query, Mailbox $mailbox = null): Builder
     {
         if (isUserSuperAdmin()) {
             return $query;
