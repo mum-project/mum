@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Alias;
 use App\AliasRequest;
 use App\Domain;
@@ -11,6 +13,8 @@ use App\SystemService;
 use App\TlsPolicy;
 use App\WebHookIntegration;
 use Carbon\Carbon;
+use Faker\Factory;
+use Faker\Generator;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -75,9 +79,9 @@ class DatabaseSeeder extends Seeder
                         ->random(2));
             });
         if (config('integrations.shell_commands.01')) {
-            ShellCommandIntegration::factory(3)->create();
+//            ShellCommandIntegration::factory(3)->create();
         }
-        WebHookIntegration::factory(3)->create();
+//        WebHookIntegration::factory(3)->create();
         Mailbox::factory()
             ->create([
                 'local_part'     => 'domain.admin',
@@ -89,7 +93,7 @@ class DatabaseSeeder extends Seeder
             ])
             ->administratedDomains()
             ->attach($exampleDomain);
-        $faker = Faker\Factory::create();
+        $faker = Factory::create();
         Domain::all()
             ->each(function (Domain $domain) use ($faker) {
                 $this->createSizeMeasurements($faker, $domain->id, Domain::class, 5 * 1024 * 1024, Carbon::now()
@@ -111,14 +115,14 @@ class DatabaseSeeder extends Seeder
     }
 
     /**
-     * @param \Faker\Generator $faker
+     * @param Generator $faker
      * @param                  $measurableId
      * @param                  $measurableType
      * @param int $startSize
      * @param Carbon $startedAt
      */
     private function createSizeMeasurements(
-        Faker\Generator $faker,
+        Generator $faker,
         $measurableId,
         $measurableType,
         int $startSize,
