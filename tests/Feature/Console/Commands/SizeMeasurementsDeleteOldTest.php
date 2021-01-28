@@ -5,7 +5,6 @@ namespace Tests\Feature\Console\Commands;
 use App\Domain;
 use App\SizeMeasurement;
 use Carbon\Carbon;
-use function factory;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -29,8 +28,8 @@ class SizeMeasurementsDeleteOldTest extends TestCase
         $this->assertTrue($domain->sizeMeasurements()
                 ->count() === 4);
 
-        $returnCode = $this->artisan('size-measurements:delete-old');
-        $this->assertTrue($returnCode === 0);
+        $this->artisan('size-measurements:delete-old')
+            ->assertExitCode(0);
 
         $this->assertTrue($domain->sizeMeasurements()
                 ->count() === 2);
@@ -54,8 +53,8 @@ class SizeMeasurementsDeleteOldTest extends TestCase
         $this->assertTrue($domain->sizeMeasurements()
                 ->count() === 4);
 
-        $returnCode = $this->artisan('size-measurements:delete-old');
-        $this->assertTrue($returnCode === 1);
+        $this->artisan('size-measurements:delete-old')
+            ->assertExitCode(1);
 
         $this->assertTrue($domain->sizeMeasurements()
                 ->count() === 4);

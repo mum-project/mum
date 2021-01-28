@@ -5,9 +5,8 @@ namespace Tests\Unit\Notifications\Channels;
 use App\Domain;
 use App\Mailbox;
 use App\Notifications\Channels\AlternativeMailChannel;
-use function factory;
+use Illuminate\Contracts\Mail\Factory as MailerFactory;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Markdown;
 use Illuminate\Mail\Message;
 use Illuminate\Notifications\Notification;
@@ -35,7 +34,7 @@ class AlternativeMailChannelTest extends TestCase
         $message->view = '';
         $message->markdown = '';
         $notification->shouldReceive(['toMail' => $message]);
-        $mailer = Mockery::mock(Mailer::class);
+        $mailer = Mockery::mock(MailerFactory::class);
         $mailer->shouldReceive('send');
         $markdown = Mockery::mock(Markdown::class);
         $markdown->shouldReceive('render');
@@ -53,7 +52,7 @@ class AlternativeMailChannelTest extends TestCase
         $message->shouldReceive('send');
         $message->view = '';
         $notification->shouldReceive(['toMail' => $message]);
-        $mailer = Mockery::mock(Mailer::class);
+        $mailer = Mockery::mock(MailerFactory::class);
         $mailer->shouldReceive('send');
         $markdown = Mockery::mock(Markdown::class);
         $markdown->shouldReceive('render');

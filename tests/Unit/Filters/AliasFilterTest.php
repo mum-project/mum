@@ -7,7 +7,6 @@ use App\Domain;
 use App\Http\Filters\AliasFilter;
 use App\Mailbox;
 use Carbon\Carbon;
-use function factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mockery;

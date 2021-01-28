@@ -146,14 +146,12 @@ class SizeMeasurementsReportTest extends TestCase
         $this->assertTrue($mailbox->sizeMeasurements()
             ->doesntExist());
 
-        $returnCode = $this->artisan('size-measurements:report', [
+        $this->artisan('size-measurements:report', [
             'directory' => $mailbox->homedir,
             'size'      => $size,
             '--MiB'     => true,
             '--GiB'     => true
-        ]);
-
-        $this->assertEquals(1, $returnCode);
+        ])->assertExitCode(1);
 
         $this->assertTrue($mailbox->sizeMeasurements()
             ->doesntExist());
@@ -163,12 +161,11 @@ class SizeMeasurementsReportTest extends TestCase
     {
         $size = $this->faker->numberBetween(100, 10000);
 
-        $returnCode = $this->artisan('size-measurements:report', [
+        $this->artisan('size-measurements:report', [
             'directory' => '/some/nonexistent/mailbox',
             'size'      => $size
-        ]);
+        ])->assertExitCode(1);
 
-        $this->assertEquals(1, $returnCode);
         $this->assertEquals(0, SizeMeasurement::query()
             ->count());
     }
@@ -179,12 +176,11 @@ class SizeMeasurementsReportTest extends TestCase
         $mailbox = Mailbox::factory()->create();
         $this->assertTrue($mailbox->sizeMeasurements()->doesntExist());
 
-        $returnCode = $this->artisan('size-measurements:report', [
+        $this->artisan('size-measurements:report', [
             'directory' => $mailbox->homedir,
             'size'      => 'NOT-A-NUMBER'
-        ]);
+        ])->assertExitCode(1);
 
-        $this->assertEquals(1, $returnCode);
         $this->assertTrue($mailbox->sizeMeasurements()->doesntExist());
     }
 }

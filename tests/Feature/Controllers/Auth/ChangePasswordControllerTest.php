@@ -5,7 +5,6 @@ namespace Tests\Feature\Controllers\Auth;
 use App\Domain;
 use App\Mailbox;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;

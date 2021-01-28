@@ -5,7 +5,6 @@ namespace Tests\Feature\Controllers\Auth;
 use App\Domain;
 use App\Mailbox;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
@@ -27,13 +26,14 @@ class LoginControllerTest extends TestCase
     public function testValidateLoginInvalidEmail()
     {
         Session::start();
+        $this->get(route('login'));
         $this->followingRedirects()
             ->post(route('login'), [
-                'email'    => 'foobar',
+                'email'    => 'foobar@example.com',
                 'password' => 'secret',
                 '_token'   => csrf_token()
             ])
-            ->assertSeeText(trans('validation.email', ['attribute' => 'email']));
+            ->assertSeeText(trans('auth.failed'));
     }
 
     public function testSuccessfulLogin()

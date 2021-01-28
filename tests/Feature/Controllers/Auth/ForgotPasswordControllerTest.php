@@ -6,7 +6,6 @@ use App\Domain;
 use App\Mailbox;
 use App\Notifications\ResetPassword;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;

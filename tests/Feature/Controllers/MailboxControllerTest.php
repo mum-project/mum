@@ -4,11 +4,10 @@ namespace Tests\Feature\Controllers;
 
 use App\Domain;
 use App\Mailbox;
-use function array_except;
+use Illuminate\Support\Arr;
 use function array_merge;
 use function compact;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Session;
 use function now;
 use function route;

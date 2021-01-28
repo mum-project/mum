@@ -6,9 +6,7 @@ use App\Domain;
 use App\Mailbox;
 use App\TlsPolicy;
 use function array_merge;
-use function compact;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Session;
 use function route;
 use Tests\TestCase;
@@ -41,7 +39,6 @@ class TlsPolicyControllerTest extends TestCase
             ->get();
 
         $this->get(route('tls-policies.index'))
-            ->dump()
             ->assertStatus(302);
         $this->actingAs($user)
             ->get(route('tls-policies.index'))
@@ -56,12 +53,12 @@ class TlsPolicyControllerTest extends TestCase
         $responsePage2->assertSuccessful();
 
         $tlsPolicies1->each(function (TlsPolicy $tlsPolicy) use ($responsePage1, $responsePage2) {
-            $responsePage1->assertSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"");
-            $responsePage2->assertDontSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"");
+            $responsePage1->assertSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"", false);
+            $responsePage2->assertDontSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"", false);
         });
         $tlsPolicies2->each(function (TlsPolicy $tlsPolicy) use ($responsePage1, $responsePage2) {
-            $responsePage1->assertDontSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"");
-            $responsePage2->assertSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"");
+            $responsePage1->assertDontSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"", false);
+            $responsePage2->assertSee("href=\"" . route('tls-policies.show', ['tls_policy' => $tlsPolicy]) . "\"", false);
         });
     }
 

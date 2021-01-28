@@ -6,7 +6,6 @@ use App\Alias;
 use App\Domain;
 use App\Mailbox;
 use Carbon\Carbon;
-use function factory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,13 +25,13 @@ class DeactivateAliasesTest extends TestCase
     {
         $deactivateAt = Carbon::now()
             ->subMinute();
-        $aliasesToDeactivate = Alias::factory( 2)->create([
+        $aliasesToDeactivate = Alias::factory(2)->create([
             'deactivate_at' => $deactivateAt
         ]);
-        $normalAliases = Alias::factory( 2)->create();
+        $normalAliases = Alias::factory(2)->create();
 
-        $returnCode = $this->artisan('aliases:deactivate');
-        $this->assertEquals(0, $returnCode);
+        $this->artisan('aliases:deactivate')
+            ->assertExitCode(0);
 
         $aliasesToDeactivate->each(function (Alias $alias) use ($deactivateAt) {
             $alias = $alias->fresh();
@@ -51,20 +50,20 @@ class DeactivateAliasesTest extends TestCase
     {
         $this->assertEquals(0, Alias::query()
             ->count());
-        $returnCode = $this->artisan('aliases:deactivate');
-        $this->assertEquals(0, $returnCode);
+        $this->artisan('aliases:deactivate')
+            ->assertExitCode(0);
     }
 
     public function testDeactivateAtInFuture()
     {
         $deactivateAt = Carbon::now()
             ->addHour();
-        $aliasesToDeactivateInFuture = Alias::factory( 2)->create([
+        $aliasesToDeactivateInFuture = Alias::factory(2)->create([
             'deactivate_at' => $deactivateAt
         ]);
 
-        $returnCode = $this->artisan('aliases:deactivate');
-        $this->assertEquals(0, $returnCode);
+        $this->artisan('aliases:deactivate')
+            ->assertExitCode(0);
 
         $aliasesToDeactivateInFuture->each(function (Alias $alias) {
             $alias = $alias->fresh();

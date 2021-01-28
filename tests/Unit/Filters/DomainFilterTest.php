@@ -5,7 +5,6 @@ namespace Tests\Unit\Filters;
 use App\Domain;
 use App\Http\Filters\DomainFilter;
 use App\Mailbox;
-use function factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mockery;

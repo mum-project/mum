@@ -12,28 +12,21 @@
 */
 
 use App\Http\Controllers\AliasController;
-use App\Http\Controllers\AliasRequestController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\DomainController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IntegrationController;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\SizeMeasurementController;
-use App\Http\Controllers\SystemServiceController;
 use App\Http\Controllers\TlsPolicyController;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('domains', DomainController::class);
-Route::resource('aliases/requests', AliasRequestController::class)->names('alias-requests')->parameters(['requests' => 'alias_request']);
-Route::patch('aliases/requests/{alias_request}/status', [AliasRequestController::class, 'updateStatus'])->name('alias-requests.status');
 Route::resource('aliases', AliasController::class);
 Route::resource('tls-policies', TlsPolicyController::class);
 Route::resource('mailboxes', MailboxController::class);
-Route::resource('integrations', IntegrationController::class);
-Route::resource('system-services', SystemServiceController::class);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 

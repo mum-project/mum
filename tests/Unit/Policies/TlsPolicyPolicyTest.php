@@ -5,7 +5,6 @@ namespace Tests\Unit\Policies;
 use App\Domain;
 use App\Mailbox;
 use App\Policies\TlsPolicyPolicy;
-use function factory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;

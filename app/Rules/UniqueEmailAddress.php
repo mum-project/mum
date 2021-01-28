@@ -3,7 +3,6 @@
 namespace App\Rules;
 
 use App\Alias;
-use App\AliasRequest;
 use App\Mailbox;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -32,9 +31,8 @@ class UniqueEmailAddress implements Rule
     {
         $existsInAliases = $this->performExistsQuery(Alias::class, $value);
         $existsInMailboxes = $this->performExistsQuery(Mailbox::class, $value);
-        $existsInAliasRequests = $this->performExistsQuery(AliasRequest::class, $value);
 
-        return !$existsInMailboxes && !$existsInAliases && !$existsInAliasRequests;
+        return !$existsInMailboxes && !$existsInAliases;
     }
 
     /**

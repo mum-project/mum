@@ -7,8 +7,6 @@ use App\Domain;
 use App\Mailbox;
 use App\SizeMeasurement;
 use App\Notifications\ResetPassword;
-use function factory;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;

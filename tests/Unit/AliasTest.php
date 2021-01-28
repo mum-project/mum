@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Alias;
 use App\Domain;
 use App\Mailbox;
-use function factory;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

@@ -36,11 +36,6 @@
                                         Create Alias
                                     </a>
                                 @endcan
-                                @can('create', App\AliasRequest::class)
-                                    <a href="{{ route('alias-requests.create') }}" class="link-black px-4 py-1 my-1">
-                                        Request Alias
-                                    </a>
-                                @endcan
                             </div>
                         @else
 

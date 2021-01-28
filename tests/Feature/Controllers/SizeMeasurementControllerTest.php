@@ -8,7 +8,6 @@ use App\Mailbox;
 use App\SizeMeasurement;
 use function compact;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
