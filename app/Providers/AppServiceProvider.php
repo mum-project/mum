@@ -2,15 +2,10 @@
 
 namespace App\Providers;
 
-use App\Alias;
 use App\Domain;
 use App\Mailbox;
-use App\Observers\AliasObserver;
 use App\Observers\DomainObserver;
 use App\Observers\MailboxObserver;
-use App\Observers\IntegrationObserver;
-use App\ShellCommandIntegration;
-use App\WebHookIntegration;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;

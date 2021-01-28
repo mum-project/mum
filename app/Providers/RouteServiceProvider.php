@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Alias;
 use App\Scopes\ExcludeAutoDeactivatedAliasesScope;
-use Closure;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
