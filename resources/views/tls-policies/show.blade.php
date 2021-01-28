@@ -41,7 +41,7 @@
                 <p class="mb-6">{{ $tlsPolicy->description }}</p>
             @endif
             <div class="form-footer">
-                <a class="btn-link" href="{{ route('tls-policies.edit', compact('tlsPolicy')) }}">Edit</a>
+                <a class="btn-link" href="{{ route('tls-policies.edit', ['tls_policy' => $tlsPolicy]) }}">Edit</a>
             </div>
         </div>
     </div>

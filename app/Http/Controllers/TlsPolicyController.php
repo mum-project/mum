@@ -74,7 +74,7 @@ class TlsPolicyController extends Controller
         $tlsPolicy = TlsPolicy::create($validated);
 
         flash('success', 'Your TLS policy was created successfully.');
-        return redirect()->route('tls-policies.show', compact('tlsPolicy'));
+        return redirect()->route('tls-policies.show', ['tls_policy' => $tlsPolicy]);
     }
 
     /**
@@ -130,7 +130,7 @@ class TlsPolicyController extends Controller
         $tlsPolicy->update($validated);
 
         flash('success', 'Your TLS policy was updated successfully.');
-        return redirect()->route('tls-policies.show', compact('tlsPolicy'));
+        return redirect()->route('tls-policies.show', ['tls_policy' => $tlsPolicy]);
     }
 
     /**
