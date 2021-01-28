@@ -9,6 +9,7 @@ language: php
 
 php:
   - 7.3
+  - 8.0
 
 before_script:
   - cp .env.travis .env
@@ -16,7 +17,6 @@ before_script:
   - composer install --prefer-source --no-interaction --dev
   - php artisan key:generate
   - php artisan migrate
-  - npm install
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
@@ -26,10 +26,18 @@ before_install:
 
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-  - npm run production
 
 after_script:
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 services:
   - mysql
+
+jobs:
+    include:
+      - language: node_js
+        node_js: 14
+        before_script:
+          - npm install
+        script:
+          - npm run production
