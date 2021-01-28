@@ -3,12 +3,9 @@
 namespace App\Observers;
 
 use App\Mailbox;
-use App\Traits\IntegrationObserverTrait;
 
 class MailboxObserver
 {
-    use IntegrationObserverTrait;
-
     /**
      * Listen to the Mailbox creating event.
      *
