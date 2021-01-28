@@ -43,4 +43,4 @@ If you discover any security vulnerabilities, please send an email to
 The [MIT license](https://opensource.org/licenses/MIT). 
 Please see the [license file](LICENSE.md) for more information.
 
-Copyright &copy; 2019 Martin Bock, Max Merz.
+Copyright &copy; 2018-2021 Martin Bock, Max Merz.
