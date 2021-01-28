@@ -34,7 +34,7 @@ return [
         'homedir'        => env('MAILBOXES_HOMEDIR', '/srv/mail/mailboxes/%d/%n'),
         'maildir'        => env('MAILBOXES_MAILDIR', 'maildir:/srv/mail/mailboxes/%d/%n:LAYOUT=fs')
     ],
-
+    
     /*
     |--------------------------------------------------------------------------
     | Aliases

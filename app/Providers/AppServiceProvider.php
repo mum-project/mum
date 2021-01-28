@@ -29,12 +29,8 @@ class AppServiceProvider extends ServiceProvider
         Paginator::defaultView('pagination::default');
         Paginator::defaultSimpleView('pagination::simple-default');
 
-        Alias::observe(AliasObserver::class);
         Domain::observe(DomainObserver::class);
         Mailbox::observe(MailboxObserver::class);
-
-        ShellCommandIntegration::observe(IntegrationObserver::class);
-        WebHookIntegration::observe(IntegrationObserver::class);
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Tests\Feature\Controllers\Auth;
 use App\Domain;
 use App\Mailbox;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -18,10 +17,10 @@ class ChangePasswordControllerTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testShowPasswordChangeForm()
@@ -34,7 +33,7 @@ class ChangePasswordControllerTest extends TestCase
     {
         $oldPass = Str::random(10);
         $newPass = Str::random(10);
-        $mailbox = factory(Mailbox::class)->create([
+        $mailbox = Mailbox::factory()->create([
             'password' => Hash::make($oldPass),
             'active'   => true
         ]);

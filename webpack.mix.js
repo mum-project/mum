@@ -13,9 +13,11 @@ let tailwindcss = require('tailwindcss');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
+    .vue()
     .sass('resources/assets/sass/app.scss', 'public/css')
     .options({
         processCssUrls: false,
         postCss: [tailwindcss('./tailwind.js')],
     })
-    .extract(['vue', 'axios', 'chart.js', 'lodash', 'vue-select', 'v-tooltip', 'popper.js']);
+    .extract(['vue', 'axios', 'chart.js', 'lodash', 'vue-select', 'v-tooltip', 'popper.js'])
+    .version();

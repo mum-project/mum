@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Alias;
 use App\Domain;
 use App\Mailbox;
-use function factory;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -16,11 +15,11 @@ class AliasTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
+        Domain::factory()->create();
+        Mailbox::factory()->create();
     }
 
     /**
@@ -28,8 +27,8 @@ class AliasTest extends TestCase
      */
     public function testDomain()
     {
-        $domain = factory(Domain::class)->create();
-        $alias = factory(Alias::class)->create(['domain_id' => $domain->id]);
+        $domain = Domain::factory()->create();
+        $alias = Alias::factory()->create(['domain_id' => $domain->id]);
         $this->assertTrue($alias->domain == $domain->fresh());
     }
 
@@ -38,9 +37,9 @@ class AliasTest extends TestCase
      */
     public function testSenderMailboxes()
     {
-        $alias = factory(Alias::class)->create();
-        $sender1 = factory(Mailbox::class)->create();
-        $sender2 = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $sender1 = Mailbox::factory()->create();
+        $sender2 = Mailbox::factory()->create();
         $alias->senderMailboxes()
             ->saveMany([
                 $sender1,
@@ -49,8 +48,8 @@ class AliasTest extends TestCase
         $this->assertTrue($alias->senderMailboxes->contains($sender1));
         $this->assertTrue($alias->senderMailboxes->contains($sender2));
 
-        $otherAlias = factory(Alias::class)->create();
-        $otherSender = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherSender = Mailbox::factory()->create();
         $otherAlias->senderMailboxes()
             ->save($otherSender);
         $this->assertFalse($alias->senderMailboxes->contains($otherSender));
@@ -61,9 +60,9 @@ class AliasTest extends TestCase
      */
     public function testRecipientMailboxes()
     {
-        $alias = factory(Alias::class)->create();
-        $recipient1 = factory(Mailbox::class)->create();
-        $recipient2 = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $recipient1 = Mailbox::factory()->create();
+        $recipient2 = Mailbox::factory()->create();
         DB::table('alias_recipients')
             ->insert([
                 [
@@ -80,8 +79,8 @@ class AliasTest extends TestCase
         $this->assertTrue($alias->recipientMailboxes->contains($recipient1));
         $this->assertTrue($alias->recipientMailboxes->contains($recipient2));
 
-        $otherAlias = factory(Alias::class)->create();
-        $otherRecipient = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherRecipient = Mailbox::factory()->create();
         DB::table('alias_recipients')
             ->insert([
                 'alias_id'          => $otherAlias->id,
@@ -94,9 +93,9 @@ class AliasTest extends TestCase
     public function testRecipientAddresses()
     {
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
-        $recipient1 = factory(Mailbox::class)->create();
-        $recipient2 = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $recipient1 = Mailbox::factory()->create();
+        $recipient2 = Mailbox::factory()->create();
         $externalEmail = $this->faker->safeEmail;
         $alias->addRecipientMailbox($recipient1);
         $alias->addRecipientMailbox($recipient2);
@@ -109,8 +108,8 @@ class AliasTest extends TestCase
         $this->assertTrue($alias->recipientAddresses()->contains($externalEmail));
 
         /** @var Alias $otherAlias */
-        $otherAlias = factory(Alias::class)->create();
-        $otherRecipient = factory(Mailbox::class)->create();
+        $otherAlias = Alias::factory()->create();
+        $otherRecipient = Mailbox::factory()->create();
         $otherAlias->addRecipientMailbox($otherRecipient);
         $this->assertFalse($alias->recipientAddresses()->contains($otherRecipient->local_part . '@' .
             $otherRecipient->domain->domain));

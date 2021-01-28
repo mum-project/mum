@@ -26,7 +26,7 @@
                         <div class="flex flex-row items-center">
                             <a class="text-grey-dark hover:text-black no-underline text-bold py-6 group pr-6 truncate"
                                title="{{ $tlsPolicy->domain }}"
-                               href="{{ route('tls-policies.show', compact('tlsPolicy')) }}"
+                               href="{{ route('tls-policies.show', ['tls_policy' => $tlsPolicy]) }}"
                             >
                                 {{ $tlsPolicy->domain }}
                                 <span class="text-black opacity-0 group-hover:opacity-100">

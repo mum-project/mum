@@ -9,6 +9,7 @@ use App\Mailbox;
 use App\Rules\MailboxesAvailable;
 use App\Rules\UniqueEmailAddress;
 use App\Rules\ValidLocalPart;
+use Illuminate\Support\Arr;
 use function array_except;
 use function array_key_exists;
 use function compact;
@@ -175,7 +176,7 @@ class MailboxController extends Controller
         }
 
         $validated = $request->validate($validationRules);
-        $mailbox->update(array_except($validated, 'password'));
+        $mailbox->update(Arr::except($validated, 'password'));
 
         if (array_key_exists('password', $validated) && $validated['password']) {
             $mailbox->password = Hash::make($validated['password']);

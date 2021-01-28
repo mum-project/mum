@@ -2,19 +2,21 @@
 
 namespace App;
 
-use App\Interfaces\Integratable;
 use App\Traits\QueryFilterTrait;
 use App\Traits\SizeMeasurable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use function isUserSuperAdmin;
 
-class Mailbox extends Authenticatable implements Integratable
+class Mailbox extends Authenticatable
 {
-    use Notifiable, QueryFilterTrait, SizeMeasurable;
+    use HasFactory, Notifiable, QueryFilterTrait, SizeMeasurable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -43,8 +45,8 @@ class Mailbox extends Authenticatable implements Integratable
     /**
      * Scope a query to only include super admin mailboxes.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeIsSuperAdmin(Builder $query)
     {
@@ -54,7 +56,7 @@ class Mailbox extends Authenticatable implements Integratable
     /**
      * Gets the domain that this mailbox belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function domain()
     {
@@ -65,7 +67,7 @@ class Mailbox extends Authenticatable implements Integratable
      * Gets all mailboxes that have the right to administrate this mailbox.
      * This collection does NOT include any domain admins that inherit this right automatically.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function admins()
     {
@@ -76,7 +78,7 @@ class Mailbox extends Authenticatable implements Integratable
      * Gets all aliases that this mailbox is allowed to use as a sender address (MAIL FROM).
      * This collection does NOT include any aliases where this mailbox is a destination address.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function sendingAliases()
     {
@@ -90,9 +92,9 @@ class Mailbox extends Authenticatable implements Integratable
      *              you have to insert values into the table manually.
      *              It is NOT possible to use the Eloquent relationship save() method.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function receivingAliases()
+    public function receivingAliases(): BelongsToMany
     {
         return $this->belongsToMany(Alias::class, 'alias_recipients');
     }
@@ -100,9 +102,9 @@ class Mailbox extends Authenticatable implements Integratable
     /**
      * Gets all domains that are administrated by this mailbox user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function administratedDomains()
+    public function administratedDomains(): BelongsToMany
     {
         return $this->belongsToMany(Domain::class, 'domain_admins');
     }
@@ -110,9 +112,9 @@ class Mailbox extends Authenticatable implements Integratable
     /**
      * Gets all mailboxes that are administrated by this mailbox user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function administratedMailboxes()
+    public function administratedMailboxes(): BelongsToMany
     {
         return $this->belongsToMany(Mailbox::class, 'mailbox_admins', 'mailbox_id', 'admin_mailbox_id');
     }
@@ -122,7 +124,7 @@ class Mailbox extends Authenticatable implements Integratable
      *
      * @return string
      */
-    public function address()
+    public function address(): string
     {
         return $this->local_part . '@' . $this->domain->domain;
     }
@@ -144,7 +146,7 @@ class Mailbox extends Authenticatable implements Integratable
      * @param null $notification
      * @return string
      */
-    public function routeNotificationForMail($notification = null)
+    public function routeNotificationForMail($notification = null): string
     {
         return $this->address();
     }
@@ -155,7 +157,7 @@ class Mailbox extends Authenticatable implements Integratable
      *
      * @return string
      */
-    public function getEmailForPasswordReset()
+    public function getEmailForPasswordReset(): string
     {
         return $this->address();
     }
@@ -176,7 +178,7 @@ class Mailbox extends Authenticatable implements Integratable
      *
      * @return bool
      */
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
         return $this->is_super_admin;
     }
@@ -186,7 +188,7 @@ class Mailbox extends Authenticatable implements Integratable
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->is_super_admin || $this->administratesDomains() || $this->administratesMailboxes();
     }
@@ -196,7 +198,7 @@ class Mailbox extends Authenticatable implements Integratable
      *
      * @return bool
      */
-    public function administratesDomains()
+    public function administratesDomains(): bool
     {
         return $this->administratedDomains()
             ->exists();
@@ -207,54 +209,10 @@ class Mailbox extends Authenticatable implements Integratable
      *
      * @return bool
      */
-    public function administratesMailboxes()
+    public function administratesMailboxes(): bool
     {
         return $this->administratedMailboxes()
             ->exists();
-    }
-
-    /**
-     * Gets all available placeholders for integrations.
-     * Example: ['placeholder' => $model->value]
-     *
-     * @return array
-     */
-    public function getIntegratablePlaceholders()
-    {
-        return [
-            'id'                => $this->id,
-            'local_part'        => $this->local_part,
-            'name'              => $this->name,
-            'domain'            => $this->domain->domain,
-            'alternative_email' => $this->alternative_email,
-            'quota'             => $this->quota,
-            'homedir'           => $this->homedir,
-            'maildir'           => $this->maildir,
-            'is_super_admin'    => $this->is_super_admin,
-            'address'           => $this->address(),
-            'send_only'         => $this->send_only,
-            'active'            => $this->active
-        ];
-    }
-
-    /**
-     * Gets the class name of the integratable.
-     *
-     * @return string
-     */
-    public function getIntegratableClassName()
-    {
-        return static::class;
-    }
-
-    /**
-     * Gets all alias requests that belong to this mailbox.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function aliasRequests()
-    {
-        return $this->hasMany(AliasRequest::class);
     }
 
     /**
@@ -265,7 +223,7 @@ class Mailbox extends Authenticatable implements Integratable
      * @param Mailbox|null $mailbox
      * @return Builder
      */
-    public function scopeWhereAuthorized(Builder $query, Mailbox $mailbox = null)
+    public function scopeWhereAuthorized(Builder $query, Mailbox $mailbox = null): Builder
     {
         if (isUserSuperAdmin()) {
             return $query;

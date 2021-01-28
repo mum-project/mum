@@ -2,14 +2,14 @@
 
 @section('breadcrumbs')
     @component('layout.components.breadcrumbs')
-        @slot('links', ['TLS Policies' => route('tls-policies.index'), $tlsPolicy->domain => route('tls-policies.show', compact('tlsPolicy')), 'Edit'])
+        @slot('links', ['TLS Policies' => route('tls-policies.index'), $tlsPolicy->domain => route('tls-policies.show', ['tls_policy' => $tlsPolicy]), 'Edit'])
     @endcomponent
 @endsection
 
 @section('content')
     <div class="max-w-lg w-full">
         <div class="dashboard-tile">
-            <form class="w-full" action="{{ route('tls-policies.update', compact('tlsPolicy')) }}" method="POST">
+            <form class="w-full" action="{{ route('tls-policies.update', ['tls_policy' => $tlsPolicy]) }}" method="POST">
                 @csrf
                 @method('PATCH')
                 <h2 class="mb-6 font-extrabold break-words">Edit TLS Policy</h2>
@@ -65,6 +65,6 @@
 @section('modal')
     @component('layout.components.deleteModal')
         @slot('name', 'TLS Policy for ' . $tlsPolicy->domain)
-        @slot('route', route('tls-policies.destroy', compact('tlsPolicy')))
+        @slot('route', route('tls-policies.destroy', ['tls_policy' => $tlsPolicy]))
     @endcomponent
 @endsection

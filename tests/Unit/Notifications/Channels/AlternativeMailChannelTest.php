@@ -5,9 +5,8 @@ namespace Tests\Unit\Notifications\Channels;
 use App\Domain;
 use App\Mailbox;
 use App\Notifications\Channels\AlternativeMailChannel;
-use function factory;
+use Illuminate\Contracts\Mail\Factory as MailerFactory;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailer;
 use Illuminate\Mail\Markdown;
 use Illuminate\Mail\Message;
 use Illuminate\Notifications\Notification;
@@ -20,22 +19,22 @@ class AlternativeMailChannelTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testSend()
     {
-        $user = factory(Mailbox::class)->create();
+        $user = Mailbox::factory()->create();
         $notification = Mockery::mock(Notification::class);
         $message = Mockery::mock(Message::class);
         $message->shouldReceive(['data' => []]);
         $message->view = '';
         $message->markdown = '';
         $notification->shouldReceive(['toMail' => $message]);
-        $mailer = Mockery::mock(Mailer::class);
+        $mailer = Mockery::mock(MailerFactory::class);
         $mailer->shouldReceive('send');
         $markdown = Mockery::mock(Markdown::class);
         $markdown->shouldReceive('render');
@@ -46,14 +45,14 @@ class AlternativeMailChannelTest extends TestCase
 
     public function testSendWithMailable()
     {
-        $user = factory(Mailbox::class)->create();
+        $user = Mailbox::factory()->create();
         $notification = Mockery::mock(Notification::class);
         $message = Mockery::mock(Mailable::class);
         $message->shouldReceive(['data' => []]);
         $message->shouldReceive('send');
         $message->view = '';
         $notification->shouldReceive(['toMail' => $message]);
-        $mailer = Mockery::mock(Mailer::class);
+        $mailer = Mockery::mock(MailerFactory::class);
         $mailer->shouldReceive('send');
         $markdown = Mockery::mock(Markdown::class);
         $markdown->shouldReceive('render');

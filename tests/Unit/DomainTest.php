@@ -6,7 +6,6 @@ use App\Alias;
 use App\Domain;
 use App\Mailbox;
 use App\SizeMeasurement;
-use function factory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +15,7 @@ class DomainTest extends TestCase
     use WithFaker;
     use RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -26,14 +25,14 @@ class DomainTest extends TestCase
      */
     public function testMailboxes()
     {
-        $domain = factory(Domain::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create(['domain_id' => $domain->id]);
-        $mailbox2 = factory(Mailbox::class)->create(['domain_id' => $domain->id]);
+        $domain = Domain::factory()->create();
+        $mailbox1 = Mailbox::factory()->create(['domain_id' => $domain->id]);
+        $mailbox2 = Mailbox::factory()->create(['domain_id' => $domain->id]);
         $this->assertTrue($domain->mailboxes->contains($mailbox1));
         $this->assertTrue($domain->mailboxes->contains($mailbox2));
 
-        $otherDomain = factory(Domain::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create(['domain_id' => $otherDomain->id]);
+        $otherDomain = Domain::factory()->create();
+        $otherMailbox = Mailbox::factory()->create(['domain_id' => $otherDomain->id]);
         $this->assertFalse($domain->mailboxes->contains($otherMailbox));
     }
 
@@ -42,14 +41,14 @@ class DomainTest extends TestCase
      */
     public function testAliases()
     {
-        $domain = factory(Domain::class)->create();
-        $alias1 = factory(Alias::class)->create(['domain_id' => $domain->id]);
-        $alias2 = factory(Alias::class)->create(['domain_id' => $domain->id]);
+        $domain = Domain::factory()->create();
+        $alias1 = Alias::factory()->create(['domain_id' => $domain->id]);
+        $alias2 = Alias::factory()->create(['domain_id' => $domain->id]);
         $this->assertTrue($domain->aliases->contains($alias1));
         $this->assertTrue($domain->aliases->contains($alias2));
 
-        $otherDomain = factory(Domain::class)->create();
-        $otherAlias = factory(Alias::class)->create(['domain_id' => $otherDomain->id]);
+        $otherDomain = Domain::factory()->create();
+        $otherAlias = Alias::factory()->create(['domain_id' => $otherDomain->id]);
         $this->assertFalse($domain->aliases->contains($otherAlias));
     }
 
@@ -58,14 +57,14 @@ class DomainTest extends TestCase
      */
     public function testSizeMeasurements()
     {
-        $domain1 = factory(Domain::class)->create();
-        $domain2 = factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
-        $size1 = factory(SizeMeasurement::class)->create([
+        $domain1 = Domain::factory()->create();
+        $domain2 = Domain::factory()->create();
+        Mailbox::factory()->create();
+        $size1 = SizeMeasurement::factory()->create([
             'measurable_id'   => $domain1->id,
             'measurable_type' => Domain::class
         ]);
-        $size2 = factory(SizeMeasurement::class)->create([
+        $size2 = SizeMeasurement::factory()->create([
             'measurable_id'   => $domain2->id,
             'measurable_type' => Domain::class
         ]);
@@ -80,9 +79,9 @@ class DomainTest extends TestCase
      */
     public function testAdmins()
     {
-        $domain = factory(Domain::class)->create();
-        $mailbox1 = factory(Mailbox::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $domain = Domain::factory()->create();
+        $mailbox1 = Mailbox::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
         $domain->admins()
             ->saveMany([
                 $mailbox1,
@@ -91,8 +90,8 @@ class DomainTest extends TestCase
         $this->assertTrue($domain->fresh()->admins->contains($mailbox1));
         $this->assertTrue($domain->fresh()->admins->contains($mailbox2));
 
-        $otherDomain = factory(Domain::class)->create();
-        $otherMailbox = factory(Mailbox::class)->create();
+        $otherDomain = Domain::factory()->create();
+        $otherMailbox = Mailbox::factory()->create();
         $otherDomain->admins()
             ->save($otherMailbox);
         $this->assertFalse($domain->fresh()->admins->contains($otherMailbox));

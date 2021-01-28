@@ -36,9 +36,7 @@ class HomeController extends Controller
             ->get()
             ->sortBy('created_at', null, false);
 
-        $systemServices = SystemService::all();
-        $latestServiceHealthCheck = ServiceHealthCheck::query()->latest()->first();
 
-        return response()->view('home', compact('rootFolderSizeMeasurements', 'systemServices', 'latestServiceHealthCheck'));
+        return response()->view('home', compact('rootFolderSizeMeasurements'));
     }
 }

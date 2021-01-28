@@ -5,15 +5,11 @@ namespace Tests\Feature\Controllers;
 use App\Alias;
 use App\Domain;
 use App\Http\Resources\AliasResource;
-use App\Http\Resources\MailboxResource;
 use App\Mailbox;
-use function array_except;
-use function array_key_exists;
+use Illuminate\Support\Arr;
 use function array_merge;
 use function compact;
 use function csrf_token;
-use function factory;
-use function GuzzleHttp\Psr7\mimetype_from_extension;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,16 +24,16 @@ class AliasControllerTest extends TestCase
 
     private $mailbox;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        factory(Mailbox::class)->create();
-        $this->admin = factory(Mailbox::class)->create([
+        Domain::factory()->create();
+        Mailbox::factory()->create();
+        $this->admin = Mailbox::factory()->create([
             'active'         => true,
             'is_super_admin' => true
         ]);
-        $this->mailbox = factory(Mailbox::class)->create([
+        $this->mailbox = Mailbox::factory()->create([
             'active'         => true,
             'is_super_admin' => false
         ]);
@@ -48,11 +44,11 @@ class AliasControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $alias = factory(Alias::class)->create();
-        $aliases = factory(Alias::class, $alias->getPerPage() - 1)->create();
+        $alias = Alias::factory()->create();
+        $aliases = Alias::factory( $alias->getPerPage() - 1)->create();
         $localParts1 = array_merge([$alias->local_part], $aliases->pluck('local_part')
             ->toArray());
-        $localParts2 = factory(Alias::class, $alias->getPerPage())
+        $localParts2 = Alias::factory( $alias->getPerPage())
             ->create()
             ->pluck('local_part')
             ->toArray();
@@ -75,8 +71,8 @@ class AliasControllerTest extends TestCase
     public function testIndexJson()
     {
         $perPage = (new Alias())->getPerPage();
-        $aliases1 = factory(Alias::class, $perPage)->create(['active' => 1]);
-        $aliases2 = factory(Alias::class, $perPage)->create(['active' => 1]);
+        $aliases1 = Alias::factory( $perPage)->create(['active' => 1]);
+        $aliases2 = Alias::factory( $perPage)->create(['active' => 1]);
 
         $response = $this->actingAs($this->admin)
             ->getJson(route('aliases.index'));
@@ -116,8 +112,8 @@ class AliasControllerTest extends TestCase
     public function testStore()
     {
         Session::start();
-        $domain = factory(Domain::class)->create();
-        $mailbox = factory(Mailbox::class)->create(['domain_id' => $domain]);
+        $domain = Domain::factory()->create();
+        $mailbox = Mailbox::factory()->create(['domain_id' => $domain]);
         $data = [
             'local_part'          => $this->faker->unique()->userName,
             'description'         => $this->faker->sentence,
@@ -140,7 +136,7 @@ class AliasControllerTest extends TestCase
             ->post(route('aliases.store'), array_merge($data, ['_token' => csrf_token()]))
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('aliases', array_except($data, [
+        $this->assertDatabaseHas('aliases', Arr::except($data, [
             'sender_mailboxes',
             'recipient_mailboxes'
         ]));
@@ -161,8 +157,8 @@ class AliasControllerTest extends TestCase
     public function testStoreWithDeactivateAt()
     {
         Session::start();
-        $domain = factory(Domain::class)->create();
-        $mailbox = factory(Mailbox::class)->create();
+        $domain = Domain::factory()->create();
+        $mailbox = Mailbox::factory()->create();
         $data = [
             'local_part'            => $this->faker->unique()->userName,
             'description'           => $this->faker->sentence,
@@ -189,7 +185,7 @@ class AliasControllerTest extends TestCase
             ->post(route('aliases.store'), array_merge($data, ['_token' => csrf_token()]))
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('aliases', array_except($data, [
+        $this->assertDatabaseHas('aliases', Arr::except($data, [
             'sender_mailboxes',
             'recipient_mailboxes',
             'deactivate_at_days',
@@ -207,8 +203,8 @@ class AliasControllerTest extends TestCase
     public function testUpdateActiveOnDeactivateAlias()
     {
         Session::start();
-        $mailbox = factory(Mailbox::class)->create();
-        $alias = factory(Alias::class)->create([
+        $mailbox = Mailbox::factory()->create();
+        $alias = Alias::factory()->create([
             'deactivate_at' => '2018-07-14 14:44:58',
             'active'        => false,
         ]);
@@ -248,8 +244,8 @@ class AliasControllerTest extends TestCase
     public function testUpdateLocalPart()
     {
         Session::start();
-        $mailbox = factory(Mailbox::class)->create();
-        $alias = factory(Alias::class)->create(['local_part' => $this->faker->userName]);
+        $mailbox = Mailbox::factory()->create();
+        $alias = Alias::factory()->create(['local_part' => $this->faker->userName]);
 
         $data = [
             'local_part'          => $this->faker->userName,
@@ -283,8 +279,8 @@ class AliasControllerTest extends TestCase
     public function testUpdateExternalRecipients()
     {
         Session::start();
-        $mailbox = factory(Mailbox::class)->create();
-        $alias = factory(Alias::class)->create();
+        $mailbox = Mailbox::factory()->create();
+        $alias = Alias::factory()->create();
         $alias->addExternalRecipient($this->faker->email);
         $alias->addExternalRecipient($this->faker->email);
         $alias->senderMailboxes()
@@ -320,7 +316,7 @@ class AliasControllerTest extends TestCase
 
     public function testShow()
     {
-        $alias = factory(Alias::class)->create();
+        $alias = Alias::factory()->create();
         $response = $this->actingAs($this->admin)
             ->get(route('aliases.show', compact('alias')));
         $response->assertSuccessful();
@@ -329,7 +325,7 @@ class AliasControllerTest extends TestCase
 
     public function testEdit()
     {
-        $alias = factory(Alias::class)->create();
+        $alias = Alias::factory()->create();
         $response = $this->actingAs($this->admin)
             ->get(route('aliases.edit', compact('alias')));
         $response->assertSuccessful();
@@ -340,10 +336,10 @@ class AliasControllerTest extends TestCase
     {
         Session::start();
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
-        $oldMailbox = factory(Mailbox::class)->create();
-        $newMailbox1 = factory(Mailbox::class)->create();
-        $newMailbox2 = factory(Mailbox::class)->create();
+        $alias = Alias::factory()->create();
+        $oldMailbox = Mailbox::factory()->create();
+        $newMailbox1 = Mailbox::factory()->create();
+        $newMailbox2 = Mailbox::factory()->create();
         $alias->senderMailboxes()
             ->attach($oldMailbox);
         $alias->addRecipientMailbox($oldMailbox);
@@ -381,7 +377,7 @@ class AliasControllerTest extends TestCase
     {
         Session::start();
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
+        $alias = Alias::factory()->create();
         $response = $this->followingRedirects()
             ->actingAs($this->admin)
             ->delete(route('aliases.destroy', compact('alias')), ['_token' => csrf_token()]);

@@ -6,7 +6,6 @@ use App\Alias;
 use App\Domain;
 use App\Http\Filters\MailboxFilter;
 use App\Mailbox;
-use function factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mockery;
@@ -18,10 +17,10 @@ class MailboxFilterTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     /**
@@ -70,10 +69,10 @@ class MailboxFilterTest extends TestCase
 
     public function testDomain()
     {
-        $filterDomain = factory(Domain::class)->create();
-        $otherDomain = factory(Domain::class)->create();
-        $matchingMailbox = factory(Mailbox::class)->create(['domain_id' => $filterDomain->id]);
-        factory(Mailbox::class)->create(['domain_id' => $otherDomain->id]);
+        $filterDomain = Domain::factory()->create();
+        $otherDomain = Domain::factory()->create();
+        $matchingMailbox = Mailbox::factory()->create(['domain_id' => $filterDomain->id]);
+        Mailbox::factory()->create(['domain_id' => $otherDomain->id]);
         $mailboxFilter = $this->createMailboxFilter(['domain' => $filterDomain->id]);
         $this->assertForOneMailbox($mailboxFilter, Mailbox::query(), $matchingMailbox);
     }
@@ -94,48 +93,48 @@ class MailboxFilterTest extends TestCase
 
     public function testActive()
     {
-        $activeMailbox = factory(Mailbox::class)->create(['active' => true]);
-        $nonActiveMailbox = factory(Mailbox::class)->create(['active' => false]);
+        $activeMailbox = Mailbox::factory()->create(['active' => true]);
+        $nonActiveMailbox = Mailbox::factory()->create(['active' => false]);
 
         $this->assertAllBoolPossibilitiesFor('active', $activeMailbox, $nonActiveMailbox);
     }
 
     public function testIsSuperAdmin()
     {
-        $admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
 
         $this->assertAllBoolPossibilitiesFor('isSuperAdmin', $admin, $mailbox);
     }
 
     public function testSendOnly()
     {
-        $sendOnlyMailbox = factory(Mailbox::class)->create(['send_only' => true]);
-        $mailbox = factory(Mailbox::class)->create(['send_only' => false]);
+        $sendOnlyMailbox = Mailbox::factory()->create(['send_only' => true]);
+        $mailbox = Mailbox::factory()->create(['send_only' => false]);
 
         $this->assertAllBoolPossibilitiesFor('sendOnly', $sendOnlyMailbox, $mailbox);
     }
 
     public function testHasName()
     {
-        $mailboxWith = factory(Mailbox::class)->create(['name' => 'Foobar']);
-        $mailboxWithout= factory(Mailbox::class)->create(['name' => null]);
+        $mailboxWith = Mailbox::factory()->create(['name' => 'Foobar']);
+        $mailboxWithout= Mailbox::factory()->create(['name' => null]);
 
         $this->assertAllBoolPossibilitiesFor('hasName', $mailboxWith, $mailboxWithout);
     }
 
     public function testHasAlternativeEmail()
     {
-        $mailboxWith = factory(Mailbox::class)->create(['alternative_email' => 'foo@bar.com']);
-        $mailboxWithout = factory(Mailbox::class)->create(['alternative_email' => null]);
+        $mailboxWith = Mailbox::factory()->create(['alternative_email' => 'foo@bar.com']);
+        $mailboxWithout = Mailbox::factory()->create(['alternative_email' => null]);
 
         $this->assertAllBoolPossibilitiesFor('hasAlternativeEmail', $mailboxWith, $mailboxWithout);
     }
 
     public function testHasQuota()
     {
-        $mailboxWith = factory(Mailbox::class)->create(['quota' => 42]);
-        $mailboxWithout = factory(Mailbox::class)->create(['quota' => null]);
+        $mailboxWith = Mailbox::factory()->create(['quota' => 42]);
+        $mailboxWithout = Mailbox::factory()->create(['quota' => null]);
 
         $this->assertAllBoolPossibilitiesFor('hasQuota', $mailboxWith, $mailboxWithout);
     }
@@ -143,10 +142,10 @@ class MailboxFilterTest extends TestCase
     public function testSendingAlias()
     {
         /** @var Mailbox $mailboxWith */
-        $mailboxWith = factory(Mailbox::class)->create();
-        $alias = factory(Alias::class)->create();
+        $mailboxWith = Mailbox::factory()->create();
+        $alias = Alias::factory()->create();
         $mailboxWith->sendingAliases()->save($alias);
-        factory(Mailbox::class)->create();
+        Mailbox::factory()->create();
 
         $mailboxFilter = $this->createMailboxFilter(['sendingAlias' => $alias->id]);
         $this->assertForOneMailbox($mailboxFilter, Mailbox::query(), $mailboxWith);
@@ -154,11 +153,11 @@ class MailboxFilterTest extends TestCase
 
     public function testReceivingAlias()
     {
-        $mailboxWith = factory(Mailbox::class)->create();
+        $mailboxWith = Mailbox::factory()->create();
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
+        $alias = Alias::factory()->create();
         $alias->addRecipientMailbox($mailboxWith);
-        factory(Mailbox::class)->create();
+        Mailbox::factory()->create();
 
         $mailboxFilter = $this->createMailboxFilter(['receivingAlias' => $alias->id]);
         $this->assertForOneMailbox($mailboxFilter, Mailbox::query(), $mailboxWith);
@@ -167,10 +166,10 @@ class MailboxFilterTest extends TestCase
     public function testAdministratedDomain()
     {
         /** @var Mailbox $mailboxWith */
-        $mailboxWith = factory(Mailbox::class)->create();
-        $domain = factory(Domain::class)->create();
+        $mailboxWith = Mailbox::factory()->create();
+        $domain = Domain::factory()->create();
         $mailboxWith->administratedDomains()->save($domain);
-        factory(Mailbox::class)->create();
+        Mailbox::factory()->create();
 
         $mailboxFilter = $this->createMailboxFilter(['administratedDomain' => $domain->id]);
         $this->assertForOneMailbox($mailboxFilter, Mailbox::query(), $mailboxWith);
@@ -178,9 +177,9 @@ class MailboxFilterTest extends TestCase
 
     public function testOrderByLocalPart()
     {
-        $mailboxB = factory(Mailbox::class)->create(['local_part' => 'b']);
-        $mailboxC = factory(Mailbox::class)->create(['local_part' => 'c']);
-        $mailboxA = factory(Mailbox::class)->create(['local_part' => 'a']);
+        $mailboxB = Mailbox::factory()->create(['local_part' => 'b']);
+        $mailboxC = Mailbox::factory()->create(['local_part' => 'c']);
+        $mailboxA = Mailbox::factory()->create(['local_part' => 'a']);
 
         $mailboxFilter = $this->createMailboxFilter(['orderByLocalPart' => 'asc']);
         $query = $mailboxFilter->apply(Mailbox::query());
@@ -199,9 +198,9 @@ class MailboxFilterTest extends TestCase
 
     public function testOrderById()
     {
-        $mailbox1 = factory(Mailbox::class)->create(['local_part' => 'b']);
-        $mailbox2 = factory(Mailbox::class)->create(['local_part' => 'c']);
-        $mailbox3 = factory(Mailbox::class)->create(['local_part' => 'a']);
+        $mailbox1 = Mailbox::factory()->create(['local_part' => 'b']);
+        $mailbox2 = Mailbox::factory()->create(['local_part' => 'c']);
+        $mailbox3 = Mailbox::factory()->create(['local_part' => 'a']);
 
         $mailboxFilter = $this->createMailboxFilter(['orderById' => 'asc']);
         $query = $mailboxFilter->apply(Mailbox::query());
@@ -220,9 +219,9 @@ class MailboxFilterTest extends TestCase
 
     public function testOrderByName()
     {
-        $mailboxB = factory(Mailbox::class)->create(['name' => 'b']);
-        $mailboxC = factory(Mailbox::class)->create(['name' => 'c']);
-        $mailboxA = factory(Mailbox::class)->create(['name' => 'a']);
+        $mailboxB = Mailbox::factory()->create(['name' => 'b']);
+        $mailboxC = Mailbox::factory()->create(['name' => 'c']);
+        $mailboxA = Mailbox::factory()->create(['name' => 'a']);
 
         $mailboxFilter = $this->createMailboxFilter(['orderByName' => 'asc']);
         $query = $mailboxFilter->apply(Mailbox::query());
@@ -241,11 +240,11 @@ class MailboxFilterTest extends TestCase
 
     public function testSearch()
     {
-        $otherMailbox = factory(Mailbox::class)->create();
-        $foobarDomain = factory(Domain::class)->create(['domain' => 'foobar.com']);
-        $mailboxLocalPart = factory(Mailbox::class)->create(['local_part' => 'foobarABC']);
-        $mailboxName = factory(Mailbox::class)->create(['name' => 'foobarXYZ']);
-        $mailboxDomain = factory(Mailbox::class)->create(['domain_id' => $foobarDomain]);
+        $otherMailbox = Mailbox::factory()->create();
+        $foobarDomain = Domain::factory()->create(['domain' => 'foobar.com']);
+        $mailboxLocalPart = Mailbox::factory()->create(['local_part' => 'foobarABC']);
+        $mailboxName = Mailbox::factory()->create(['name' => 'foobarXYZ']);
+        $mailboxDomain = Mailbox::factory()->create(['domain_id' => $foobarDomain]);
 
         $mailboxFilter = $this->createMailboxFilter(['search' => 'foobar']);
         $query = $mailboxFilter->apply(Mailbox::query());
@@ -259,8 +258,8 @@ class MailboxFilterTest extends TestCase
 
     public function testSearchWithoutKeyword()
     {
-        $mailbox1 = factory(Mailbox::class)->create();
-        $mailbox2 = factory(Mailbox::class)->create();
+        $mailbox1 = Mailbox::factory()->create();
+        $mailbox2 = Mailbox::factory()->create();
 
         $mailboxFilter = $this->createMailboxFilter(['search' => '']);
         $results = $mailboxFilter->apply(Mailbox::query())->get();

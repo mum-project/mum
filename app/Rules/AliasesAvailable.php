@@ -3,7 +3,6 @@
 namespace App\Rules;
 
 use App\Alias;
-use App\AliasRequest;
 use Illuminate\Contracts\Validation\Rule;
 use \App\Domain;
 
@@ -30,9 +29,8 @@ class AliasesAvailable implements Rule
     {
         $domainMaxAliases = Domain::query()->find($value)->max_aliases;
         $aliases = Alias::query()->where('domain_id', '=', $value)->count();
-        $aliasRequests = AliasRequest::query()->where('domain_id', '=', $value)->count();
 
-        if ($domainMaxAliases === null || $aliases + $aliasRequests + 1 <= $domainMaxAliases) {
+        if ($domainMaxAliases === null || $aliases + 1 <= $domainMaxAliases) {
             return true;
         }
         return false;

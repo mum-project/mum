@@ -10,6 +10,7 @@
                        @keydown="triggerFetch"
                        @focus="hasFocus = true"
                        @blur="triggerLooseFocus"
+                       autocomplete="off"
                        placeholder="Search..." v-model="searchInput">
                 <div class="form-addon py-2">
                     <button type="submit" class="text-grey-dark hover:text-grey-darkest focus:text-grey-darkest">

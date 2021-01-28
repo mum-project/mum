@@ -6,7 +6,6 @@ use App\Alias;
 use App\Domain;
 use App\Mailbox;
 use App\Policies\AliasPolicy;
-use function factory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,16 +14,16 @@ class AliasPolicyTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testBefore()
     {
-        $admin = factory(Mailbox::class)->create(['is_super_admin' => true]);
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $admin = Mailbox::factory()->create(['is_super_admin' => true]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
         $policy = new AliasPolicy();
         $this->assertTrue($policy->before($admin, null));
         $this->assertNull($policy->before($mailbox, null));
@@ -32,10 +31,10 @@ class AliasPolicyTest extends TestCase
 
     public function testView()
     {
-        $mailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
-        $otherMailbox = factory(Mailbox::class)->create(['is_super_admin' => false]);
+        $mailbox = Mailbox::factory()->create(['is_super_admin' => false]);
+        $otherMailbox = Mailbox::factory()->create(['is_super_admin' => false]);
         /** @var Alias $alias */
-        $alias = factory(Alias::class)->create();
+        $alias = Alias::factory()->create();
         $alias->addRecipientMailbox($mailbox);
         $policy = new AliasPolicy();
         $this->assertTrue($policy->view($mailbox, $alias));

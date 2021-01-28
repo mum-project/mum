@@ -5,7 +5,6 @@ namespace Tests\Unit\Filters;
 use App\Domain;
 use App\Http\Filters\DomainFilter;
 use App\Mailbox;
-use function factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Mockery;
@@ -63,20 +62,20 @@ class DomainFilterTest extends TestCase
 
     public function testActive()
     {
-        $domainWith = factory(Domain::class)->create(['active' => true]);
-        $domainWithout = factory(Domain::class)->create(['active' => false]);
+        $domainWith = Domain::factory()->create(['active' => true]);
+        $domainWithout = Domain::factory()->create(['active' => false]);
 
         $this->assertAllBoolPossibilitiesFor('active', $domainWith, $domainWithout);
     }
 
     public function testAdmin()
     {
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         /** @var Mailbox $admin */
-        $admin = factory(Mailbox::class)->create();
+        $admin = Mailbox::factory()->create();
         $admin->administratedDomains()->attach($domain);
-        $otherDomain = factory(Domain::class)->create();
-        $otherAdmin = factory(Mailbox::class)->create();
+        $otherDomain = Domain::factory()->create();
+        $otherAdmin = Mailbox::factory()->create();
         $otherAdmin->administratedDomains()->attach($otherDomain);
 
         $domainFilter = $this->createDomainFilter(['admin' => $admin->id]);
@@ -94,9 +93,9 @@ class DomainFilterTest extends TestCase
 
     public function testOrderById()
     {
-        $domain1 = factory(Domain::class)->create(['domain' => 'b.local']);
-        $domain2 = factory(Domain::class)->create(['domain' => 'c.local']);
-        $domain3 = factory(Domain::class)->create(['domain' => 'a.local']);
+        $domain1 = Domain::factory()->create(['domain' => 'b.local']);
+        $domain2 = Domain::factory()->create(['domain' => 'c.local']);
+        $domain3 = Domain::factory()->create(['domain' => 'a.local']);
 
         $domainFilter = $this->createDomainFilter(['orderById' => 'asc']);
         $query = $domainFilter->apply(Domain::query());
@@ -115,9 +114,9 @@ class DomainFilterTest extends TestCase
 
     public function testOrderByDomain()
     {
-        $domainB = factory(Domain::class)->create(['domain' => 'b.local']);
-        $domainC = factory(Domain::class)->create(['domain' => 'c.local']);
-        $domainA = factory(Domain::class)->create(['domain' => 'a.local']);
+        $domainB = Domain::factory()->create(['domain' => 'b.local']);
+        $domainC = Domain::factory()->create(['domain' => 'c.local']);
+        $domainA = Domain::factory()->create(['domain' => 'a.local']);
 
         $domainFilter = $this->createDomainFilter(['orderByDomain' => 'asc']);
         $query = $domainFilter->apply(Domain::query());
@@ -136,9 +135,9 @@ class DomainFilterTest extends TestCase
 
     public function testOrderByQuota()
     {
-        $domain3 = factory(Domain::class)->create(['quota' => 3]);
-        $domain1 = factory(Domain::class)->create(['quota' => 1]);
-        $domain2 = factory(Domain::class)->create(['quota' => 2]);
+        $domain3 = Domain::factory()->create(['quota' => 3]);
+        $domain1 = Domain::factory()->create(['quota' => 1]);
+        $domain2 = Domain::factory()->create(['quota' => 2]);
 
         $domainFilter = $this->createDomainFilter(['orderByQuota' => 'asc']);
         $query = $domainFilter->apply(Domain::query());
@@ -157,9 +156,9 @@ class DomainFilterTest extends TestCase
 
     public function testOrderByMaxQuota()
     {
-        $domain3 = factory(Domain::class)->create(['max_quota' => 3]);
-        $domain1 = factory(Domain::class)->create(['max_quota' => 1]);
-        $domain2 = factory(Domain::class)->create(['max_quota' => 2]);
+        $domain3 = Domain::factory()->create(['max_quota' => 3]);
+        $domain1 = Domain::factory()->create(['max_quota' => 1]);
+        $domain2 = Domain::factory()->create(['max_quota' => 2]);
 
         $domainFilter = $this->createDomainFilter(['orderByMaxQuota' => 'asc']);
         $query = $domainFilter->apply(Domain::query());
@@ -178,9 +177,9 @@ class DomainFilterTest extends TestCase
 
     public function testOrderByMaxAliases()
     {
-        $domain3 = factory(Domain::class)->create(['max_aliases' => 3]);
-        $domain1 = factory(Domain::class)->create(['max_aliases' => 1]);
-        $domain2 = factory(Domain::class)->create(['max_aliases' => 2]);
+        $domain3 = Domain::factory()->create(['max_aliases' => 3]);
+        $domain1 = Domain::factory()->create(['max_aliases' => 1]);
+        $domain2 = Domain::factory()->create(['max_aliases' => 2]);
 
         $domainFilter = $this->createDomainFilter(['orderByMaxAliases' => 'asc']);
         $query = $domainFilter->apply(Domain::query());
@@ -199,9 +198,9 @@ class DomainFilterTest extends TestCase
 
     public function testOrderByMaxMailboxes()
     {
-        $domain3 = factory(Domain::class)->create(['max_mailboxes' => 3]);
-        $domain1 = factory(Domain::class)->create(['max_mailboxes' => 1]);
-        $domain2 = factory(Domain::class)->create(['max_mailboxes' => 2]);
+        $domain3 = Domain::factory()->create(['max_mailboxes' => 3]);
+        $domain1 = Domain::factory()->create(['max_mailboxes' => 1]);
+        $domain2 = Domain::factory()->create(['max_mailboxes' => 2]);
 
         $domainFilter = $this->createDomainFilter(['orderByMaxMailboxes' => 'asc']);
         $query = $domainFilter->apply(Domain::query());
@@ -220,8 +219,8 @@ class DomainFilterTest extends TestCase
 
     public function testSearch()
     {
-        $domain1 = factory(Domain::class)->create(['domain' => 'foobarABC']);
-        $domain2 = factory(Domain::class)->create(['domain' => 'some.other.domain']);
+        $domain1 = Domain::factory()->create(['domain' => 'foobarABC']);
+        $domain2 = Domain::factory()->create(['domain' => 'some.other.domain']);
 
         $domainFilter = $this->createDomainFilter(['search' => 'foobar']);
         $query = $domainFilter->apply(Domain::query());

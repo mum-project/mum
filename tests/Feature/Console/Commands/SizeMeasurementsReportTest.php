@@ -14,16 +14,16 @@ class SizeMeasurementsReportTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
+        Domain::factory()->create();
     }
 
     public function testReportDefaultSize()
     {
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $size = $this->faker->numberBetween(100, 10000);
 
         $this->assertTrue($mailbox->sizeMeasurements()
@@ -41,7 +41,7 @@ class SizeMeasurementsReportTest extends TestCase
     public function testReportInKiB()
     {
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $size = $this->faker->numberBetween(100, 10000);
 
         $this->assertTrue($mailbox->sizeMeasurements()
@@ -60,7 +60,7 @@ class SizeMeasurementsReportTest extends TestCase
     public function testReportInMiB()
     {
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $size = $this->faker->numberBetween(100, 10000);
 
         $this->assertTrue($mailbox->sizeMeasurements()
@@ -81,7 +81,7 @@ class SizeMeasurementsReportTest extends TestCase
     public function testReportInGiB()
     {
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $size = $this->faker->numberBetween(100, 10000);
 
         $this->assertTrue($mailbox->sizeMeasurements()
@@ -102,7 +102,7 @@ class SizeMeasurementsReportTest extends TestCase
     public function testReportOnDomain()
     {
         /** @var Domain $mailbox */
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $size = $this->faker->numberBetween(100, 10000);
 
         $this->assertTrue($domain->sizeMeasurements()
@@ -140,20 +140,18 @@ class SizeMeasurementsReportTest extends TestCase
     public function testConflictingOptions()
     {
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $size = $this->faker->numberBetween(100, 10000);
 
         $this->assertTrue($mailbox->sizeMeasurements()
             ->doesntExist());
 
-        $returnCode = $this->artisan('size-measurements:report', [
+        $this->artisan('size-measurements:report', [
             'directory' => $mailbox->homedir,
             'size'      => $size,
             '--MiB'     => true,
             '--GiB'     => true
-        ]);
-
-        $this->assertEquals(1, $returnCode);
+        ])->assertExitCode(1);
 
         $this->assertTrue($mailbox->sizeMeasurements()
             ->doesntExist());
@@ -163,12 +161,11 @@ class SizeMeasurementsReportTest extends TestCase
     {
         $size = $this->faker->numberBetween(100, 10000);
 
-        $returnCode = $this->artisan('size-measurements:report', [
+        $this->artisan('size-measurements:report', [
             'directory' => '/some/nonexistent/mailbox',
             'size'      => $size
-        ]);
+        ])->assertExitCode(1);
 
-        $this->assertEquals(1, $returnCode);
         $this->assertEquals(0, SizeMeasurement::query()
             ->count());
     }
@@ -176,15 +173,14 @@ class SizeMeasurementsReportTest extends TestCase
     public function testInvalidSize()
     {
         /** @var Mailbox $mailbox */
-        $mailbox = factory(Mailbox::class)->create();
+        $mailbox = Mailbox::factory()->create();
         $this->assertTrue($mailbox->sizeMeasurements()->doesntExist());
 
-        $returnCode = $this->artisan('size-measurements:report', [
+        $this->artisan('size-measurements:report', [
             'directory' => $mailbox->homedir,
             'size'      => 'NOT-A-NUMBER'
-        ]);
+        ])->assertExitCode(1);
 
-        $this->assertEquals(1, $returnCode);
         $this->assertTrue($mailbox->sizeMeasurements()->doesntExist());
     }
 }

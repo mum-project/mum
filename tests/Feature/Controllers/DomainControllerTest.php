@@ -7,7 +7,6 @@ use App\Mailbox;
 use function array_merge;
 use function compact;
 use function csrf_token;
-use function factory;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,11 +18,11 @@ class DomainControllerTest extends TestCase
 
     private $admin;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        factory(Domain::class)->create();
-        $this->admin = factory(Mailbox::class)->create([
+        Domain::factory()->create();
+        $this->admin = Mailbox::factory()->create([
             'active'         => true,
             'is_super_admin' => true
         ]);
@@ -35,7 +34,7 @@ class DomainControllerTest extends TestCase
     public function testIndex()
     {
         $perPage = (new Domain())->getPerPage();
-        factory(Domain::class, $perPage * 2 - 1)->create();
+        Domain::factory( $perPage * 2 - 1)->create();
         $domainsPage1 = Domain::whereAuthorized()
             ->take($perPage)
             ->pluck('domain')
@@ -83,7 +82,7 @@ class DomainControllerTest extends TestCase
 
     public function testShow()
     {
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $response = $this->actingAs($this->admin)
             ->get(route('domains.show', compact('domain')));
         $response->assertSuccessful();
@@ -92,7 +91,7 @@ class DomainControllerTest extends TestCase
 
     public function testEdit()
     {
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $response = $this->actingAs($this->admin)
             ->get(route('domains.edit', compact('domain')));
         $response->assertSuccessful();
@@ -102,7 +101,7 @@ class DomainControllerTest extends TestCase
     public function testUpdate()
     {
         Session::start();
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $data = [
             'description'   => 'foobar',
             'max_mailboxes' => '250'
@@ -119,7 +118,7 @@ class DomainControllerTest extends TestCase
     public function testDestroy()
     {
         Session::start();
-        $domain = factory(Domain::class)->create();
+        $domain = Domain::factory()->create();
         $this->assertDatabaseHas('domains', $domain->toArray());
         $response = $this->followingRedirects()
             ->actingAs($this->admin)
