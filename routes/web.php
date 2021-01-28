@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 use App\Http\Controllers\AliasController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -23,6 +12,17 @@ use App\Http\Controllers\SizeMeasurementController;
 use App\Http\Controllers\TlsPolicyController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
 Route::resource('domains', DomainController::class);
 Route::resource('aliases', AliasController::class);
 Route::resource('tls-policies', TlsPolicyController::class);
@@ -34,10 +34,10 @@ Route::get('change-password', [ChangePasswordController::class, 'showPasswordCha
 Route::post('change-password', [ChangePasswordController::class, 'updatePassword']);
 
 Route::get('domains/{domain}/sizes', [SizeMeasurementController::class, 'indexForDomain'])->name('domains.sizes');
-Route::delete('domains/{domain}/sizes', [SizeMeasurementController::class, 'destroyForDomain'])->name('domains.sizes');
+Route::delete('domains/{domain}/sizes', [SizeMeasurementController::class, 'destroyForDomain']);
 
 Route::get('mailboxes/{mailbox}/sizes', [SizeMeasurementController::class, 'indexForMailbox'])->name('mailboxes.sizes');
-Route::delete('mailboxes/{mailbox}/sizes', [SizeMeasurementController::class, 'destroyForMailbox'])->name('mailboxes.sizes');
+Route::delete('mailboxes/{mailbox}/sizes', [SizeMeasurementController::class, 'destroyForMailbox']);
 
 /**
  * Authentication Routes
