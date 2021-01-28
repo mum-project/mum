@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Mailbox;
 use App\Alias;
+use App\Mailbox;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use function isUserSuperAdmin;
 

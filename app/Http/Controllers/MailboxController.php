@@ -9,15 +9,14 @@ use App\Mailbox;
 use App\Rules\MailboxesAvailable;
 use App\Rules\UniqueEmailAddress;
 use App\Rules\ValidLocalPart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use function array_except;
 use function array_key_exists;
 use function compact;
 use function config;
-use function getHomedirForMailbox;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use function isUserSuperAdmin;
 
 class MailboxController extends Controller

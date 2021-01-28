@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Rules\Domain as DomainRule;
 use App\TlsPolicy;
+use Illuminate\Http\Request;
 use function compact;
 use function flash;
-use Illuminate\Http\Request;
 use function redirect;
 use function response;
 

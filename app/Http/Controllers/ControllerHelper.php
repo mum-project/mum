@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\QueryFilter;
-use function array_push;
 use Illuminate\Http\Request;
+use function array_push;
 
 class ControllerHelper
 {

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Domain;
 use App\Http\Controllers\Controller;
-use function getLocalPartOfEmailAddress;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use function getLocalPartOfEmailAddress;
 
 class ResetPasswordController extends Controller
 {

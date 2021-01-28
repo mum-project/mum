@@ -2,11 +2,11 @@
 
 namespace App\Http\Filters;
 
-use function array_key_exists;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use TypeError;
+use function array_key_exists;
 
 abstract class QueryFilter
 {

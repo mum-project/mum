@@ -2,12 +2,12 @@
 
 namespace App\Rules;
 
+use Illuminate\Contracts\Validation\Rule;
 use function config;
+use function filter_var;
+use function trans;
 use const FILTER_FLAG_HOSTNAME;
 use const FILTER_VALIDATE_DOMAIN;
-use function filter_var;
-use Illuminate\Contracts\Validation\Rule;
-use function trans;
 
 class Domain implements Rule
 {

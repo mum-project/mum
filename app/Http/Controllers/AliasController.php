@@ -10,16 +10,16 @@ use App\Http\Resources\MailboxResource;
 use App\Mailbox;
 use App\Rules\AliasesAvailable;
 use App\Rules\UniqueEmailAddress;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use function array_key_exists;
 use function array_push;
 use function compact;
 use function flash;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use function redirect;
 use function response;
-use Carbon\Carbon;
 
 class AliasController extends Controller
 {

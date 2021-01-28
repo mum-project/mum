@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use function abort_if;
 use App\Domain;
 use App\Http\Resources\SizeMeasurementResource;
 use App\Mailbox;
-use function array_combine;
+use Illuminate\Http\Request;
+use function abort_if;
 use function compact;
 use function flash;
-use Illuminate\Http\Request;
 use function isUserSuperAdmin;
 use function response;
 

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Rules\OwnPassword;
-use function compact;
-use function config;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Rules\OwnPassword;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use function config;
 use function redirect;
 
 class ChangePasswordController extends Controller

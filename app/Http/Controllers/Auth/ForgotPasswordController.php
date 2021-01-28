@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Domain;
 use App\Http\Controllers\Controller;
-use App\Notifications\ResetPassword;
-use function getDomainOfEmailAddress;
-use function getLocalPartOfEmailAddress;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use function getDomainOfEmailAddress;
+use function getLocalPartOfEmailAddress;
 
 class ForgotPasswordController extends Controller
 {

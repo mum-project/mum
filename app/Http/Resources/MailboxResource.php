@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 use function isUserSuperAdmin;
 
 class MailboxResource extends JsonResource

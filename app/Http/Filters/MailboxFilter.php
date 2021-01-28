@@ -2,9 +2,9 @@
 
 namespace App\Http\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use function explode;
 use function filter_var;
-use Illuminate\Database\Eloquent\Builder;
 use function is_string;
 
 class MailboxFilter extends QueryFilter

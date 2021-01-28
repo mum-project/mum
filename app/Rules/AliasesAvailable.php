@@ -3,8 +3,8 @@
 namespace App\Rules;
 
 use App\Alias;
+use App\Domain;
 use Illuminate\Contracts\Validation\Rule;
-use \App\Domain;
 
 class AliasesAvailable implements Rule
 {

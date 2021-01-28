@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Domain;
 use App\Http\Controllers\Controller;
-use function getDomainOfEmailAddress;
-use function getLocalPartOfEmailAddress;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use function getDomainOfEmailAddress;
+use function getLocalPartOfEmailAddress;
 
 class LoginController extends Controller
 {

@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use App\Domain;
 use App\Mailbox;
 use Illuminate\Contracts\Validation\Rule;
-use App\Domain;
 
 class MailboxesAvailable implements Rule
 {

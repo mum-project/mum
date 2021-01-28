@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Alias;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class DeactivateAliases extends Command
 {

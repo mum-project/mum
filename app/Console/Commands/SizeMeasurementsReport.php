@@ -5,15 +5,15 @@ namespace App\Console\Commands;
 use App\Domain;
 use App\Mailbox;
 use App\SizeMeasurement;
+use Illuminate\Console\Command;
+use InvalidArgumentException;
 use function array_filter;
 use function array_intersect;
 use function array_keys;
 use function config;
-use const FILTER_VALIDATE_INT;
 use function filter_var;
-use Illuminate\Console\Command;
-use InvalidArgumentException;
 use function sizeof;
+use const FILTER_VALIDATE_INT;
 
 class SizeMeasurementsReport extends Command
 {

@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain;
 use App\ServiceHealthCheck;
 use App\SizeMeasurement;
 use App\SystemService;
-use function array_combine;
-use function compact;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use function compact;
 use function response;
 
 class HomeController extends Controller
