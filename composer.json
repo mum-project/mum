@@ -54,7 +54,10 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
-        ]
+        ],
+        "test": "@php artisan test",
+        "coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "coverage-clover": "vendor/bin/phpunit --coverage-clover coverage.xml"
     },
     "config": {
         "preferred-install": "dist",
