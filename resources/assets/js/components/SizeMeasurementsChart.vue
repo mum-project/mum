@@ -1,9 +1,10 @@
 <template>
-    <canvas :width="ratio.x" :height="ratio.y"></canvas>
+  <canvas :width="ratio.x" :height="ratio.y"></canvas>
 </template>
 
 <script>
-import Chart from 'chart.js';
+import {Chart, registerables} from 'chart.js';
+import 'chartjs-adapter-moment';
 
 export default {
   props: {
@@ -93,6 +94,7 @@ export default {
     },
   },
   mounted() {
+    Chart.register(...registerables);
     let ctx = this.$el.getContext('2d');
     new Chart(ctx, {
       type: 'line',
@@ -102,53 +104,53 @@ export default {
           {
             data: this.values,
             backgroundColor:
-              'rgba(' +
-              this.colorRGB.r +
-              ',' +
-              this.colorRGB.g +
-              ',' +
-              this.colorRGB.b +
-              ',0.3)',
+                'rgba(' +
+                this.colorRGB.r +
+                ',' +
+                this.colorRGB.g +
+                ',' +
+                this.colorRGB.b +
+                ',0.3)',
             borderColor:
-              'rgba(' +
-              this.colorRGB.r +
-              ',' +
-              this.colorRGB.g +
-              ',' +
-              this.colorRGB.b +
-              ',1)',
+                'rgba(' +
+                this.colorRGB.r +
+                ',' +
+                this.colorRGB.g +
+                ',' +
+                this.colorRGB.b +
+                ',1)',
             pointBackgroundColor:
-              'rgba(' +
-              this.colorRGB.r +
-              ',' +
-              this.colorRGB.g +
-              ',' +
-              this.colorRGB.b +
-              ',0.3)',
+                'rgba(' +
+                this.colorRGB.r +
+                ',' +
+                this.colorRGB.g +
+                ',' +
+                this.colorRGB.b +
+                ',0.3)',
             pointBorderColor:
-              'rgba(' +
-              this.colorRGB.r +
-              ',' +
-              this.colorRGB.g +
-              ',' +
-              this.colorRGB.b +
-              ',1)',
+                'rgba(' +
+                this.colorRGB.r +
+                ',' +
+                this.colorRGB.g +
+                ',' +
+                this.colorRGB.b +
+                ',1)',
             pointHoverBackgroundColor:
-              'rgba(' +
-              this.colorRGB.r +
-              ',' +
-              this.colorRGB.g +
-              ',' +
-              this.colorRGB.b +
-              ',1)',
+                'rgba(' +
+                this.colorRGB.r +
+                ',' +
+                this.colorRGB.g +
+                ',' +
+                this.colorRGB.b +
+                ',1)',
             pointHoverBorderColor:
-              'rgba(' +
-              this.colorRGB.r +
-              ',' +
-              this.colorRGB.g +
-              ',' +
-              this.colorRGB.b +
-              ',1)',
+                'rgba(' +
+                this.colorRGB.r +
+                ',' +
+                this.colorRGB.g +
+                ',' +
+                this.colorRGB.b +
+                ',1)',
             cubicInterpolationMode: 'monotone',
             pointRadius: this.showPoints ? 4 : 0,
             borderWidth: this.lineThickness,
@@ -165,46 +167,45 @@ export default {
             bottom: this.padding.b,
           },
         },
-        legend: {
-          display: this.showLegend,
-        },
         scales: {
-          xAxes: [
-            {
-              type: 'time',
-              ticks: {
-                padding: this.showAxisLabels.x ? 4 : 0,
-                display: this.showAxisLabels.x,
-              },
-              gridLines: {
-                display: this.showGridLines.x,
-                color: '#f1f5f8',
-                drawBorder: this.showAxisLabels.x,
-              },
+          xAxis: {
+            type: 'time',
+            ticks: {
+              padding: this.showAxisLabels.x ? 4 : 0,
+              display: this.showAxisLabels.x,
             },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                callback: (value, index, values) => {
-                  return this.getPrettyDataSizeString(value);
-                },
-                padding: this.showAxisLabels.y ? 4 : 0,
-                display: this.showAxisLabels.y,
-              },
-              gridLines: {
-                display: this.showGridLines.y,
-                color: '#f1f5f8',
-                drawBorder: this.showAxisLabels.y,
-              },
+            gridLines: {
+              display: this.showGridLines.x,
+              color: '#f1f5f8',
+              drawBorder: this.showAxisLabels.x,
             },
-          ],
+          },
+          yAxis: {
+            ticks: {
+              callback: (value, index, values) => {
+                return this.getPrettyDataSizeString(value);
+              },
+              padding: this.showAxisLabels.y ? 4 : 0,
+              display: this.showAxisLabels.y,
+            },
+            gridLines: {
+              display: this.showGridLines.x,
+              color: '#f1f5f8',
+              drawBorder: this.showAxisLabels.x,
+            },
+          },
         },
-        tooltips: {
-          enabled: this.showPoints,
-          callbacks: {
-            label: (tooltipItem, data) => {
-              return this.getPrettyDataSizeString(tooltipItem.yLabel);
+        plugins: {
+          legend: {
+            display: this.showLegend,
+          },
+          tooltip: {
+            enabled: true,
+            intersect: false,
+            callbacks: {
+              label: (tooltipItem, data) => {
+                return this.getPrettyDataSizeString(tooltipItem.raw);
+              },
             },
           },
         },
