@@ -1,7 +1,7 @@
 <p align="center"><img src="https://mum-project.github.io/img/mum.svg" height="128"></p>
 
 <p align="center">
-    <a href="https://travis-ci.com/mum-project/mum"><img src="https://travis-ci.com/mum-project/mum.svg?branch=master" alt="Build Status"></a>
+    [![Build Status](https://github.com/mum-project/mum/actions/workflows/laravel.yml/badge.svg)](https://github.com/mum-project/mum/actions/workflows/laravel.yml)
     <a href="https://codeclimate.com/github/mum-project/mum/maintainability"><img src="https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/maintainability" alt="Maintainability"></a>
     <a href="https://codeclimate.com/github/mum-project/mum/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6b6f006c7ba1297b431a/test_coverage" alt="Test Coverage"></a>
 </p>
