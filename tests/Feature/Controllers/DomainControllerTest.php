@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use App\Domain;
 use App\Mailbox;
+use Illuminate\Support\Arr;
 use function array_merge;
 use function compact;
 use function csrf_token;
@@ -34,7 +35,7 @@ class DomainControllerTest extends TestCase
     public function testIndex()
     {
         $perPage = (new Domain())->getPerPage();
-        Domain::factory( $perPage * 2 - 1)->create();
+        Domain::factory($perPage * 2 - 1)->create();
         $domainsPage1 = Domain::whereAuthorized()
             ->take($perPage)
             ->pluck('domain')
@@ -119,12 +120,14 @@ class DomainControllerTest extends TestCase
     {
         Session::start();
         $domain = Domain::factory()->create();
-        $this->assertDatabaseHas('domains', $domain->toArray());
+        $data = Arr::except($domain->toArray(), ['created_at', 'updated_at']);
+
+        $this->assertDatabaseHas('domains', $data);
         $response = $this->followingRedirects()
             ->actingAs($this->admin)
             ->delete(route('domains.update', compact('domain')), ['_token' => csrf_token()]);
         $response->assertSuccessful();
         $response->assertSeeText($domain->domain);
-        $this->assertDatabaseMissing('domains', $domain->toArray());
+        $this->assertDatabaseMissing('domains', $data);
     }
 }
