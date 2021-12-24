@@ -18,7 +18,7 @@
         "diceware-wordlist-en-eff": "^1.0.1",
         "fuse.js": "^3.2.1",
         "laravel-mix": "^6.0.11",
-        "lodash": "^4.17.20",
+        "lodash": "^4.17.21",
         "moment": "^2.29.1",
         "popper.js": "^1.12",
         "postcss": "^8.2.10",

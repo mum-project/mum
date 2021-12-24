@@ -28,7 +28,15 @@ class Alias extends Model
         'updated_at',
     ];
 
-    protected $dates = ['deactivate_at'];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'active'        => 'boolean',
+        'deactivate_at' => 'datetime',
+    ];
 
     /**
      * The "booting" method of the model.
