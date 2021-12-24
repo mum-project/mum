@@ -34,7 +34,7 @@ class SizeMeasurementControllerTest extends TestCase
     public function testIndexForDomain()
     {
         $domain = Domain::factory()->create();
-        SizeMeasurement::factory( 30)->create([
+        SizeMeasurement::factory(30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -65,7 +65,7 @@ class SizeMeasurementControllerTest extends TestCase
     public function testIndexForMailbox()
     {
         $mailbox = Mailbox::factory()->create();
-        SizeMeasurement::factory( 30)->create([
+        SizeMeasurement::factory(30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -97,7 +97,7 @@ class SizeMeasurementControllerTest extends TestCase
     {
         /** @var Domain $domain */
         $domain = Domain::factory()->create();
-        SizeMeasurement::factory( 30)->create([
+        SizeMeasurement::factory(30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -127,7 +127,7 @@ class SizeMeasurementControllerTest extends TestCase
     {
         /** @var Domain $mailbox */
         $mailbox = Mailbox::factory()->create();
-        SizeMeasurement::factory( 30)->create([
+        SizeMeasurement::factory(30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -156,7 +156,7 @@ class SizeMeasurementControllerTest extends TestCase
     public function testIndexForDomainAsJson()
     {
         $domain = Domain::factory()->create();
-        $sizes = SizeMeasurement::factory( 30)->create([
+        $sizes = SizeMeasurement::factory(30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -173,14 +173,14 @@ class SizeMeasurementControllerTest extends TestCase
             ->assertSuccessful();
 
         $sizes->each(function (SizeMeasurement $sizeMeasurement) use ($response) {
-            $response->assertJsonFragment((new SizeMeasurementResource($sizeMeasurement))->jsonSerialize());
+            $response->assertJsonFragment($this->getExpectedSizeMeasurementResourceData($sizeMeasurement));
         });
     }
 
     public function testIndexForMailboxAsJson()
     {
         $mailbox = Mailbox::factory()->create();
-        $sizes = SizeMeasurement::factory( 30)->create([
+        $sizes = SizeMeasurement::factory(30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -197,7 +197,7 @@ class SizeMeasurementControllerTest extends TestCase
             ->assertSuccessful();
 
         $sizes->each(function (SizeMeasurement $sizeMeasurement) use ($response) {
-            $response->assertJsonFragment((new SizeMeasurementResource($sizeMeasurement))->jsonSerialize());
+            $response->assertJsonFragment($this->getExpectedSizeMeasurementResourceData($sizeMeasurement));
         });
     }
 
@@ -205,7 +205,7 @@ class SizeMeasurementControllerTest extends TestCase
     {
         /** @var Domain $domain */
         $domain = Domain::factory()->create();
-        SizeMeasurement::factory( 30)->create([
+        SizeMeasurement::factory(30)->create([
             'measurable_id'   => $domain->id,
             'measurable_type' => Domain::class
         ]);
@@ -233,7 +233,7 @@ class SizeMeasurementControllerTest extends TestCase
     {
         /** @var Domain $mailbox */
         $mailbox = Mailbox::factory()->create();
-        SizeMeasurement::factory( 30)->create([
+        SizeMeasurement::factory(30)->create([
             'measurable_id'   => $mailbox->id,
             'measurable_type' => Mailbox::class
         ]);
@@ -255,5 +255,14 @@ class SizeMeasurementControllerTest extends TestCase
 
         $this->assertTrue($mailbox->sizeMeasurements()
             ->doesntExist());
+    }
+
+    protected function getExpectedSizeMeasurementResourceData(SizeMeasurement $sizeMeasurement)
+    {
+        return [
+            'id'         => $sizeMeasurement->id,
+            'size'       => $sizeMeasurement->size,
+            'created_at' => (string)$sizeMeasurement->created_at,
+        ];
     }
 }
