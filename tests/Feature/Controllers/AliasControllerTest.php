@@ -83,13 +83,13 @@ class AliasControllerTest extends TestCase
         $response2->assertSuccessful();
 
         $aliases1->each(function (Alias $alias) use ($response, $response2) {
-            $response->assertJsonFragment((new AliasResource($alias))->jsonSerialize());
-            $response2->assertJsonMissingExact((new AliasResource($alias))->jsonSerialize());
+            $response->assertJsonFragment($this->getExpectedAliasResourceData($alias));
+            $response2->assertJsonMissingExact($this->getExpectedAliasResourceData($alias));
         });
 
         $aliases2->each(function (Alias $alias) use ($response, $response2) {
-            $response2->assertJsonFragment((new AliasResource($alias))->jsonSerialize());
-            $response->assertJsonMissingExact((new AliasResource($alias))->jsonSerialize());
+            $response2->assertJsonFragment($this->getExpectedAliasResourceData($alias));
+            $response->assertJsonMissingExact($this->getExpectedAliasResourceData($alias));
         });
     }
 
@@ -238,7 +238,7 @@ class AliasControllerTest extends TestCase
             ->firstOrFail();
 
         $this->assertTrue($alias->deactivate_at === null);
-        $this->assertTrue($alias->active === 1);
+        $this->assertTrue($alias->active);
     }
 
     public function testUpdateLocalPart()
@@ -383,5 +383,18 @@ class AliasControllerTest extends TestCase
             ->delete(route('aliases.destroy', compact('alias')), ['_token' => csrf_token()]);
         $response->assertSuccessful();
         $this->assertDatabaseMissing('aliases', $alias->toArray());
+    }
+
+    protected function getExpectedAliasResourceData(Alias $alias)
+    {
+        return [
+            'id'          => $alias->id,
+            'local_part'  => $alias->local_part,
+            'address'     => $alias->address(),
+            'active'      => $alias->active,
+            'description' => $alias->description,
+            'created_at'  => (string)$alias->created_at,
+            'updated_at'  => (string)$alias->updated_at,
+        ];
     }
 }
