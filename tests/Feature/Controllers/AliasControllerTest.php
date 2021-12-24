@@ -238,7 +238,7 @@ class AliasControllerTest extends TestCase
             ->firstOrFail();
 
         $this->assertTrue($alias->deactivate_at === null);
-        $this->assertTrue($alias->active === 1);
+        $this->assertTrue($alias->active);
     }
 
     public function testUpdateLocalPart()
