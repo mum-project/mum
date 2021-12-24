@@ -19,6 +19,15 @@ class SizeMeasurement extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'size' => 'integer',
+    ];
+
+    /**
      * Gets the size measurable models that this size measurement belongs to.
      *
      * @return MorphTo
