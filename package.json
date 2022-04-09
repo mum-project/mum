@@ -21,7 +21,7 @@
         "fuse.js": "^6.5.3",
         "laravel-mix": "^6.0.39",
         "lodash": "^4.17.21",
-        "moment": "^2.29.1",
+        "moment": "^2.29.2",
         "postcss": "^8.4.5",
         "sass": "^1.45.1",
         "sass-loader": "^12.4.0",
